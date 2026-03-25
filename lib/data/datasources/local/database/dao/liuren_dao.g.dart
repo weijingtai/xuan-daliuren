@@ -1,0 +1,18 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'liuren_dao.dart';
+
+// ignore_for_file: type=lint
+mixin _$LiuRenDaoMixin on DatabaseAccessor<DaLiuRenAppDatabase> {
+  $DbInitializationFlagsTable get dbInitializationFlags =>
+      attachedDatabase.dbInitializationFlags;
+  LiuRenDaoManager get managers => LiuRenDaoManager(this);
+}
+
+class LiuRenDaoManager {
+  final _$LiuRenDaoMixin _db;
+  LiuRenDaoManager(this._db);
+  $$DbInitializationFlagsTableTableManager get dbInitializationFlags =>
+      $$DbInitializationFlagsTableTableManager(
+          _db.attachedDatabase, _db.dbInitializationFlags);
+}

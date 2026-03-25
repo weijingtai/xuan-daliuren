@@ -1,7 +1,9 @@
 import 'package:common/enums.dart';
 import 'package:common/module.dart';
+import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:daliuren/domain/usecases/base_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
+import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
 import 'package:daliuren/domain/usecases/load_divination_data_usecase.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/presentation/viewmodels/base_viewmodel.dart';
@@ -9,12 +11,15 @@ import 'package:daliuren/presentation/viewmodels/base_viewmodel.dart';
 class DaLiuRenViewModel extends BaseViewModel {
   final CalculateDivinationUseCase _calculateDivinationUseCase;
   final LoadDivinationDataUseCase _loadDivinationDataUseCase;
+  final CalculateShenShaUseCase? _calculateShenShaUseCase;
 
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
     required LoadDivinationDataUseCase loadDivinationDataUseCase,
+    CalculateShenShaUseCase? calculateShenShaUseCase,
   })  : _calculateDivinationUseCase = calculateDivinationUseCase,
-        _loadDivinationDataUseCase = loadDivinationDataUseCase;
+        _loadDivinationDataUseCase = loadDivinationDataUseCase,
+        _calculateShenShaUseCase = calculateShenShaUseCase;
 
   // Data properties
   DateTime _selectedDateTime = DateTime.now();
@@ -30,6 +35,9 @@ class DaLiuRenViewModel extends BaseViewModel {
   int? _juNumber;
   bool _isDataLoaded = false;
 
+  // Shen sha results
+  Map<DiZhi, List<ShenShaResult>>? _shenShaResults;
+
   // Getters
   DateTime get selectedDateTime => _selectedDateTime;
   String? get question => _question;
@@ -41,6 +49,7 @@ class DaLiuRenViewModel extends BaseViewModel {
   DiZhi? get dunGanZhi => _dunGanZhi;
   int? get juNumber => _juNumber;
   bool get isDataLoaded => _isDataLoaded;
+  Map<DiZhi, List<ShenShaResult>>? get shenShaResults => _shenShaResults;
 
   // Initialize data
   Future<void> initializeData() async {
@@ -90,6 +99,7 @@ class DaLiuRenViewModel extends BaseViewModel {
       logger.d(
           '🔵 [ViewModel] Calculation successful: ${divination.dayJiaZi.name}日');
       _updateDivinationProperties();
+      await _calculateShenSha();
       setSuccess();
     } catch (e) {
       logger.e('🔴 [ViewModel] Calculation error: $e');
@@ -121,5 +131,30 @@ class DaLiuRenViewModel extends BaseViewModel {
   // Reset to current time
   void resetToNow() {
     updateDateTime(DateTime.now());
+  }
+
+  Future<void> _calculateShenSha() async {
+    if (_calculateShenShaUseCase == null) {
+      logger.d('🟡 [ViewModel] ShenSha UseCase is null, skipping');
+      return;
+    }
+    if (_yearJiaZi == null || _monthJiaZi == null || _dayJiaZi == null || _timeJiaZi == null) {
+      logger.d('🟡 [ViewModel] JiaZi values not ready for ShenSha');
+      return;
+    }
+    try {
+      logger.d('🔵 [ViewModel] Calculating ShenSha...');
+      final params = CalculateShenShaParams(
+        yearJiaZi: _yearJiaZi!,
+        monthJiaZi: _monthJiaZi!,
+        dayJiaZi: _dayJiaZi!,
+        hourJiaZi: _timeJiaZi!,
+      );
+      _shenShaResults = await _calculateShenShaUseCase!.call(params);
+      final totalCount = _shenShaResults?.values.fold<int>(0, (sum, list) => sum + list.length) ?? 0;
+      logger.d('🟢 [ViewModel] ShenSha calculated: $totalCount results');
+    } catch (e) {
+      logger.e('🔴 [ViewModel] Error calculating shen sha: $e');
+    }
   }
 }

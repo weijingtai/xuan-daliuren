@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
+import 'package:daliuren/presentation/widgets/shen_sha_display_widget.dart';
 
 class DivinationDisplayWidget extends StatelessWidget {
   const DivinationDisplayWidget({super.key});
@@ -34,6 +35,11 @@ class DivinationDisplayWidget extends StatelessWidget {
 
               // Divination Panel (placeholder for now)
               _buildDivinationPanel(context, divination),
+
+              const SizedBox(height: 16),
+
+              // Shen Sha Display
+              ShenShaDisplayWidget(shenShaResults: viewModel.shenShaResults),
             ],
           ),
         );

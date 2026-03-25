@@ -27,6 +27,11 @@ import '../model/enum_gui_ren.dart';
 import '../model/four_class.dart';
 import '../model/three_chuan.dart';
 import '../model/yu_ding_da_liu_ren.dart';
+import '../domain/entities/shen_sha_entity.dart';
+import '../domain/services/shen_sha_calculation_service_impl.dart';
+import '../domain/usecases/calculate_shen_sha_usecase.dart';
+import '../data/services/shen_sha_data_service_impl.dart';
+import '../presentation/widgets/shen_sha_display_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -65,6 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<Tuple2<JiaZi, DiZhi>?> classNumberNotifier =
       ValueNotifier(null);
   final ValueNotifier<int?> juNumberNotifier = ValueNotifier(null);
+  final ValueNotifier<Map<DiZhi, List<ShenShaResult>>?> shenShaNotifier =
+      ValueNotifier(null);
+  final CalculateShenShaUseCase _shenShaUseCase = CalculateShenShaUseCase(
+    ShenShaCalculationServiceImpl(dataService: ShenShaDataServiceImpl()),
+  );
 
   final ValueNotifier<bool> _showMonthGeneralJieQi = ValueNotifier(false);
   @override
@@ -96,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (panDatetimeNotifier.value == null) {
           lunarNotifier.value = null;
           daLiuRenGongNotifier.value = null;
+          shenShaNotifier.value = null;
           juNumberNotifier.value = null;
         } else {
           final dt = panDatetimeNotifier.value!;
@@ -146,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
             monthGeneral: MonthGeneral.fromByStartAtJie(prevQiName),
           );
           daLiuRenGongNotifier.value = pan;
+          _calculateShenShaForPan(pan);
           checkPanJu(pan.dayJiaZi, pan.timeJiaZi,
                   pan.isDayGuiRen ? YinYang.YANG : YinYang.YIN)
               .then((va) => juNumberNotifier.value = va);
@@ -190,6 +202,23 @@ class _MyHomePageState extends State<MyHomePage> {
     int juNumber = mapper[dayJiaZi.name]![timeJiaZi.diZhi.name]![
         yinYangDun.isYang ? "yang" : "yin"]!;
     return juNumber;
+  }
+
+  void _calculateShenShaForPan(DaLiuRenKePan pan) async {
+    try {
+      logger.d('🔵 [OldUI] Calculating ShenSha for ${pan.dayJiaZi.name}日...');
+      final params = CalculateShenShaParams(
+        yearJiaZi: pan.yearJiaZi,
+        monthJiaZi: pan.monthJiaZi,
+        dayJiaZi: pan.dayJiaZi,
+        hourJiaZi: pan.timeJiaZi,
+      );
+      shenShaNotifier.value = await _shenShaUseCase.call(params);
+      final count = shenShaNotifier.value?.values.fold<int>(0, (s, l) => s + l.length) ?? 0;
+      logger.d('🟢 [OldUI] ShenSha calculated: $count results');
+    } catch (e) {
+      logger.e('🔴 [OldUI] Error calculating shen sha: $e');
+    }
   }
 
   Future<Map<String, Map<String, Map<String, int>>>> loadJuMapper() async {
@@ -612,6 +641,22 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(
             height: 16,
           ),
+          // Shen Sha Display
+          ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
+            valueListenable: shenShaNotifier,
+            builder: (ctx, shenShaResults, child) {
+              if (shenShaResults == null || shenShaResults.isEmpty) {
+                return const SizedBox();
+              }
+              return Container(
+                width: panSize.width,
+                child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
+              );
+            },
+          ),
+          const SizedBox(
+            height: 16,
+          ),
           ValueListenableBuilder<Tuple2<JiaZi, DiZhi>?>(
               valueListenable: classNumberNotifier,
               builder: (ctx, tuple2, child) {
@@ -695,11 +740,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       );
     } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      return Column(
         children: [
-          Container(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
             width: panSize.width,
             height: panSize.height,
             decoration: BoxDecoration(
@@ -813,6 +860,19 @@ class _MyHomePageState extends State<MyHomePage> {
                             duration: const Duration(milliseconds: 400),
                             begin: 0);
               })
+          ],
+        ),
+        const SizedBox(height: 16),
+        // Shen Sha Display (landscape)
+        ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
+          valueListenable: shenShaNotifier,
+          builder: (ctx, shenShaResults, child) {
+            if (shenShaResults == null || shenShaResults.isEmpty) {
+              return const SizedBox();
+            }
+            return ShenShaDisplayWidget(shenShaResults: shenShaResults);
+          },
+        ),
         ],
       );
     }

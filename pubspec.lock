@@ -172,9 +172,11 @@ packages:
   common:
     dependency: "direct main"
     description:
-      path: "../common"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "304f093cdfa8be2edcc550558fbb0bd600b1c6aa"
+      url: "https://github.com/weijingtai/xuan-common.git"
+    source: git
     version: "1.0.0+1"
   convert:
     dependency: transitive
@@ -273,7 +275,7 @@ packages:
     source: hosted
     version: "0.4.2"
   drift:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: drift
       sha256: "5ea2f718558c0b31d4b8c36a3d8e5b7016f1265f46ceb5a5920e16117f0c0d6a"
@@ -281,7 +283,7 @@ packages:
     source: hosted
     version: "2.30.1"
   drift_dev:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: drift_dev
       sha256: "892dfb5d69d9e604bdcd102a9376de8b41768cf7be93fd26b63cfc4d8f91ad5f"
@@ -289,7 +291,7 @@ packages:
     source: hosted
     version: "2.30.1"
   drift_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: drift_flutter
       sha256: c07120854742a0cae2f7501a0da02493addde550db6641d284983c08762e60a7
@@ -297,7 +299,7 @@ packages:
     source: hosted
     version: "0.2.8"
   equatable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: equatable
       sha256: "3e0141505477fd8ad55d6eb4e7776d3fe8430be8e497ccb1521370c3f21a3e2b"
@@ -800,7 +802,7 @@ packages:
     source: hosted
     version: "1.1.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: "50c5dd5b6e1aaf6fb3a78b33f6aa3afca52bf903a8a5298f53101fdaee55bbcd"
@@ -850,9 +852,11 @@ packages:
   persistence_core:
     dependency: transitive
     description:
-      path: "../persistence_core"
-      relative: true
-    source: path
+      path: core
+      ref: HEAD
+      resolved-ref: c8671bbc9e4c0cb27941d592dfde3a1cfc794714
+      url: "https://github.com/weijingtai/xuan-storage.git"
+    source: git
     version: "0.0.1"
   petitparser:
     dependency: transitive
@@ -895,7 +899,7 @@ packages:
     source: hosted
     version: "2.1.0"
   protobuf:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: protobuf
       sha256: "75ec242d22e950bdcc79ee38dd520ce4ee0bc491d7fadc4ea47694604d22bf06"
@@ -1059,14 +1063,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
-  sprintf:
-    dependency: transitive
-    description:
-      name: sprintf
-      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.0"
   sqlite3:
     dependency: transitive
     description:
@@ -1076,13 +1072,13 @@ packages:
     source: hosted
     version: "2.7.5"
   sqlite3_flutter_libs:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqlite3_flutter_libs
-      sha256: "1a96b59227828d9eb1463191d684b37a27d66ee5ed7597fcf42eee6452c88a14"
+      sha256: eeb9e3a45207649076b808f8a5a74d68770d0b7f26ccef6d5f43106eee5375ad
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.32"
+    version: "0.5.42"
   sqlparser:
     dependency: transitive
     description:
@@ -1215,10 +1211,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: a5be9ef6618a7ac1e964353ef476418026db906c4facdedaa299b7a2e71690ff
+      sha256: a11b666489b1954e01d992f3d601b1804a33937b5a8fe677bd26b8a9f96f96e8
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.1"
+    version: "4.5.2"
   vector_graphics:
     dependency: transitive
     description:
