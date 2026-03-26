@@ -84,6 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
   );
 
   final ValueNotifier<bool> _showMonthGeneralJieQi = ValueNotifier(false);
+  final ValueNotifier<bool> isSmallPanNotifier = ValueNotifier(false);
+
+  static const double NORMAL_PAN_SIZE = 400.0;
+  static const double SMALL_PAN_SIZE = 280.0;
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -232,7 +237,9 @@ class _MyHomePageState extends State<MyHomePage> {
         hourJiaZi: pan.timeJiaZi,
       );
       shenShaNotifier.value = await _shenShaUseCase.call(params);
-      final count = shenShaNotifier.value?.values.fold<int>(0, (s, l) => s + l.length) ?? 0;
+      final count =
+          shenShaNotifier.value?.values.fold<int>(0, (s, l) => s + l.length) ??
+              0;
       logger.d('🟢 [OldUI] ShenSha calculated: $count results');
     } catch (e) {
       logger.e('🔴 [OldUI] Error calculating shen sha: $e');
@@ -259,8 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
       logger.d('Matching KeTi for patterns: $patterns');
       final results = ketiService.findByNames(patterns);
       if (results.isNotEmpty) {
-        matchedLessonsNotifier.value =
-            results.map((r) => r.lesson).toList();
+        matchedLessonsNotifier.value = results.map((r) => r.lesson).toList();
       } else {
         matchedLessonsNotifier.value = [];
       }
@@ -655,69 +661,124 @@ class _MyHomePageState extends State<MyHomePage> {
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       return Column(
         children: [
-          Container(
-            width: panSize.width,
-            height: panSize.height,
-            decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 251, 240, 1),
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    spreadRadius: 6,
-                  )
-                ]),
-            alignment: Alignment.center,
-            child: ValueListenableBuilder<DaLiuRenKePan?>(
-                valueListenable: daLiuRenGongNotifier,
-                builder: (ct, pan, child) =>
-                    pan == null ? child! : build_panel(pan, gongSize),
-                child: ValueListenableBuilder(
-                  valueListenable: daLiuRenModelNotifier,
-                  builder: (ctx, pan, child) =>
-                      pan == null ? child! : build_panel_model(pan, gongSize),
-                  child: Container(
-                    width: panSize.width,
-                    height: panSize.height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
+          ValueListenableBuilder<bool>(
+            valueListenable: isSmallPanNotifier,
+            builder: (context, isSmall, _) {
+              return SizedBox(
+                width: NORMAL_PAN_SIZE,
+                height: NORMAL_PAN_SIZE,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Center(
+                      child: TweenAnimationBuilder<double>(
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.easeInOutQuart,
+                        tween: Tween<double>(
+                          begin: isSmall ? NORMAL_PAN_SIZE : SMALL_PAN_SIZE,
+                          end: isSmall ? SMALL_PAN_SIZE : NORMAL_PAN_SIZE,
+                        ),
+                        builder: (context, size, child) {
+                          final double currentScaleFactor =
+                              size / NORMAL_PAN_SIZE;
+                          final Size currentGongSize =
+                              Size(size * 0.25, size * 0.25);
+                          return Container(
+                            width: size,
+                            height: size,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(255, 251, 240, 1),
+                                borderRadius: BorderRadius.circular(
+                                    32 * currentScaleFactor),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 6 * currentScaleFactor,
+                                    spreadRadius: 6 * currentScaleFactor,
+                                  )
+                                ]),
+                            alignment: Alignment.center,
+                            child: ValueListenableBuilder<DaLiuRenKePan?>(
+                                valueListenable: daLiuRenGongNotifier,
+                                builder: (ct, pan, child) => pan == null
+                                    ? child!
+                                    : build_panel(pan, currentGongSize,
+                                        currentScaleFactor),
+                                child: ValueListenableBuilder(
+                                  valueListenable: daLiuRenModelNotifier,
+                                  builder: (ctx, pan, child) => pan == null
+                                      ? child!
+                                      : build_panel_model(pan, currentGongSize,
+                                          currentScaleFactor),
+                                  child: Container(
+                                    width: size,
+                                    height: size,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          32 * currentScaleFactor),
+                                    ),
+                                  ),
+                                )),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                )),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Material(
+                        color: Colors.redAccent,
+                        elevation: 8,
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          icon: Icon(
+                            isSmall ? Icons.fullscreen : Icons.fullscreen_exit,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                          onPressed: () => isSmallPanNotifier.value =
+                              !isSmallPanNotifier.value,
+                          tooltip: "切换大小",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
           const SizedBox(
             height: 16,
           ),
           // Shen Sha Display
-              ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
-                valueListenable: shenShaNotifier,
-                builder: (ctx, shenShaResults, child) {
-                  if (shenShaResults == null || shenShaResults.isEmpty) {
-                    return const SizedBox();
-                  }
-                  return Container(
-                    width: panSize.width,
-                    child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              // KeTi Detail Display
-              ValueListenableBuilder<List<DaliurenLesson>>(
-                valueListenable: matchedLessonsNotifier,
-                builder: (ctx, lessons, child) {
-                  if (lessons.isEmpty) {
-                    return const SizedBox();
-                  }
-                  return Container(
-                    width: panSize.width,
-                    child: KetiDetailWidget(lessons: lessons),
-                  );
-                },
-              ),
+          ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
+            valueListenable: shenShaNotifier,
+            builder: (ctx, shenShaResults, child) {
+              if (shenShaResults == null || shenShaResults.isEmpty) {
+                return const SizedBox();
+              }
+              return Container(
+                width: panSize.width,
+                child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
+              );
+            },
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          // KeTi Detail Display
+          ValueListenableBuilder<List<DaliurenLesson>>(
+            valueListenable: matchedLessonsNotifier,
+            builder: (ctx, lessons, child) {
+              if (lessons.isEmpty) {
+                return const SizedBox();
+              }
+              return Container(
+                width: panSize.width,
+                child: KetiDetailWidget(lessons: lessons),
+              );
+            },
+          ),
           const SizedBox(
             height: 16,
           ),
@@ -810,144 +871,200 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-            width: panSize.width,
-            height: panSize.height,
-            decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 251, 240, 1),
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    spreadRadius: 6,
-                  )
-                ]),
-            alignment: Alignment.center,
-            child: ValueListenableBuilder<DaLiuRenKePan?>(
-                valueListenable: daLiuRenGongNotifier,
-                builder: (ct, pan, child) =>
-                    pan == null ? child! : build_panel(pan, gongSize),
-                child: ValueListenableBuilder(
-                  valueListenable: daLiuRenModelNotifier,
-                  builder: (ctx, pan, child) =>
-                      pan == null ? child! : build_panel_model(pan, gongSize),
-                  child: Container(
-                    width: panSize.width,
-                    height: panSize.height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                  ),
-                )),
-          ),
-          const SizedBox(
-            width: 32,
-          ),
-          ValueListenableBuilder<Tuple2<JiaZi, DiZhi>?>(
-              valueListenable: classNumberNotifier,
-              builder: (ctx, tuple2, child) {
-                return tuple2 == null
-                    ? const SizedBox()
-                    : Container(
-                            width: panSize.width,
-                            height: panSize.height,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 24, horizontal: 16),
-                            decoration: BoxDecoration(
-                                // color: Colors.blue.withOpacity(.1),
+              ValueListenableBuilder<bool>(
+                valueListenable: isSmallPanNotifier,
+                builder: (context, isSmall, _) {
+                  return SizedBox(
+                    width: NORMAL_PAN_SIZE,
+                    height: NORMAL_PAN_SIZE,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Center(
+                          child: TweenAnimationBuilder<double>(
+                            duration: const Duration(milliseconds: 600),
+                            curve: Curves.easeInOutQuart,
+                            tween: Tween<double>(
+                              begin: isSmall ? NORMAL_PAN_SIZE : SMALL_PAN_SIZE,
+                              end: isSmall ? SMALL_PAN_SIZE : NORMAL_PAN_SIZE,
+                            ),
+                            builder: (context, size, child) {
+                              final double currentScaleFactor =
+                                  size / NORMAL_PAN_SIZE;
+                              final Size currentGongSize =
+                                  Size(size * 0.25, size * 0.25);
+                              return Container(
+                                width: size,
+                                height: size,
+                                decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromRGBO(255, 251, 240, 1),
+                                    borderRadius: BorderRadius.circular(
+                                        32 * currentScaleFactor),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6 * currentScaleFactor,
+                                        spreadRadius: 6 * currentScaleFactor,
+                                      )
+                                    ]),
+                                alignment: Alignment.center,
+                                child: ValueListenableBuilder<DaLiuRenKePan?>(
+                                    valueListenable: daLiuRenGongNotifier,
+                                    builder: (ct, pan, child) => pan == null
+                                        ? child!
+                                        : build_panel(pan, currentGongSize,
+                                            currentScaleFactor),
+                                    child: ValueListenableBuilder(
+                                      valueListenable: daLiuRenModelNotifier,
+                                      builder: (ctx, pan, child) => pan == null
+                                          ? child!
+                                          : build_panel_model(pan,
+                                              currentGongSize, currentScaleFactor),
+                                      child: Container(
+                                        width: size,
+                                        height: size,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              32 * currentScaleFactor),
+                                        ),
+                                      ),
+                                    )),
+                              );
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: Material(
+                            color: Colors.redAccent,
+                            elevation: 8,
+                            shape: const CircleBorder(),
+                            child: IconButton(
+                              icon: Icon(
+                                isSmall ? Icons.fullscreen : Icons.fullscreen_exit,
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(32),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 6,
-                                    spreadRadius: 6,
-                                  )
-                                ]),
-                            child: SingleChildScrollView(
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  FutureBuilder(
-                                      future:
-                                          loadBy(tuple2.item1, tuple2.item2),
-                                      builder: (ctx, snap) {
-                                        if (snap.hasError) {
-                                          logger.d(snap.error.toString());
-                                        }
-                                        if (snap.hasData) {
-                                          return yu_ding(snap.data!);
-                                        } else {
-                                          return const SizedBox(
-                                              height: 64,
-                                              width: 64,
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-                                      }),
-                                  Positioned(
-                                    top: -24,
-                                    right: 0,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Container(
-                                          // color: Colors.blue.withOpacity(.1),
-                                          height: 128,
-                                          width: 64,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "${ICONS_ASSETS_PATH}/tag_virt.png"))),
-                                          // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
-                                        ),
-                                        const Column(
-                                          children: [Text("元"), Text("首")],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                size: 28,
                               ),
-                            ))
-                        .animate()
-                        .moveX(
-                            delay: const Duration(milliseconds: 1000),
-                            curve: Curves.easeInOutQuint,
-                            duration: const Duration(milliseconds: 1000),
-                            begin: -128,
-                            end: 0)
-                        .fadeIn(
-                            delay: const Duration(milliseconds: 800),
-                            curve: Curves.easeInOutQuint,
-                            duration: const Duration(milliseconds: 400),
-                            begin: 0);
-              })
-          ],
-        ),
-        const SizedBox(height: 16),
-        // Shen Sha Display (landscape)
-        ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
-          valueListenable: shenShaNotifier,
-          builder: (ctx, shenShaResults, child) {
-            if (shenShaResults == null || shenShaResults.isEmpty) {
-              return const SizedBox();
-            }
-            return ShenShaDisplayWidget(shenShaResults: shenShaResults);
-          },
-        ),
-        const SizedBox(height: 16),
-        // KeTi Detail Display (landscape)
-        ValueListenableBuilder<List<DaliurenLesson>>(
-          valueListenable: matchedLessonsNotifier,
-          builder: (ctx, lessons, child) {
-            if (lessons.isEmpty) {
-              return const SizedBox();
-            }
-            return KetiDetailWidget(lessons: lessons);
-          },
-        ),
+                              onPressed: () => isSmallPanNotifier.value =
+                                  !isSmallPanNotifier.value,
+                              tooltip: "切换大小",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(
+                width: 32,
+              ),
+              ValueListenableBuilder<Tuple2<JiaZi, DiZhi>?>(
+                  valueListenable: classNumberNotifier,
+                  builder: (ctx, tuple2, child) {
+                    return tuple2 == null
+                        ? const SizedBox()
+                        : Container(
+                                width: panSize.width,
+                                height: panSize.height,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 24, horizontal: 16),
+                                decoration: BoxDecoration(
+                                    // color: Colors.blue.withOpacity(.1),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(32),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6,
+                                        spreadRadius: 6,
+                                      )
+                                    ]),
+                                child: SingleChildScrollView(
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      FutureBuilder(
+                                          future: loadBy(
+                                              tuple2.item1, tuple2.item2),
+                                          builder: (ctx, snap) {
+                                            if (snap.hasError) {
+                                              logger.d(snap.error.toString());
+                                            }
+                                            if (snap.hasData) {
+                                              return yu_ding(snap.data!);
+                                            } else {
+                                              return const SizedBox(
+                                                  height: 64,
+                                                  width: 64,
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            }
+                                          }),
+                                      Positioned(
+                                        top: -24,
+                                        right: 0,
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Container(
+                                              // color: Colors.blue.withOpacity(.1),
+                                              height: 128,
+                                              width: 64,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "${ICONS_ASSETS_PATH}/tag_virt.png"))),
+                                              // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
+                                            ),
+                                            const Column(
+                                              children: [Text("元"), Text("首")],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ))
+                            .animate()
+                            .moveX(
+                                delay: const Duration(milliseconds: 1000),
+                                curve: Curves.easeInOutQuint,
+                                duration: const Duration(milliseconds: 1000),
+                                begin: -128,
+                                end: 0)
+                            .fadeIn(
+                                delay: const Duration(milliseconds: 800),
+                                curve: Curves.easeInOutQuint,
+                                duration: const Duration(milliseconds: 400),
+                                begin: 0);
+                  })
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Shen Sha Display (landscape)
+          ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
+            valueListenable: shenShaNotifier,
+            builder: (ctx, shenShaResults, child) {
+              if (shenShaResults == null || shenShaResults.isEmpty) {
+                return const SizedBox();
+              }
+              return ShenShaDisplayWidget(shenShaResults: shenShaResults);
+            },
+          ),
+          const SizedBox(height: 16),
+          // KeTi Detail Display (landscape)
+          ValueListenableBuilder<List<DaliurenLesson>>(
+            valueListenable: matchedLessonsNotifier,
+            builder: (ctx, lessons, child) {
+              if (lessons.isEmpty) {
+                return const SizedBox();
+              }
+              return KetiDetailWidget(lessons: lessons);
+            },
+          ),
         ],
       );
     }
@@ -1473,11 +1590,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget build_panel_model(DaLiuRenPanModel panModel, Size gongSize) {
+  Widget build_panel_model(
+      DaLiuRenPanModel panModel, Size gongSize, double scaleFactor) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        panel_gong(panModel, gongSize),
+        panel_gong(panModel, gongSize, scaleFactor),
         SizedBox(
           width: gongSize.width * 2,
           height: gongSize.height * 2,
@@ -1489,14 +1607,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: gongSize.height,
                 width: gongSize.width,
                 // color: Colors.orange.withOpacity(.2),
-                child: build_four_ke(panModel.getFourClass()),
+                child: build_four_ke(panModel.getFourClass(), scaleFactor),
               ),
               Container(
                 height: gongSize.height,
                 width: gongSize.width,
                 alignment: Alignment.center,
                 // color: Colors.orange.withOpacity(.4),
-                child: build_san_chuan(panModel.getThreeChuan()),
+                child: build_san_chuan(panModel.getThreeChuan(), scaleFactor),
               )
             ],
           ),
@@ -1505,17 +1623,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget build_panel(DaLiuRenKePan daLiuPan, Size gongSize) {
+  Widget build_panel(
+      DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        panel_gong(daLiuPan, gongSize),
-        panel_center(daLiuPan, gongSize),
+        panel_gong(daLiuPan, gongSize, scaleFactor),
+        panel_center(daLiuPan, gongSize, scaleFactor),
       ],
     );
   }
 
-  Widget panel_center(DaLiuRenKePan daLiuPan, Size gongSize) {
+  Widget panel_center(
+      DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor) {
     double width = gongSize.width * 2;
     double height = gongSize.height * 2;
     return SizedBox(
@@ -1582,10 +1702,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: [
                                 Text(daLiuPan.monthGeneral.name.split("").first,
                                     style: guiRenNameTextStyle.copyWith(
-                                        fontSize: 28)),
+                                        fontSize: 28 * scaleFactor)),
                                 Text(daLiuPan.monthGeneral.name.split("").last,
                                     style: guiRenNameTextStyle.copyWith(
-                                        fontSize: 28)),
+                                        fontSize: 28 * scaleFactor)),
                               ],
                             ),
                           ),
@@ -1596,7 +1716,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text(
                                 "︹",
                                 style: guiRenNameTextStyle.copyWith(
-                                    height: 1.0, fontSize: 12),
+                                    height: 1.0, fontSize: 12 * scaleFactor),
                               ),
                               Text(
                                 daLiuPan.monthGeneral.generalZhi.name,
@@ -1617,12 +1737,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text(
                                 "将",
                                 style: guiRenNameTextStyle.copyWith(
-                                    height: 1.0, fontSize: 12),
+                                    height: 1.0, fontSize: 12 * scaleFactor),
                               ),
                               Text(
                                 "︺",
                                 style: guiRenNameTextStyle.copyWith(
-                                    height: 1.0, fontSize: 12),
+                                    height: 1.0, fontSize: 12 * scaleFactor),
                               ),
                             ],
                           )
@@ -1630,8 +1750,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 4,
+                  SizedBox(
+                    height: 4 * scaleFactor,
                   ),
                   ValueListenableBuilder(
                       valueListenable: _showMonthGeneralJieQi,
@@ -1681,7 +1801,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         key: const ValueKey("jie_qi"),
                         children: [
                           SizedBox(
-                              width: 30,
+                              width: 30 * scaleFactor,
                               child: TwentyFourJieQiTag(
                                 jieQi: daLiuPan.monthGeneral.jieSegment.item1,
                                 fontColor: Colors.blueGrey,
@@ -1691,9 +1811,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     .withOpacity(.2),
                                 isHor: true,
                               )),
-                          const SizedBox(height: 2),
+                          SizedBox(height: 2 * scaleFactor),
                           SizedBox(
-                              width: 30,
+                              width: 30 * scaleFactor,
                               child: TwentyFourJieQiTag(
                                   jieQi: daLiuPan.monthGeneral.jieSegment.item2,
                                   fontColor: Colors.blueGrey,
@@ -1709,7 +1829,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8 * scaleFactor),
                   ),
                   child: buildClassType(daLiuPan))
             ],
@@ -1718,8 +1838,8 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              build_san_chuan(daLiuPan.getThreeChuan()),
-              build_four_ke(daLiuPan.getFourClass()),
+              build_san_chuan(daLiuPan.getThreeChuan(), scaleFactor),
+              build_four_ke(daLiuPan.getFourClass(), scaleFactor),
             ],
           )
         ],
@@ -2006,7 +2126,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget build_four_ke(FourClass fourClass) {
+  Widget build_four_ke(FourClass fourClass, double scaleFactor) {
     double diZhiFontSize = gongSize.width * .24;
     double otherFontSize = gongSize.width * .24;
     TextStyle tianGanStyle = ConstUIResourcesMapper.tianGanTextStyle
@@ -2030,7 +2150,7 @@ class _MyHomePageState extends State<MyHomePage> {
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
-    SizedBox intervalSize = const SizedBox(width: 6);
+    SizedBox intervalSize = SizedBox(width: 6 * scaleFactor);
     double height = gongSize.height;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -2042,7 +2162,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text(
               "四",
-              style: GoogleFonts.maShanZheng(height: 1, fontSize: 18),
+              style: GoogleFonts.maShanZheng(
+                  height: 1, fontSize: 18 * scaleFactor),
             ),
             Text(fourClass.fourth.guiRen.name, style: guiRenName),
             Text(fourClass.fourth.sky.value,
@@ -2060,7 +2181,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text(
               "三",
-              style: GoogleFonts.maShanZheng(height: 1, fontSize: 18),
+              style: GoogleFonts.maShanZheng(
+                  height: 1, fontSize: 18 * scaleFactor),
             ),
             Text(fourClass.third.guiRen.name, style: guiRenName),
             Text(fourClass.third.sky.value,
@@ -2078,7 +2200,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text(
               "二",
-              style: GoogleFonts.maShanZheng(height: 1, fontSize: 18),
+              style: GoogleFonts.maShanZheng(
+                  height: 1, fontSize: 18 * scaleFactor),
             ),
             Text(fourClass.second.guiRen.name, style: guiRenName),
             Text(fourClass.second.sky.value,
@@ -2101,7 +2224,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Text(
                     "一",
-                    style: GoogleFonts.maShanZheng(height: 1, fontSize: 18),
+                    style: GoogleFonts.maShanZheng(
+                        height: 1, fontSize: 18 * scaleFactor),
                   ),
                   Text(fourClass.first.guiRen.name, style: guiRenName),
                   Center(
@@ -2130,7 +2254,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget build_san_chuan(ThreeChuan chuan) {
+  Widget build_san_chuan(ThreeChuan chuan, double scaleFactor) {
     double diZhiFontSize = gongSize.width * .24;
     TextStyle otherStyle =
         guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .16, shadows: [
@@ -2156,7 +2280,7 @@ class _MyHomePageState extends State<MyHomePage> {
           offset: const Offset(0, 0))
     ]);
     // TextStyle sixQing = guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .16,shadows:[Shadow(color: Colors.grey.withOpacity(.5), blurRadius: 2, offset: Offset(0, 0))]);
-    SizedBox offset = const SizedBox(width: 4);
+    SizedBox offset = SizedBox(width: 4 * scaleFactor);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -2175,7 +2299,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offset,
             // Text(chuan.first.tianGan?.value ?? "○", style: otherStyle,),
             chuan.first.tianGan == null
-                ? buildKongWangCircle(otherStyle.color, 16)
+                ? buildKongWangCircle(otherStyle.color, 16 * scaleFactor)
                 : Text(chuan.first.tianGan!.value,
                     style: tianGanStyle.copyWith(
                         color: getGanColor(chuan.first.tianGan!))),
@@ -2195,7 +2319,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(chuan.second.liuQin.name, style: otherStyle),
             offset,
             chuan.second.tianGan == null
-                ? buildKongWangCircle(otherStyle.color, 16)
+                ? buildKongWangCircle(otherStyle.color, 16 * scaleFactor)
                 : Text(chuan.second.tianGan!.value,
                     style: tianGanStyle.copyWith(
                         color: getGanColor(chuan.second.tianGan!))),
@@ -2215,7 +2339,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(chuan.third.liuQin.name, style: otherStyle),
             offset,
             chuan.third.tianGan == null
-                ? buildKongWangCircle(otherStyle.color, 16)
+                ? buildKongWangCircle(otherStyle.color, 16 * scaleFactor)
                 : Text(chuan.third.tianGan!.value,
                     style: tianGanStyle.copyWith(
                         color: getGanColor(chuan.third.tianGan!))),
@@ -2286,12 +2410,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget panel_gong(DaLiuRenPanel daLiuPan, Size gongSize) {
+  Widget panel_gong(DaLiuRenPanel daLiuPan, Size gongSize, double scaleFactor) {
     // double width = 200;
     // double height = 200;
     Map<DiZhi, Widget> gongWidgetMapper = {};
     daLiuPan.getGongMapper().forEach((key, value) {
-      gongWidgetMapper[key] = content(value.groundPanDiZhi, value, gongSize);
+      gongWidgetMapper[key] =
+          content(value.groundPanDiZhi, value, gongSize, scaleFactor);
     });
     return Container(
         alignment: Alignment.center,
@@ -2404,27 +2529,30 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  Widget content(DiZhi diZhi, DaLiuRenGong gong, Size gongSize) {
+  Widget content(
+      DiZhi diZhi, DaLiuRenGong gong, Size gongSize, double scaleFactor) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        backgroundContent(diZhi, gongSize),
-        buildTianGanJiZhi(diZhi),
-        eachGong(gong, gongSize)
+        backgroundContent(diZhi, gongSize, scaleFactor),
+        buildTianGanJiZhi(diZhi, scaleFactor),
+        eachGong(gong, gongSize, scaleFactor)
       ],
     );
   }
 
-  Widget buildTianGanJiZhi(DiZhi diZhi, {bool isSecond = false}) {
+  Widget buildTianGanJiZhi(DiZhi diZhi, double scaleFactor,
+      {bool isSecond = false}) {
     double defaultOpacity = .3;
-    BoxDecoration boxDecoration =
-        BoxDecoration(borderRadius: BorderRadius.circular(4), boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.1),
-        spreadRadius: 1,
-        blurRadius: 1,
-      ),
-    ]);
+    BoxDecoration boxDecoration = BoxDecoration(
+        borderRadius: BorderRadius.circular(4 * scaleFactor),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1 * scaleFactor,
+            blurRadius: 1 * scaleFactor,
+          ),
+        ]);
     TextStyle fontStyle = TextStyle(
         color: Colors.white,
         fontSize: gongSize.width * .12,
@@ -2437,7 +2565,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Opacity(
           opacity: defaultOpacity,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4 * scaleFactor),
             alignment: Alignment.center,
             decoration: boxDecoration.copyWith(color: getGanColor(gan)),
             child: Text(gan.name, style: fontStyle),
@@ -2451,7 +2579,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Opacity(
           opacity: defaultOpacity,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4 * scaleFactor),
             alignment: Alignment.center,
             decoration: boxDecoration.copyWith(color: getGanColor(gan)),
             child: Text(gan.name, style: fontStyle),
@@ -2465,7 +2593,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Opacity(
           opacity: defaultOpacity,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4 * scaleFactor),
             alignment: Alignment.center,
             decoration: boxDecoration.copyWith(color: getGanColor(gan)),
             child: Text(gan.name, style: fontStyle),
@@ -2479,7 +2607,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Opacity(
           opacity: defaultOpacity,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4 * scaleFactor),
             alignment: Alignment.center,
             decoration: boxDecoration.copyWith(color: getGanColor(gan)),
             child: Text(gan.name, style: fontStyle),
@@ -2494,7 +2622,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Opacity(
           opacity: defaultOpacity,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4 * scaleFactor),
             alignment: Alignment.center,
             decoration: boxDecoration.copyWith(color: getGanColor(gan)),
             child: Text(gan.name, style: fontStyle),
@@ -2508,7 +2636,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Opacity(
           opacity: defaultOpacity,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4 * scaleFactor),
             alignment: Alignment.center,
             decoration: boxDecoration.copyWith(color: getGanColor(gan)),
             child: Text(gan.name, style: fontStyle),
@@ -2526,19 +2654,19 @@ class _MyHomePageState extends State<MyHomePage> {
             Opacity(
               opacity: defaultOpacity,
               child: Container(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(4 * scaleFactor),
                 alignment: Alignment.center,
                 decoration: boxDecoration.copyWith(color: getGanColor(gan)),
                 child: Text(gan.name, style: fontStyle),
               ),
             ),
-            const SizedBox(
-              height: 4,
+            SizedBox(
+              height: 4 * scaleFactor,
             ),
             Opacity(
               opacity: defaultOpacity,
               child: Container(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(4 * scaleFactor),
                 alignment: Alignment.center,
                 decoration: boxDecoration.copyWith(color: getGanColor(gan1)),
                 child: Text(gan1.name, style: fontStyle),
@@ -2558,19 +2686,19 @@ class _MyHomePageState extends State<MyHomePage> {
             Opacity(
               opacity: defaultOpacity,
               child: Container(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(4 * scaleFactor),
                 alignment: Alignment.center,
                 decoration: boxDecoration.copyWith(color: getGanColor(gan)),
                 child: Text(gan.name, style: fontStyle),
               ),
             ),
-            const SizedBox(
-              height: 4,
+            SizedBox(
+              height: 4 * scaleFactor,
             ),
             Opacity(
               opacity: defaultOpacity,
               child: Container(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(4 * scaleFactor),
                 alignment: Alignment.center,
                 decoration: boxDecoration.copyWith(color: getGanColor(gan1)),
                 child: Text(gan1.name, style: fontStyle),
@@ -2584,21 +2712,21 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget eachGong(DaLiuRenGong gong, Size gongSize) {
+  Widget eachGong(DaLiuRenGong gong, Size gongSize, double scaleFactor) {
     return Container(
       width: gongSize.width,
       height: gongSize.height,
       alignment: Alignment.center,
-      child: centerContent(gong, gongSize),
+      child: centerContent(gong, gongSize, scaleFactor),
     );
   }
 
-  Widget backgroundContent(DiZhi diZhi, Size gongSize) {
+  Widget backgroundContent(DiZhi diZhi, Size gongSize, double scaleFactor) {
     BorderRadius radius = BorderRadius.zero;
-    double borderRadiusSize = 32;
-    Border border = Border.all(color: Colors.grey, width: 1);
+    double borderRadiusSize = 32 * scaleFactor;
+    Border border = Border.all(color: Colors.grey, width: 1 * scaleFactor);
     BorderSide defaultBorderSide =
-        const BorderSide(color: Colors.grey, width: 1);
+        BorderSide(color: Colors.grey, width: 1 * scaleFactor);
     Alignment alignment = Alignment.center;
     switch (diZhi) {
       case DiZhi.ZI:
@@ -2667,35 +2795,16 @@ class _MyHomePageState extends State<MyHomePage> {
             BorderRadius.only(bottomRight: Radius.circular(borderRadiusSize));
         break;
     }
-    // return Container(
-    //     width: gongSize.width,
-    //     height: gongSize.height,
-    //     alignment: alignment,
-    //     padding: EdgeInsets.all(12),
-    //     decoration: BoxDecoration(
-    //       color: Colors.red.withOpacity(.2),
-    //         border:border,
-    //         borderRadius: radius
-    //     ),
-    //     // child: Text(diZhi.value,style: ConstUIResourcesMapper.twelveDiZhiTextStyle.copyWith(color: Colors.grey.withOpacity(.2),fontSize: gongSize.width * .3),)
-    //   child: Stack(
-    //     alignment: Alignment.center,
-    //     children: [
-    //
-    //       Text(diZhi.value,style: ConstUIResourcesMapper.twelveDiZhiTextStyle.copyWith(color: Colors.grey.withOpacity(.2),fontSize: gongSize.width * .3),)
-    //     ],
-    //   ),
-    // );
     return Container(
         width: gongSize.width,
         height: gongSize.height,
         alignment: alignment,
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12 * scaleFactor),
         decoration: BoxDecoration(border: border, borderRadius: radius),
         child: Text(
           diZhi.value,
           style: ConstUIResourcesMapper.twelveDiZhiTextStyle.copyWith(
-              color: Colors.grey.withOpacity(.2),
+              color: Colors.grey.withOpacity(scaleFactor < 1.0 ? .1 : .2),
               fontSize: gongSize.width * .3),
         ));
   }
@@ -2745,9 +2854,9 @@ class _MyHomePageState extends State<MyHomePage> {
             offset: const Offset(0, 0))
       ]);
 
-  Widget centerContent(DaLiuRenGong daLiuRenGong, Size gongSize) {
+  Widget centerContent(
+      DaLiuRenGong daLiuRenGong, Size gongSize, double scaleFactor) {
     double middleHeight = gongSize.height * .5;
-    double middleWidth = gongSize.height * .5;
     double godFontSize = gongSize.height * .16;
     double jiaZiFontSize = gongSize.height * .16;
     return Container(
@@ -2760,14 +2869,14 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-              height: gongSize.height * .16,
-              width: gongSize.height * .34,
+              height: gongSize.height * .16 + (scaleFactor < 1.0 ? 4 : 0),
+              width: gongSize.height * .34 + (scaleFactor < 1.0 ? 4 : 0),
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   daLiuRenGong.guiRen == GuiRen.GUI_REN
                       ? SizedBox(
-                          width: gongSize.height * .34,
+                          width: gongSize.height * .34 + (scaleFactor < 1.0 ? 4 : 0),
                           child: ColorFiltered(
                               colorFilter: const ColorFilter.mode(
                                   Color.fromRGBO(176, 31, 36, .7),
@@ -2778,7 +2887,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       : const SizedBox(),
                   Text(
                     daLiuRenGong.guiRen.name,
-                    style: guiRenNameTextStyle.copyWith(fontSize: godFontSize),
+                    style: guiRenNameTextStyle.copyWith(
+                        fontSize: godFontSize + (scaleFactor < 1.0 ? 2 : 0)),
                   ),
                 ],
               )),
@@ -2797,7 +2907,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: ConstUIResourcesMapper.twelveDiZhiTextStyle.copyWith(
                       color: ConstResourcesMapper
                           .zodiacZhiColors[daLiuRenGong.skyPanDiZhi]!,
-                      fontSize: gongSize.width * .4),
+                      fontSize: (gongSize.width * .4) -
+                          (scaleFactor < 1.0 ? 2 : 0)),
                 ),
               ),
               Container(
