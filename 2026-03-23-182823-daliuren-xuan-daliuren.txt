@@ -1,0 +1,793 @@
+ ▐▛███▜▌   Claude Code v2.1.81
+▝▜█████▛▘  Sonnet 4.6 · API Usage Billing
+  ▘▘ ▝▝    ~/Git/Public/xuan-migration/xuan-daliuren
+
+❯ 项目遇到了问题，本地的daliuren 以及起远端的项目"xuan-daliuren"                
+却少了许多新开发的功能，而这些功能在"https://github.com/weijingtai/xuan.git"    
+项目中·daliuren· submodule 包含了 请与我讨论并制定找回计划                      
+
+⏺ Let me first understand the current state of both repositories to assess the
+  situation.
+
+⏺ 3 Explore agents finished (ctrl+o to expand)
+   ├─ Explore local daliuren repo state · 4 tool uses · 14.2k tokens
+   │  ⎿  Done
+   ├─ Check xuan repo for daliuren submodule · 0 tool uses
+   │  ⎿  Done
+   └─ Explore local lib directory structure · 0 tool uses
+      ⎿  Done
+
+⏺ I've completed a thorough comparison of both repositories. Here's the
+  situation:
+
+  Findings Summary
+
+  xuan-daliuren (standalone): Only 1 commit (3a633fe), migrated from monorepo on
+   Jan 31. Contains basic MVVM + Clean Architecture.
+
+  xuan.git daliuren submodule: Contains significantly more features. Key
+  differences:
+
+  ┌─────────────────────────────────────────────────┬───────────────────────┐
+  │              Missing in Standalone              │        Impact         │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ lib/core/ (errors, constants, base use cases)   │ Core infrastructure   │
+  │                                                 │ layer absent          │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ Drift database layer (tables, DAOs, type        │ No local persistence  │
+  │ converters)                                     │ at all                │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ Protobuf support (.proto + generated .pb.dart)  │ No efficient data     │
+  │                                                 │ serialization         │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ Enhanced lib/data/datasources/ (local/remote)   │ Only has bare         │
+  │                                                 │ repository impl       │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ Additional domain services (shen_sha, month     │ Missing business      │
+  │ general, raw pan, etc.)                         │ logic                 │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ Additional use cases (InitializeDatabase,       │ Missing orchestration │
+  │ GetYuDing, CalculateShenSha)                    │                       │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ service_locator.dart                            │ Incomplete DI setup   │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ Modular presentation widgets (four_class,       │ UI still monolithic   │
+  │ three_chuan, pan_display, yu_ding_display)      │                       │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ ARCHITECTURE.md                                 │ Missing architecture  │
+  │                                                 │ docs                  │
+  ├─────────────────────────────────────────────────┼───────────────────────┤
+  │ assets/shen_sha/                                │ Missing divination    │
+  │                                                 │ data                  │
+  └─────────────────────────────────────────────────┴───────────────────────┘
+
+⏺ User answered Claude's questions:
+  ⎿  · How do you want to recover the missing features from xuan.git's daliuren 
+     submodule? → 需要你对两个版本的daliure进行功能以及代码的分析，并进行对比，
+     之后由我来决定哪个版本的那个部分被保留
+     · Is the xuan.git repo accessible locally, or should I clone it fresh from 
+     GitHub? → 
+     克隆到本地的文件，但是在完成这次之后进行删除，防止存储占用以及代码混淆
+     · Should we keep the current standalone xuan-daliuren commit history, or is
+      it okay to start fresh? → Keep current history
+
+⏺ 明白了。你希望先做详细对比分析，然后由你决定保留哪些部分。让我设计详细的对比和
+  迁移计划。
+
+⏺ Plan(Design migration comparison plan)
+  ⎿  Done (90 tool uses · 109.5k tokens · 13m 16s)
+  (ctrl+o to expand)
+
+⏺ Very insightful findings from the analysis. Let me now write the detailed plan
+   and present the key decision points.
+
+⏺ Updated plan
+  ⎿  /plan to preview
+
+⏺ 计划已经写好了。核心发现是：缺失的功能存在于 xuan monorepo 的 git 
+  历史中（submodule 转换前被删除），而非当前的 submodule 中。
+
+  计划包含了 12 个层面的逐文件对比表，以及 5
+  个按依赖关系组织的迁移捆绑包（A-E），其中 Layer 7 
+  计算服务层存在架构冲突（旧版单体 vs 新版策略模式），需要你做关键设计决策。
+
+  请审阅计划，特别关注：
+  1. 每个 Layer 的迁移/跳过决定
+  2. Bundle E 的架构选项（A/B/C）
+  3. 是否需要数据库层（Bundle C）和 Protobuf（Layer 3）
+
+⏺ User approved Claude's plan
+  ⎿  Plan saved to: ~/.claude/plans/sorted-herding-wreath.md · /plan to edit
+     Daliuren Feature Recovery Plan
+
+     Context
+
+     问题: xuan-daliuren 独立仓库缺少 xuan monorepo 中 daliuren 的许多功能。
+
+     关键发现: xuan monorepo 当前的 daliuren/ 子模块指向的就是 xuan-daliuren.git
+      同一仓库，文件完全一致。缺失的功能存在于 monorepo 的 git 历史中 — 在将
+     daliuren 从内联目录转为 submodule 时（commit 10bfe5e
+     附近），旧架构的代码被删除了。这些功能需要从 xuan monorepo 的 git
+     历史中恢复。
+
+     当前 standalone 架构: MVVM + Clean Architecture（新版策略模式 calculators）
+     旧 monorepo 架构: 单体 service 类 + Drift 数据库 + Protobuf
+
+     ---
+     Phase 1: 准备工作
+
+     1. 克隆 xuan.git 到临时目录（需要完整历史以访问旧提交）
+     git clone https://github.com/weijingtai/xuan.git /tmp/xuan-recovery-temp
+
+     2. 从 git 历史中提取旧版 daliuren 代码到对比目录
+     git -C /tmp/xuan-recovery-temp archive <pre-migration-commit>:daliuren/ |
+     tar -x -C /tmp/xuan-old-daliuren/
+
+     3. 同时提取 monorepo 级别的资产文件（shen_sha、da_liu_ren proto 等）
+
+     ---
+     Phase 2: 逐层对比与决策
+
+     对比格式说明
+
+     - 仅旧版有: 需要决定是否迁移
+     - 仅新版有: standalone 新开发的，保留
+     - 两版都有但不同: 需要逐文件比较决定
+
+     ---
+     Layer 1: Core 基础层 (lib/core/)
+
+     ┌─────────────────────────────────────┬─────┬────────────┬────────────────┐
+     │                文件                 │ 行  │    说明    │      建议      │
+     │                                     │ 数  │            │                │
+     ├─────────────────────────────────────┼─────┼────────────┼────────────────┤
+     │ core/constants/da_liu_ren_common_co │ ~11 │ 六壬常量查 │ 迁移（无冲突） │
+     │ nstants.dart                        │ 2   │ 找表       │                │
+     ├─────────────────────────────────────┼─────┼────────────┼────────────────┤
+     │                                     │     │            │ 审查（standalo │
+     │ core/errors/failures.dart           │ ~54 │ 结构化错误 │ ne 的 base_use │
+     │                                     │     │ 类型       │ case.dart      │
+     │                                     │     │            │ 已有简化版）   │
+     ├─────────────────────────────────────┼─────┼────────────┼────────────────┤
+     │                                     │     │ 基础       │ 跳过（已有     │
+     │ core/usecase/usecase.dart           │ ~13 │ UseCase    │ base_usecase.d │
+     │                                     │     │ 接口       │ art）          │
+     └─────────────────────────────────────┴─────┴────────────┴────────────────┘
+
+     ---
+     Layer 2: 数据库层 - Drift (lib/data/datasources/local/database/)
+
+     ┌─────────────────────────────────────┬───────┬──────────────────┐
+     │                文件                 │ 行数  │       说明       │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ drift_database.dart + .g.dart       │ ~2336 │ Drift 数据库设置 │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ local_data_source.dart              │ ~173  │ 数据源抽象       │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ dao/liuren_dao.dart + .g.dart       │ ~175  │ 数据访问对象     │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ tables/preset_pans.dart             │ ~26   │ 预设盘表         │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ tables/ju_mappings.dart             │ ~13   │ 局映射表         │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ tables/yu_ding_entries.dart         │ ~27   │ 御定条目表       │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ tables/db_initialization_flags.dart │ ~15   │ 初始化标志表     │
+     ├─────────────────────────────────────┼───────┼──────────────────┤
+     │ converters/*.dart (4 files)         │ ~113  │ 类型转换器       │
+     └─────────────────────────────────────┴───────┴──────────────────┘
+
+     依赖: 需要添加 drift, sqlite3_flutter_libs, drift_flutter 依赖
+     决策: 这是完整的本地持久化功能，属于重大架构特性
+
+     ---
+     Layer 3: Protobuf (lib/data/datasources/local/protobuf/)
+
+     ┌─────────────────────────────────────────┬───────┬───────────────────────┐
+     │                  文件                   │ 行数  │         说明          │
+     ├─────────────────────────────────────────┼───────┼───────────────────────┤
+     │ jia_wu_geng_niu_yang.pb.dart + 3        │ ~929+ │ 甲午庚牛羊数据        │
+     │ 辅助文件                                │       │ protobuf              │
+     ├─────────────────────────────────────────┼───────┼───────────────────────┤
+     │ ju_mapper.pb.dart + 3 辅助文件          │ ~175+ │ 局映射 protobuf       │
+     └─────────────────────────────────────────┴───────┴───────────────────────┘
+
+     依赖: 需要 protobuf 包 + .proto 源文件
+     用途: 大型 JSON 数据的高效序列化（6MB+ → 更小更快）
+
+     ---
+     Layer 4: 数据模型层 (lib/data/models/)
+
+     ┌──────────────────────────────────────────────┬────────────────┐
+     │                     文件                     │      说明      │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ da_liu_ren_gong_data_model.dart + .g.dart    │ 宫位数据模型   │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ da_liu_ren_pan_data_model.dart + .g.dart     │ 盘面数据模型   │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ each_chuan_data_model.dart + .g.dart         │ 传数据模型     │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ each_class_data_model.dart + .g.dart         │ 课数据模型     │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ four_class_data_model.dart + .g.dart         │ 四课数据模型   │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ ju_mapping_data_model.dart + .g.dart         │ 局映射数据模型 │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ three_chuan_data_model.dart + .g.dart        │ 三传数据模型   │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ yu_ding_da_liu_ren_data_model.dart + .g.dart │ 御定数据模型   │
+     ├──────────────────────────────────────────────┼────────────────┤
+     │ placeholder_data_model.dart                  │ 占位模型       │
+     └──────────────────────────────────────────────┴────────────────┘
+
+     依赖: 部分依赖数据库层
+
+     ---
+     Layer 5: 领域实体层 (lib/domain/entities/)
+
+     ┌───────────────────────────────────┬──────┬────────────────┐
+     │               文件                │ 行数 │      说明      │
+     ├───────────────────────────────────┼──────┼────────────────┤
+     │ liu_ren_pan_model.dart + .g.dart  │ ~269 │ 领域层盘面模型 │
+     ├───────────────────────────────────┼──────┼────────────────┤
+     │ pan_input.dart                    │ ~74  │ 盘面输入参数   │
+     ├───────────────────────────────────┼──────┼────────────────┤
+     │ raw_pan_info_model.dart + .g.dart │ ~316 │ 原始盘面信息   │
+     ├───────────────────────────────────┼──────┼────────────────┤
+     │ shen_sha_entity.dart              │ ~306 │ 神煞实体       │
+     ├───────────────────────────────────┼──────┼────────────────┤
+     │ yuding_entry.dart                 │ ~41  │ 御定条目       │
+     └───────────────────────────────────┴──────┴────────────────┘
+
+     ---
+     Layer 6: 领域枚举 (lib/domain/enums/)
+
+     ┌────────────────────────────┬─────┬───────────┬────────────────────────┐
+     │            文件            │ 行  │   说明    │          注意          │
+     │                            │ 数  │           │                        │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ each_class_zei_ke_type.dar │ ~20 │ 贼克类型  │ standalone model/      │
+     │ t                          │     │           │ 已有类似               │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ gui_ren.dart               │ ~10 │ 贵人枚举  │ 与 enum_gui_ren.dart   │
+     │                            │ 1   │           │ 可能重复               │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ nine_zong_men.dart         │ ~68 │ 九宗门枚  │ 与 enum_nine_zong_men. │
+     │                            │     │ 举        │ dart 可能重复          │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ pan_type.dart              │ ~31 │ 盘面类型  │                        │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ she_hai_type.dart          │ ~18 │ 涉害类型  │                        │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ three_chuan_staff.dart     │ ~17 │ 三传要素  │                        │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ yao_ke_type.dart           │ ~12 │ 遥克类型  │                        │
+     ├────────────────────────────┼─────┼───────────┼────────────────────────┤
+     │ zei_ke_type.dart           │ ~14 │ 贼克类型  │                        │
+     └────────────────────────────┴─────┴───────────┴────────────────────────┘
+
+     注意: 需要与 standalone 现有的 model/enum_*.dart 逐一对比去重
+
+     ---
+     Layer 7: 领域计算服务 (lib/domain/services/) ⚠️ 关键决策
+
+     旧版（monorepo）:
+
+     ┌─────────────────────────────────────────┬──────┬─────────────────────┐
+     │                  文件                   │ 行数 │        说明         │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ nine_zong_men_calculator_v1_2.dart      │ 1591 │ 九宗门计算引擎 v1.2 │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ three_chuan_calculator.dart             │ 1455 │ 三传计算器（单体）  │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ calculate_day_night_gui_ren.dart        │ ~30  │ 昼夜贵人计算        │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ calculate_gui_ren_position_service.dart │ ~106 │ 贵人方位            │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ calculate_month_general_service.dart    │ ~245 │ 月将计算            │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ calculate_raw_pan_service.dart          │ ~304 │ 原始盘面计算        │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ calculate_upon_gan_service.dart         │ ~100 │ 寄干计算            │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ shen_sha_calculation_service.dart       │ ~91  │ 神煞接口            │
+     ├─────────────────────────────────────────┼──────┼─────────────────────┤
+     │ shen_sha_calculation_service_impl.dart  │ ~355 │ 神煞实现            │
+     └─────────────────────────────────────────┴──────┴─────────────────────┘
+
+     新版（standalone）:
+
+     ┌─────────────────────────────────────────┬────────────────────────┐
+     │                  文件                   │          说明          │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/base_calculator.dart        │ 计算器基类             │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/four_class_calculator.dart  │ 四课计算器             │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/gui_ren_calculator.dart     │ 贵人计算器             │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/lunar_calculator.dart       │ 历法计算器             │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/three_chuan_calculator.dart │ 三传计算器（策略模式） │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/tian_di_pan_calculator.dart │ 天地盘计算器           │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ calculators/three_chuan_strategies/     │ 策略模式目录           │
+     ├─────────────────────────────────────────┼────────────────────────┤
+     │ da_liu_ren_calculation_service.dart     │ 编排服务               │
+     └─────────────────────────────────────────┴────────────────────────┘
+
+     ⚠️ 架构冲突: 旧版是单体 service（nine_zong_men_calculator_v1_2.dart
+     1591行），新版使用策略模式拆分为多个 calculator。不能直接合并。
+
+     三个选项:
+     - A: 保留新架构，从旧版中移植特定计算逻辑到新 calculators
+     - B: 用旧版替换新版（放弃策略模式重构）
+     - C: 两版并存过渡期
+
+     ---
+     Layer 8: 额外用例 (lib/domain/usecases/)
+
+     ┌───────────────────────────────────┬──────┬──────────────┬────────────────
+     ┐
+     │               文件                │ 行数 │     说明     │      依赖
+     │
+     ├───────────────────────────────────┼──────┼──────────────┼────────────────
+     ┤
+     │ initialize_database_usecase.dart  │ ~105 │ 数据库初始化 │ 依赖数据库层
+     │
+     ├───────────────────────────────────┼──────┼──────────────┼────────────────
+     ┤
+     │ calculate_liuren_pan_usecase.dart │ ~39  │ 六壬盘计算   │ 依赖旧 service
+     │
+     ├───────────────────────────────────┼──────┼──────────────┼────────────────
+     ┤
+     │ get_yuding_entry_usecase.dart     │ ~54  │ 获取御定条目 │ 依赖数据库层
+     │
+     ├───────────────────────────────────┼──────┼──────────────┼────────────────
+     ┤
+     │ calculate_shen_sha_usecase.dart   │ ~99  │ 神煞计算     │ 依赖神煞服务
+     │
+     └───────────────────────────────────┴──────┴──────────────┴────────────────
+     ┘
+
+     ---
+     Layer 9: 展示层增强 (lib/presentation/)
+
+     ┌─────────────────────────────────────────┬──────┬──────────────────────┐
+     │                  文件                   │ 行数 │         说明         │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ pages/daliuren_home_page.dart           │ ~497 │ 旧版首页（替代方案） │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ pages/dev.dart                          │ ~195 │ 开发调试页           │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ viewmodels/daliuren_home_viewmodel.dart │ ~194 │ 首页 ViewModel       │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ widgets/four_class_widget.dart          │ ~44  │ 四课组件             │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ widgets/three_chuan_widget.dart         │ ~51  │ 三传组件             │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ widgets/pan_display_widget.dart         │ ~62  │ 盘面展示组件         │
+     ├─────────────────────────────────────────┼──────┼──────────────────────┤
+     │ widgets/yu_ding_display_widget.dart     │ ~88  │ 御定展示组件         │
+     └─────────────────────────────────────────┴──────┴──────────────────────┘
+
+     ---
+     Layer 10: 资产文件
+
+     ┌─────────────────────────────┬─────────┬────────────────────┐
+     │            资产             │ 文件数  │        说明        │
+     ├─────────────────────────────┼─────────┼────────────────────┤
+     │ assets/shen_sha/            │ 21 JSON │ 神煞数据（纯数据） │
+     ├─────────────────────────────┼─────────┼────────────────────┤
+     │ assets/da_liu_ren/*.proto   │ 2       │ Protobuf 定义文件  │
+     ├─────────────────────────────┼─────────┼────────────────────┤
+     │ assets/sql/initial_data.sql │ 1       │ 数据库初始化 SQL   │
+     └─────────────────────────────┴─────────┴────────────────────┘
+
+     ---
+     Layer 11: 额外测试
+
+     ┌────────────────────────────────────────────────┬──────┬─────────────────┐
+     │                      文件                      │ 行数 │      说明       │
+     ├────────────────────────────────────────────────┼──────┼─────────────────┤
+     │ test/data/.../liuren_dao_drift_test.dart       │ ~190 │ 数据库 DAO 测试 │
+     ├────────────────────────────────────────────────┼──────┼─────────────────┤
+     │ test/domain/.../shen_sha_calculation_test.dart │ ~180 │ 神煞计算测试    │
+     ├────────────────────────────────────────────────┼──────┼─────────────────┤
+     │ test/she_hai_checkout.dart                     │ ~230 │ 涉害验证        │
+     ├────────────────────────────────────────────────┼──────┼─────────────────┤
+     │ test/she_hai_compare.dart                      │ ~162 │ 涉害对比        │
+     ├────────────────────────────────────────────────┼──────┼─────────────────┤
+     │ test/test_nine_zong_men_calculator.dart        │ ~91  │ 九宗门测试      │
+     └────────────────────────────────────────────────┴──────┴─────────────────┘
+
+     ---
+     Layer 12: DI 与配置
+
+     ┌──────────────────────────────┬─────────────┬───────────────────────────┐
+     │             文件             │    说明     │           建议            │
+     ├──────────────────────────────┼─────────────┼───────────────────────────┤
+     │ di/service_locator.dart      │ GetIt       │ 审查（与现有 Provider DI  │
+     │ (~105行)                     │ 依赖注入    │ 冲突）                    │
+     ├──────────────────────────────┼─────────────┼───────────────────────────┤
+     │ ARCHITECTURE.md              │ 架构文档    │ 迁移（纯文档）            │
+     └──────────────────────────────┴─────────────┴───────────────────────────┘
+
+     ---
+     Phase 3: 推荐的迁移捆绑包
+
+     基于依赖分析，按以下捆绑包顺序迁移：
+
+     Bundle A: "低风险独立项"（无架构冲突）
+
+     - Core Constants (Layer 1)
+     - ARCHITECTURE.md (Layer 12)
+     - 展示层 Widgets (Layer 9 中的 4 个 widget 文件)
+     - Shen Sha 资产数据 (Layer 10)
+
+     Bundle B: "神煞功能"（依赖 Bundle A 资产）
+
+     - Shen Sha Entity (Layer 5)
+     - Shen Sha Services (Layer 7)
+     - Shen Sha Use Case (Layer 8)
+     - Shen Sha Tests (Layer 11)
+
+     Bundle C: "数据库功能"（重大架构特性，自包含）
+
+     - Drift 数据库层 (Layer 2)
+     - Data Models (Layer 4)
+     - SQL Assets (Layer 10)
+     - Database Use Cases (Layer 8)
+     - Database Tests (Layer 11)
+     - Protobuf (Layer 3) — 可选优化
+
+     Bundle D: "领域丰富"（需仔细合并）
+
+     - Domain Entities (Layer 5)
+     - Domain Enums (Layer 6) — 需去重
+     - Additional Models
+
+     Bundle E: "旧版计算引擎"（⚠️ 架构冲突，需设计决策）
+
+     - 旧版 Calculation Services (Layer 7)
+     - 需要用户决定 A/B/C 三个选项之一
+
+     ---
+     Phase 4: 执行步骤
+
+     对于每个批准的 Bundle：
+
+     1. 从 xuan monorepo git 历史中提取文件
+     2. 复制到 standalone 对应目录
+     3. 解决 import 路径冲突
+     4. 更新 pubspec.yaml（如需新依赖）
+     5. 更新 dependency_injection.dart 注册新服务
+     6. 运行 build_runner 代码生成
+     7. 运行 flutter analyze
+     8. 运行 flutter test
+
+     ---
+     Phase 5: 验证
+
+     flutter pub get
+     flutter packages pub run build_runner build --delete-conflicting-outputs
+     flutter analyze
+     flutter test
+
+     验证 example app:
+     cd example && flutter pub get && flutter run
+
+     ---
+     Phase 6: 清理
+
+     - 删除临时克隆目录 /tmp/xuan-recovery-temp
+     - 删除旧版代码提取目录 /tmp/xuan-old-daliuren
+     - 提交变更到 xuan-daliuren
+
+⏺ 计划已批准。开始执行。首先需要确认一个关键信息：
+
+⏺ User answered Claude's questions:
+  ⎿  · 你想要先看到详细的逐文件代码对比结果再做决定，还是已经对 Bundle A-E 
+     有了明确的取舍？ → 先做详细对比 (Recommended)
+
+⏺ 好，开始执行详细对比。先克隆仓库并提取旧代码。
+
+⏺ Bash(git clone https://github.com/weijingtai/xuan.git /tmp/xuan-recovery-temp
+      2>&1)
+  ⎿  Cloning into '/tmp/xuan-recovery-temp'...
+     Encountered 1 file that should have been a pointer, but wasn't:
+        assets/dataset/combined-now.json
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git log --oneline --all | head -30)
+  ⎿  2e50770 feat: add ai_core submodule for AI divination integration
+     e727d35 五星格局 version 1
+     5234992 docs: rewrite README.md with comprehensive project documentati
+     … +26 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git log --oneline --all | tail -30)  ⎿  ba881aa add
+     f7ea3ca remove *.bak
+     c06e509 rename to remove version number
+     … +24 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git log --oneline a1fa5d5~5..a1fa5d5)
+  ⎿  a1fa5d5 feat(daliuren): overwrite daliuren with refactored version fro
+     m qmdj/refactor/mvvm_usecase
+     9d75642 feat(qimendunjia): add architecture selection page to example
+     … +5 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git log --oneline a1fa5d5^..a1fa5d5 --
+      daliuren/ && echo "---" && git log --oneline 21ffaae^..a1fa5d5 --
+      daliuren/)
+  ⎿  a1fa5d5 feat(daliuren): overwrite daliuren with refactored version fro
+     m qmdj/refactor/mvvm_usecase
+     ---
+     … +3 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git show --stat a1fa5d5 -- daliuren/ | head
+       -20)
+  ⎿  commit a1fa5d541d6f4fc807cfbaa5b195309b305208ca
+     Author: wjt <wjt19951215@gmail.com>
+     Date:   Thu Jan 29 21:23:53 2026 -0800
+     … +14 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git ls-tree --name-only
+      a1fa5d5^:daliuren/lib/ 2>/dev/null | head -20 || echo "No daliuren/lib at
+      parent commit")
+  ⎿  core
+     data
+     di
+     … +6 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && git log --oneline --all -- daliuren/lib/ |
+      head -20)
+  ⎿  949343e refactor: migrate to git submodules architecture
+     4601778 hidden YingYan at "Tyme"
+     d90a908 refactor: 从 lunar 迁移到 tyme 包
+     … +17 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Now I can see the old code exists at a1fa5d5^. Let me extract both versions
+  for comparison.
+
+⏺ Bash(mkdir -p /tmp/xuan-old-daliuren && cd /tmp/xuan-recovery-temp && git
+      archive a1fa5d5^:daliuren/ | tar -x -C /tmp/xuan-old-daliuren/)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && find . -path ./daliuren -prune -o -path
+      './assets/da_liu_ren' -print -o -path './assets/shen_sha' -print -o -path
+      './assets/sql' -…)
+  ⎿  ./assets/da_liu_ren
+     ./assets/shen_sha
+     ./assets/sql
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ Bash(cd /tmp/xuan-recovery-temp && ls assets/da_liu_ren/ 2>/dev/null && echo
+      "---" && ls assets/shen_sha/ 2>/dev/null && echo "---" && ls assets/sql/
+      2>/dev/null)
+  ⎿  jia_wu_geng_niu_yang.pro
+     jia_wu_geng_niu_yang.proto
+     ju_mapper.json
+     … +29 lines (ctrl+o to expand)
+  ⎿  Shell cwd was reset to 
+     /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+⏺ Good. Old code extracted successfully. Now let me do the detailed comparison.
+
+⏺ 3 Explore agents finished (ctrl+o to expand)
+   ├─ Compare lib/core and lib/data layers · 1 tool use · 14.5k tokens
+   │  ⎿  Done
+   ├─ Compare domain and model layers · 0 tool uses
+   │  ⎿  Done
+   └─ Compare presentation, DI, and assets · 0 tool uses
+      ⎿  Done
+
+⏺ 详细对比完成。以下是关键发现：
+
+  对比总结
+
+  ┌───────────────────┬────────────┬────────────┬──────────────────────┐
+  │        层         │ 旧版文件数 │ 新版文件数 │         变化         │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ lib/core/         │ 3          │ 0          │ 完全移除             │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ lib/data/         │ 37+        │ 1          │ 99% 移除（无数据库） │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ lib/domain/       │ 28         │ 12         │ 57% 精简             │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ lib/presentation/ │ 14         │ 7          │ 50% 精简             │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ lib/model/        │ 30+        │ 30+        │ 完全相同             │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ lib/di/           │ 2          │ 1          │ 移除 ServiceLocator  │
+  ├───────────────────┼────────────┼────────────┼──────────────────────┤
+  │ Tests             │ 17         │ 11         │ 35% 减少             │
+  └───────────────────┴────────────┴────────────┴──────────────────────┘
+
+  关键架构变化
+
+  1. 计算逻辑迁移: 旧版的 nine_zong_men_calculator_v1_2.dart (1591行) 和
+  three_chuan_calculator.dart (1455行) 的计算逻辑 → 已合并到
+  model/da_liu_ren_ke_pan.dart (1826行)
+  中作为静态方法。新旧版核心计算逻辑实际上是相同的，只是位置不同。
+  2. 数据库层完全移除: Drift ORM + DAO + 4表 + Protobuf → 改为纯 JSON Asset
+  加载（无持久化）
+  3. 神煞(ShenSha)功能完全移除: 服务、用例、测试、21个JSON数据文件全部缺失
+  4. DI 简化: GetIt + Provider → 仅 Provider
+
+  现在需要你做决定。每个功能块我会分别询问：
+  ⎿  Tool use rejected
+
+⏺ 你有什么需要澄清的？请告诉我你的疑问，我会补充更多细节帮你做决定。
+
+✻ Crunched for 18m 57s
+
+❯ 首先，必须迁移"神煞"相关所有内容，其次，两个版本的UI有什么不同点              
+
+⏺ 明白，神煞全部迁移。让我详细对比两个版本的 UI 差异。
+
+⏺ Explore(Compare old and new UI in detail)  ⎿  Done (32 tool uses · 59.2k tokens · 1m 15s)
+  (ctrl+o to expand)
+
+⏺ 两版 UI 对比
+
+  导航结构（两版相同）
+
+  ┌───────────────┬─────────────────┐
+  │     路由      │      指向       │
+  ├───────────────┼─────────────────┤
+  │ /daliuren     │ 新版 MVVM View  │
+  ├───────────────┼─────────────────┤
+  │ /daliuren/old │ 旧版 MyHomePage │
+  ├───────────────┼─────────────────┤
+  │ /daliuren/dev │ 开发调试页      │
+  └───────────────┴─────────────────┘
+
+  两版本 可以并存 运行。
+
+  ---
+  核心区别
+
+  ┌──────────┬─────────────────────────────────┬────────────────────────────┐
+  │   方面   │         旧版 MyHomePage         │     新版 DaLiuRenView      │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 代码量   │ ~3000行单文件                   │ 87行主视图 + 4个独立       │
+  │          │                                 │ widget                     │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 输入方式 │ 手动输入天干地支 + 手动选阴阳遁 │ 选时间 →                   │
+  │          │  + 手动输入局号                 │ 自动计算，可选输入问题     │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 状态管理 │ 多个 ValueNotifier              │ Provider + ViewModel       │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 四课显示 │ 纯文字占位（placeholder）       │ Card 网格 +                │
+  │          │                                 │ 伏吟/反吟/全课/三课标签    │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 三传显示 │ 纯文字占位                      │ 九宗门 +                   │
+  │          │                                 │ 天干/地支/贵人/六亲详情    │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 十二宫   │ 无                              │ 4x3 GridView 展示天地盘    │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 御定显示 │ 有完整展示（课义/解曰/断曰）    │ 无（缺少                   │
+  │          │                                 │ yu_ding_display_widget）   │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 动画效果 │ ShakeMe 抖动验证反馈            │ 无                         │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 调试信息 │ print()                         │ logger.d/logger.e          │
+  ├──────────┼─────────────────────────────────┼────────────────────────────┤
+  │ 代码质量 │ 有 git merge 冲突残留           │ 干净无冲突                 │
+  └──────────┴─────────────────────────────────┴────────────────────────────┘
+
+  ---
+  旧版独有的 Widgets（4个占位组件）
+
+  ┌─────────────────────────────┬──────┬───────────────────────────────┐
+  │           Widget            │ 行数 │             状态              │
+  ├─────────────────────────────┼──────┼───────────────────────────────┤
+  │ pan_display_widget.dart     │ ~60  │ 占位/TODO，未实现实际渲染     │
+  ├─────────────────────────────┼──────┼───────────────────────────────┤
+  │ four_class_widget.dart      │ ~45  │ 占位/TODO，只显示 "上:?/下:?" │
+  ├─────────────────────────────┼──────┼───────────────────────────────┤
+  │ three_chuan_widget.dart     │ ~50  │ 占位/TODO，基础文字           │
+  ├─────────────────────────────┼──────┼───────────────────────────────┤
+  │ yu_ding_display_widget.dart │ 88   │ 已实现，展示课义/解曰/断曰    │
+  └─────────────────────────────┴──────┴───────────────────────────────┘
+
+  旧版 4 个 widget 中，只有 yu_ding_display_widget
+  是真正实现的，其余都是占位符。
+
+  新版独有的 Widgets（4个已实现组件）
+
+  ┌────────────────────────────────┬──────┬────────────────────────────┐
+  │             Widget             │ 行数 │            功能            │
+  ├────────────────────────────────┼──────┼────────────────────────────┤
+  │ datetime_selector_widget.dart  │ 80   │ 时间选择 + 问题输入        │
+  ├────────────────────────────────┼──────┼────────────────────────────┤
+  │ divination_display_widget.dart │ 329  │ 完整的四课/三传/十二宫展示 │
+  ├────────────────────────────────┼──────┼────────────────────────────┤
+  │ error_widget.dart              │ ~30  │ 错误提示 + 重试            │
+  ├────────────────────────────────┼──────┼────────────────────────────┤
+  │ loading_widget.dart            │ ~20  │ 加载状态                   │
+  └────────────────────────────────┴──────┴────────────────────────────┘
+
+  ---
+  总结
+
+  - 新版 UI 更完善：四课、三传、十二宫都有实际渲染，旧版大多是占位符
+  - 旧版有一个新版缺失的功能：yu_ding_display_widget（御定展示）
+  - 旧版 ViewModel (daliuren_home_viewmodel.dart) 有数据库初始化 +
+  御定条目获取的完整工作流
+
+  你的 UI 决定是什么？
+
+⏺ User answered Claude's questions:
+  ⎿  · UI 层如何处理？新版有实际渲染的四课/三传/十二宫，但缺少御定展示；旧版有御
+     定展示但其他都是占位符。 → 两版并存
+     · 是否迁移旧版的 daliuren_home_viewmodel.dart？ → 跳过
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+✻ Cooked for 2m 21s
+
+❯ 神煞相关代码进行迁移了吗                                                      
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+❯ /model                                                                        
+  ⎿  Set model to Sonnet 4.6 (1M context)
+
+❯ /model                                                                        
+  ⎿  Set model to Opus 4.6 (1M context)
+
+❯ 继续                                                                          
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+❯ 继续                                                                          
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+❯ /model                                                                        
+  ⎿  Set model to Sonnet 4.6 (1M context)
+
+❯ 继续                                                                          
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ 继续                                                                          
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ /model                                                                        
+  ⎿  Set model to Opus 4.6 (1M context)
+
+❯ 继续                                                                          
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+❯ /model                                                                        
+  ⎿  Set model to Sonnet 4.6 (default)
+
+❯ /model                                                                        
+  ⎿  Set model to Haiku 4.5
+
+❯ 继续                                                                          
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+❯ /model                                                                        
+  ⎿  Set model to Opus 4.6 (1M context)
+
+❯ 继续                                                                          
+  ⎿  Please run /login · API Error: 403 status code (no body)
+
+❯ 继续                                                                          
+  ⎿  Please run /login · API Error: 403 status code (no body)

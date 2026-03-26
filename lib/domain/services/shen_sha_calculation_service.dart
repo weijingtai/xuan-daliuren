@@ -86,6 +86,15 @@ abstract class ShenShaDataService {
   /// 加载旬煞数据
   Future<List<XunShenShaEntity>> loadXunShenSha();
 
+  /// 加载日煞数据（日干专属）
+  Future<List<TianGanShenShaEntity>> loadDayGanShenSha();
+
+  /// 加载年干神煞数据
+  Future<List<TianGanShenShaEntity>> loadYearGanShenSha();
+
+  /// 加载月干神煞数据
+  Future<List<TianGanShenShaEntity>> loadMonthGanShenSha();
+
   /// 加载所有神煞数据
   Future<List<ShenShaEntity>> loadAllShenSha();
 }

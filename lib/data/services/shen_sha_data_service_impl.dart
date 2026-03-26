@@ -13,6 +13,9 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   List<DiZhiShenShaEntity>? _diZhiShenShaCache;
   List<JiShenShaEntity>? _jiShenShaCache;
   List<XunShenShaEntity>? _xunShenShaCache;
+  List<TianGanShenShaEntity>? _dayGanShenShaCache;
+  List<TianGanShenShaEntity>? _yearGanShenShaCache;
+  List<TianGanShenShaEntity>? _monthGanShenShaCache;
 
   @override
   Future<List<TianGanShenShaEntity>> loadTianGanShenSha() async {
@@ -25,8 +28,17 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
           await rootBundle.loadString('$_assetPrefix/6_shensha_gan.json');
       final List<dynamic> jsonList = json.decode(jsonString);
 
-      _tianGanShenShaCache =
-          jsonList.map((json) => TianGanShenShaEntity.fromJson(json)).toList();
+      // 6_shensha_gan.json 中混合了 干煞、日煞、支煞 类型，只加载 干煞
+      _tianGanShenShaCache = jsonList
+          .where((j) => j['type'] == '干煞')
+          .map((json) => TianGanShenShaEntity.fromJson(json))
+          .toList();
+
+      // 同时缓存 日煞 类型
+      _dayGanShenShaCache = jsonList
+          .where((j) => j['type'] == '日煞')
+          .map((json) => TianGanShenShaEntity.fromJson(json))
+          .toList();
 
       return _tianGanShenShaCache!;
     } catch (e) {
@@ -81,34 +93,12 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      // 从年煞和月煞数据中提取地支神煞（按type分类）
-      final yearShenShaList = await loadYearShenSha();
-      final monthShenShaList = await loadMonthShenSha();
+      final jsonString =
+          await rootBundle.loadString('$_assetPrefix/6_shensha_zhi.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
 
-      _diZhiShenShaCache = [
-        ...yearShenShaList
-            .where((item) => item.type == '支煞')
-            .map((item) => DiZhiShenShaEntity(
-                  name: item.name,
-                  jiXiong: item.jiXiong,
-                  descriptionList: item.descriptionList,
-                  type: item.type,
-                  locationMapper: item.locationMapper,
-                  locationDescriptionList: item.locationDescriptionList,
-                  otherNameList: item.otherNameList,
-                )),
-        ...monthShenShaList
-            .where((item) => item.type == '支煞')
-            .map((item) => DiZhiShenShaEntity(
-                  name: item.name,
-                  jiXiong: item.jiXiong,
-                  descriptionList: item.descriptionList,
-                  type: item.type,
-                  locationMapper: item.locationMapper,
-                  locationDescriptionList: item.locationDescriptionList,
-                  otherNameList: item.otherNameList,
-                )),
-      ];
+      _diZhiShenShaCache =
+          jsonList.map((json) => DiZhiShenShaEntity.fromJson(json)).toList();
 
       return _diZhiShenShaCache!;
     } catch (e) {
@@ -153,6 +143,60 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
       return _xunShenShaCache!;
     } catch (e) {
       throw Exception('Failed to load 旬煞 data: $e');
+    }
+  }
+
+  /// 加载日煞（日干专属神煞，来自 6_shensha_gan.json 中 type='日煞' 的条目）
+  Future<List<TianGanShenShaEntity>> loadDayGanShenSha() async {
+    if (_dayGanShenShaCache != null) return _dayGanShenShaCache!;
+    // 触发 loadTianGanShenSha 会同时缓存 日煞
+    await loadTianGanShenSha();
+    return _dayGanShenShaCache ?? [];
+  }
+
+  /// 加载年干神煞（6_shensha_year_gan.json）
+  Future<List<TianGanShenShaEntity>> loadYearGanShenSha() async {
+    if (_yearGanShenShaCache != null) return _yearGanShenShaCache!;
+    try {
+      final jsonString =
+          await rootBundle.loadString('$_assetPrefix/6_shensha_year_gan.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
+      _yearGanShenShaCache =
+          jsonList.map((j) => TianGanShenShaEntity.fromJson(j)).toList();
+      return _yearGanShenShaCache!;
+    } catch (e) {
+      _yearGanShenShaCache = [];
+      return _yearGanShenShaCache!;
+    }
+  }
+
+  /// 加载月干神煞（6_shensha_month_gan.json）
+  Future<List<TianGanShenShaEntity>> loadMonthGanShenSha() async {
+    if (_monthGanShenShaCache != null) return _monthGanShenShaCache!;
+    try {
+      final jsonString =
+          await rootBundle.loadString('$_assetPrefix/6_shensha_month_gan.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
+      _monthGanShenShaCache =
+          jsonList.map((j) => TianGanShenShaEntity.fromJson(j)).toList();
+      return _monthGanShenShaCache!;
+    } catch (e) {
+      _monthGanShenShaCache = [];
+      return _monthGanShenShaCache!;
+    }
+  }
+
+  /// 加载月支干合神煞（6_shensha_month_zhi_gan.json，type='月煞'）
+  Future<List<MonthShenShaEntity>> loadMonthZhiGanShenSha() async {
+    try {
+      final jsonString = await rootBundle
+          .loadString('$_assetPrefix/6_shensha_month_zhi_gan.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
+      return jsonList
+          .map((j) => MonthShenShaEntity.fromJson(j))
+          .toList();
+    } catch (e) {
+      return [];
     }
   }
 

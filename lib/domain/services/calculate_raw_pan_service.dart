@@ -1,5 +1,6 @@
 import 'package:common/enums.dart';
 import 'package:common/models/divination_datetime.dart';
+import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/raw_pan_info_model.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
@@ -13,6 +14,7 @@ import 'calculate_day_night_gui_ren.dart';
 import 'calculate_gui_ren_position_service.dart';
 import 'calculate_month_general_service.dart';
 import 'calculate_upon_gan_service.dart';
+import 'keti_data_service.dart';
 import 'three_chuan_calculator_v1.dart';
 
 ///
@@ -26,6 +28,10 @@ class CalculateRawPanService {
   final CalculateDayNightGuiRen _dayNightGuiRen = CalculateDayNightGuiRen();
   final CalculateGuiRenPositionService _guiRenPositionService =
       CalculateGuiRenPositionService();
+  final KetiDataService? _ketiDataService;
+
+  CalculateRawPanService({KetiDataService? ketiDataService})
+      : _ketiDataService = ketiDataService;
 
   LiuRenPanModel calculate(DaLiuRenPanConfig config,
       DivinationDatetimeModel divinationDatetimeModel) {
@@ -96,6 +102,22 @@ class CalculateRawPanService {
     // 11. 定盘类型
     PanType panType = DaLiuRenCommonConstants
         .ziGongUponPanTypeMapper[gongMapper[DiZhi.ZI]!.skyPanDiZhi]!;
+
+    // 12. 匹配六十四课体
+    List<DaliurenLesson> matchedLessons = [];
+    List<String> keTiComplement = [];
+    if (_ketiDataService != null && _ketiDataService.isLoaded) {
+      final results =
+          _ketiDataService.findByNames(threeChuanOutput.patternName);
+      matchedLessons = results.map((r) => r.lesson).toList();
+      keTiComplement = results.map((r) {
+        if (r.matchedSubLesson != null) {
+          return '${r.lesson.name} · ${r.matchedSubLesson!.name}';
+        }
+        return r.lesson.name;
+      }).toList();
+    }
+
     return LiuRenPanModel(
       dayJiaZi: divinationDatetimeModel.dayJiaZi,
       timeGanZhi: divinationDatetimeModel.timeJiaZi,
@@ -113,6 +135,8 @@ class CalculateRawPanService {
       panType: panType,
       nineZongMen: threeChuanOutput.nineZongmen,
       patternName: threeChuanOutput.patternName,
+      matchedLessons: matchedLessons,
+      keTiComplement: keTiComplement,
     );
   }
 

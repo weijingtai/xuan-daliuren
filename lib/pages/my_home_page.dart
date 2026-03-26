@@ -16,6 +16,7 @@ import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:tyme/tyme.dart' hide YinYang;
 import 'package:tuple/tuple.dart';
 
@@ -32,6 +33,10 @@ import '../domain/services/shen_sha_calculation_service_impl.dart';
 import '../domain/usecases/calculate_shen_sha_usecase.dart';
 import '../data/services/shen_sha_data_service_impl.dart';
 import '../presentation/widgets/shen_sha_display_widget.dart';
+import '../domain/services/keti_data_service.dart';
+import '../domain/services/yuding_keti_match_service.dart';
+import '../domain/entities/daliuren_lesson.dart';
+import '../presentation/widgets/keti_detail_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -72,6 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<int?> juNumberNotifier = ValueNotifier(null);
   final ValueNotifier<Map<DiZhi, List<ShenShaResult>>?> shenShaNotifier =
       ValueNotifier(null);
+  final ValueNotifier<List<DaliurenLesson>> matchedLessonsNotifier =
+      ValueNotifier([]);
   final CalculateShenShaUseCase _shenShaUseCase = CalculateShenShaUseCase(
     ShenShaCalculationServiceImpl(dataService: ShenShaDataServiceImpl()),
   );
@@ -88,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
     selectedDatetimeNotifier.dispose();
     daLiuRenModelNotifier.dispose();
     _showMonthGeneralJieQi.dispose();
+    matchedLessonsNotifier.dispose();
 
     // release resources
     if (_showMonthGeneralJieQiTimer != null) {
@@ -100,6 +108,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // Load KeTi data for displaying lesson info in buildClassType
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final ketiService = context.read<KetiDataService>();
+      ketiService.loadData().catchError((e) {
+        logger.e('Failed to load KeTi data in legacy UI: $e');
+      });
+    });
+
     panDatetimeNotifier.addListener(() {
       if (prevDatetime != panDatetimeNotifier.value) {
         prevDatetime = panDatetimeNotifier.value;
@@ -158,6 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           daLiuRenGongNotifier.value = pan;
           _calculateShenShaForPan(pan);
+          _matchKeTiForPan(pan);
           checkPanJu(pan.dayJiaZi, pan.timeJiaZi,
                   pan.isDayGuiRen ? YinYang.YANG : YinYang.YIN)
               .then((va) => juNumberNotifier.value = va);
@@ -218,6 +236,36 @@ class _MyHomePageState extends State<MyHomePage> {
       logger.d('🟢 [OldUI] ShenSha calculated: $count results');
     } catch (e) {
       logger.e('🔴 [OldUI] Error calculating shen sha: $e');
+    }
+  }
+
+  void _matchKeTiForPan(DaLiuRenPanel pan) async {
+    try {
+      final ketiService = context.read<KetiDataService>();
+      final yudingService = context.read<YuDingKetiMatchService>();
+
+      // Ensure data is loaded
+      if (!ketiService.isLoaded) {
+        await ketiService.loadData();
+      }
+
+      final patterns = await yudingService.getKeTiNames(pan);
+
+      if (patterns.isEmpty) {
+        matchedLessonsNotifier.value = [];
+        return;
+      }
+
+      logger.d('Matching KeTi for patterns: $patterns');
+      final results = ketiService.findByNames(patterns);
+      if (results.isNotEmpty) {
+        matchedLessonsNotifier.value =
+            results.map((r) => r.lesson).toList();
+      } else {
+        matchedLessonsNotifier.value = [];
+      }
+    } catch (e) {
+      logger.e('🔴 [OldUI] Error matching KeTi in legacy UI: $e');
     }
   }
 
@@ -642,18 +690,34 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 16,
           ),
           // Shen Sha Display
-          ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
-            valueListenable: shenShaNotifier,
-            builder: (ctx, shenShaResults, child) {
-              if (shenShaResults == null || shenShaResults.isEmpty) {
-                return const SizedBox();
-              }
-              return Container(
-                width: panSize.width,
-                child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
-              );
-            },
-          ),
+              ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
+                valueListenable: shenShaNotifier,
+                builder: (ctx, shenShaResults, child) {
+                  if (shenShaResults == null || shenShaResults.isEmpty) {
+                    return const SizedBox();
+                  }
+                  return Container(
+                    width: panSize.width,
+                    child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              // KeTi Detail Display
+              ValueListenableBuilder<List<DaliurenLesson>>(
+                valueListenable: matchedLessonsNotifier,
+                builder: (ctx, lessons, child) {
+                  if (lessons.isEmpty) {
+                    return const SizedBox();
+                  }
+                  return Container(
+                    width: panSize.width,
+                    child: KetiDetailWidget(lessons: lessons),
+                  );
+                },
+              ),
           const SizedBox(
             height: 16,
           ),
@@ -871,6 +935,17 @@ class _MyHomePageState extends State<MyHomePage> {
               return const SizedBox();
             }
             return ShenShaDisplayWidget(shenShaResults: shenShaResults);
+          },
+        ),
+        const SizedBox(height: 16),
+        // KeTi Detail Display (landscape)
+        ValueListenableBuilder<List<DaliurenLesson>>(
+          valueListenable: matchedLessonsNotifier,
+          builder: (ctx, lessons, child) {
+            if (lessons.isEmpty) {
+              return const SizedBox();
+            }
+            return KetiDetailWidget(lessons: lessons);
           },
         ),
         ],
@@ -1866,7 +1941,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildClassType(DaLiuRenKePan daLiuPan) {
-    List<String> classTypeList = ["退茹", "斩关", "乱首", "不备"];
+    // 通过 KetiDataService 匹配课体
+    final ketiService = context.read<KetiDataService>();
+    final nineZongMen = daLiuPan.threeChuan.nineZongMen;
+    final ketiResult = ketiService.isLoaded
+        ? ketiService.findByNineZongMen(nineZongMen)
+        : null;
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1878,18 +1959,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.w600,
                 color: Colors.blueGrey.shade800),
           ),
-          if (classTypeList.isNotEmpty)
-            ...classTypeList
-                .map((e) => RichText(
-                    strutStyle: const StrutStyle(height: 1),
-                    text: TextSpan(
-                      style: eightSeasonTextStyle.copyWith(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18,
-                          color: Colors.blueGrey.shade800),
-                      text: e,
-                    )))
-                .toList()
+          if (ketiResult != null) ...[
+            Text(
+              ketiResult.lesson.name,
+              style: eightSeasonTextStyle.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.blueGrey.shade600),
+            ),
+            if (ketiResult.lesson.keTiShi != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  ketiResult.lesson.keTiShi!,
+                  style: eightSeasonTextStyle.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.blueGrey.shade500),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+          ],
         ]);
   }
 

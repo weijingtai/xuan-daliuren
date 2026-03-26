@@ -1,6 +1,7 @@
 /// Represents the complete Liu Ren divination盤 (Pan).
 /// This is a core domain entity holding all calculated and contextual information of a divination.
 import 'package:common/enums.dart';
+import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/raw_pan_info_model.dart';
 import 'package:daliuren/model/da_liu_ren_gong.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -51,6 +52,10 @@ class LiuRenPanModel {
 
   final DiZhi guiRenLocation;
 
+  /// 匹配到的六十四课体详细信息（不参与 JSON 序列化）
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final List<DaliurenLesson> matchedLessons;
+
   LiuRenPanModel({
     required this.dayJiaZi,
     required this.timeGanZhi,
@@ -65,6 +70,7 @@ class LiuRenPanModel {
     required this.guiRenLocation,
     required this.gongMapper,
     required this.patternName,
+    this.matchedLessons = const [],
   });
 
   factory LiuRenPanModel.fromJson(Map<String, dynamic> json) =>

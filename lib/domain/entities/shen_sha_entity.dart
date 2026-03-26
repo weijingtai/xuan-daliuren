@@ -26,6 +26,9 @@ abstract class ShenShaEntity {
 
     switch (type) {
       case '干煞':
+      case '日煞':
+      case '年干':
+      case '月干':
         return TianGanShenShaEntity.fromJson(json);
       case '年煞':
         return YearShenShaEntity.fromJson(json);

@@ -19,25 +19,25 @@ DaLiuRenPanConfig _$DaLiuRenPanConfigFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$DaLiuRenPanConfigToJson(DaLiuRenPanConfig instance) =>
     <String, dynamic>{
       'monthGeneralType':
-          _$CalculateMonthGeneralTypeEnumMap[instance.monthGeneralType],
+          _$CalculateMonthGeneralTypeEnumMap[instance.monthGeneralType]!,
       'dayNightBoundaryType':
-          _$DayNightBoundaryTypeEnumMap[instance.dayNightBoundaryType],
+          _$DayNightBoundaryTypeEnumMap[instance.dayNightBoundaryType]!,
       'dayNight': _$EnumDayNightEnumMap[instance.dayNight],
       'guiRenType': _$GuiRenTypeEnumMap[instance.guiRenType]!,
     };
 
 const _$CalculateMonthGeneralTypeEnumMap = {
-  CalculateMonthGeneralType.monthJian: null,
-  CalculateMonthGeneralType.monthHe: null,
-  CalculateMonthGeneralType.middleQi: null,
-  CalculateMonthGeneralType.chaoShen: null,
+  CalculateMonthGeneralType.monthJian: '月建',
+  CalculateMonthGeneralType.monthHe: '月合',
+  CalculateMonthGeneralType.middleQi: '中气',
+  CalculateMonthGeneralType.chaoShen: '超神法',
 };
 
 const _$DayNightBoundaryTypeEnumMap = {
-  DayNightBoundaryType.maoYou: null,
-  DayNightBoundaryType.season4: null,
-  DayNightBoundaryType.sunRiseSet: null,
-  DayNightBoundaryType.manual: null,
+  DayNightBoundaryType.maoYou: '卯酉',
+  DayNightBoundaryType.season4: '四季',
+  DayNightBoundaryType.sunRiseSet: '日升落',
+  DayNightBoundaryType.manual: '手动',
 };
 
 const _$GuiRenTypeEnumMap = {

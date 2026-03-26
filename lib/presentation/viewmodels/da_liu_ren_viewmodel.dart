@@ -1,6 +1,9 @@
 import 'package:common/enums.dart';
 import 'package:common/module.dart';
+import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
+import 'package:daliuren/domain/services/keti_data_service.dart';
+import 'package:daliuren/domain/services/yuding_keti_match_service.dart';
 import 'package:daliuren/domain/usecases/base_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
@@ -12,14 +15,20 @@ class DaLiuRenViewModel extends BaseViewModel {
   final CalculateDivinationUseCase _calculateDivinationUseCase;
   final LoadDivinationDataUseCase _loadDivinationDataUseCase;
   final CalculateShenShaUseCase? _calculateShenShaUseCase;
+  final KetiDataService? _ketiDataService;
+  final YuDingKetiMatchService? _yuDingKetiMatchService;
 
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
     required LoadDivinationDataUseCase loadDivinationDataUseCase,
     CalculateShenShaUseCase? calculateShenShaUseCase,
+    KetiDataService? ketiDataService,
+    YuDingKetiMatchService? yuDingKetiMatchService,
   })  : _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
-        _calculateShenShaUseCase = calculateShenShaUseCase;
+        _calculateShenShaUseCase = calculateShenShaUseCase,
+        _ketiDataService = ketiDataService,
+        _yuDingKetiMatchService = yuDingKetiMatchService;
 
   // Data properties
   DateTime _selectedDateTime = DateTime.now();
@@ -38,6 +47,9 @@ class DaLiuRenViewModel extends BaseViewModel {
   // Shen sha results
   Map<DiZhi, List<ShenShaResult>>? _shenShaResults;
 
+  // Matched 课体 results
+  List<DaliurenLesson> _matchedLessons = [];
+
   // Getters
   DateTime get selectedDateTime => _selectedDateTime;
   String? get question => _question;
@@ -50,21 +62,22 @@ class DaLiuRenViewModel extends BaseViewModel {
   int? get juNumber => _juNumber;
   bool get isDataLoaded => _isDataLoaded;
   Map<DiZhi, List<ShenShaResult>>? get shenShaResults => _shenShaResults;
+  List<DaliurenLesson> get matchedLessons => _matchedLessons;
 
   // Initialize data
   Future<void> initializeData() async {
     if (_isDataLoaded) return;
 
-    logger.d('🔵 [ViewModel] initializeData() called');
+    print('🔵 [ViewModel] initializeData() called');
     setLoading();
     try {
-      logger.d('🔵 [ViewModel] Calling LoadDivinationDataUseCase...');
+      print('🔵 [ViewModel] Calling LoadDivinationDataUseCase...');
       await _loadDivinationDataUseCase.call(NoParams());
       _isDataLoaded = true;
-      logger.d('🔵 [ViewModel] Data loaded successfully');
+      print('🔵 [ViewModel] Data loaded successfully');
       setSuccess();
     } catch (e) {
-      logger.e('🔴 [ViewModel] Error loading data: $e');
+      print('🔴 [ViewModel] Error loading data: $e');
       setError(e is DivinationFailure ? e.message : e.toString());
     }
   }
@@ -88,21 +101,21 @@ class DaLiuRenViewModel extends BaseViewModel {
       await initializeData();
     }
 
-    logger.d(
-        '🔵 [ViewModel] _calculateDivination() called for ${_selectedDateTime}');
+    print('🔵 [ViewModel] _calculateDivination() called for $_selectedDateTime');
     setLoading();
     try {
       final params = DateTimeParams(_selectedDateTime, question: _question);
-      logger.d('🔵 [ViewModel] Calling CalculateDivinationUseCase...');
+      print('🔵 [ViewModel] Calling CalculateDivinationUseCase...');
       final divination = await _calculateDivinationUseCase.call(params);
       _currentDivination = divination;
-      logger.d(
-          '🔵 [ViewModel] Calculation successful: ${divination.dayJiaZi.name}日');
+      print('🔵 [ViewModel] Calculation successful: ${divination.dayJiaZi.name}日');
       _updateDivinationProperties();
+      // Run async enrichment THEN do a single final notifyListeners
+      await _matchKeTi();
       await _calculateShenSha();
-      setSuccess();
+      setSuccess(); // This calls notifyListeners() with all data already populated
     } catch (e) {
-      logger.e('🔴 [ViewModel] Calculation error: $e');
+      print('🔴 [ViewModel] Calculation error: $e');
       setError(e is DivinationFailure ? e.message : e.toString());
     }
   }
@@ -133,6 +146,35 @@ class DaLiuRenViewModel extends BaseViewModel {
     updateDateTime(DateTime.now());
   }
 
+  Future<void> _matchKeTi() async {
+    if (_ketiDataService == null ||
+        _currentDivination == null ||
+        _yuDingKetiMatchService == null) {
+      print('🟡 [ViewModel] _matchKeTi: Service or divination is null');
+      _matchedLessons = [];
+      return;
+    }
+
+    if (!_ketiDataService.isLoaded) {
+      print('🟡 [ViewModel] _matchKeTi: KetiDataService not loaded yet');
+      _matchedLessons = [];
+      return;
+    }
+
+    try {
+      final patternNames =
+          await _yuDingKetiMatchService.getKeTiNames(_currentDivination!);
+      print('🔵 [ViewModel] _matchKeTi: Pattern names from Service: $patternNames');
+      final results = _ketiDataService.findByNames(patternNames);
+      _matchedLessons = results.map((r) => r.lesson).toList();
+      print('🟢 [ViewModel] _matchKeTi: Final matched lessons: ${_matchedLessons.map((l) => l.name).toList()}');
+      // Do NOT call notifyListeners here – let the caller (_calculateDivination) do it via setSuccess()
+    } catch (e) {
+      print('🔴 [ViewModel] Error in _matchKeTi: $e');
+      _matchedLessons = [];
+    }
+  }
+
   Future<void> _calculateShenSha() async {
     if (_calculateShenShaUseCase == null) {
       logger.d('🟡 [ViewModel] ShenSha UseCase is null, skipping');
@@ -150,7 +192,7 @@ class DaLiuRenViewModel extends BaseViewModel {
         dayJiaZi: _dayJiaZi!,
         hourJiaZi: _timeJiaZi!,
       );
-      _shenShaResults = await _calculateShenShaUseCase!.call(params);
+      _shenShaResults = await _calculateShenShaUseCase.call(params);
       final totalCount = _shenShaResults?.values.fold<int>(0, (sum, list) => sum + list.length) ?? 0;
       logger.d('🟢 [ViewModel] ShenSha calculated: $totalCount results');
     } catch (e) {

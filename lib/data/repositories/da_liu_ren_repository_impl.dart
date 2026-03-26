@@ -6,17 +6,22 @@ import 'package:common/module.dart';
 import 'package:common/const_resources_mapper.dart';
 import 'package:daliuren/domain/repositories/da_liu_ren_repository.dart';
 import 'package:daliuren/domain/services/da_liu_ren_calculation_service.dart';
+import 'package:daliuren/domain/services/keti_data_service.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/model/da_liu_ren_pan_model.dart';
 
 class DaLiuRenRepositoryImpl implements DaLiuRenRepository {
   final DaLiuRenCalculationService calculationService;
+  final KetiDataService ketiDataService;
 
-  DaLiuRenRepositoryImpl({required this.calculationService});
-  static const String _yangAssetPath = "assets/da_liu_ren/甲午庚牛羊_阳.json";
-  static const String _yinAssetPath = "assets/da_liu_ren/甲午庚牛羊_阴.json";
-  static const String _juMapperPath = "assets/da_liu_ren/ju_mapper.json";
-  static const String _yuDingPath = "assets/da_liu_ren/御定大六壬.json";
+  DaLiuRenRepositoryImpl({
+    required this.calculationService,
+    required this.ketiDataService,
+  });
+  static const String _yangAssetPath = "packages/daliuren/assets/da_liu_ren/甲午庚牛羊_阳.json";
+  static const String _yinAssetPath = "packages/daliuren/assets/da_liu_ren/甲午庚牛羊_阴.json";
+  static const String _juMapperPath = "packages/daliuren/assets/da_liu_ren/ju_mapper.json";
+  static const String _yuDingPath = "packages/daliuren/assets/da_liu_ren/御定大六壬.json";
 
   List<dynamic>? _yuDingData;
   Map<String, dynamic>? _juMapperData;
@@ -32,6 +37,7 @@ class DaLiuRenRepositoryImpl implements DaLiuRenRepository {
         _loadJuMapperData(),
         _loadPanData(YinYang.YANG),
         _loadPanData(YinYang.YIN),
+        ketiDataService.loadData(),
       ]);
       logger.d('🟡 [Repository] All divination data loaded successfully');
     } catch (e) {
@@ -43,12 +49,14 @@ class DaLiuRenRepositoryImpl implements DaLiuRenRepository {
   Future<void> _loadYuDingData() async {
     if (_yuDingData != null) return;
     try {
+      logger.d('🟡 [Repository] Loading YuDing data from $_yuDingPath');
       final jsonString = await rootBundle.loadString(_yuDingPath);
       final decoded = jsonDecode(jsonString);
       _yuDingData =
           decoded is List<dynamic> ? decoded : List<dynamic>.from(decoded);
+      logger.d('🟢 [Repository] YuDing data loaded: ${_yuDingData?.length ?? 0} items');
     } catch (e) {
-      logger.w('Warning: Failed to load Yu Ding data: $e');
+      logger.e('🔴 [Repository] Failed to load Yu Ding data: $e');
       _yuDingData = <dynamic>[];
     }
   }

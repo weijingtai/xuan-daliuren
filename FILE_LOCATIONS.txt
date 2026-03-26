@@ -1,0 +1,42 @@
+KeTi Display Fix - Complete File Locations
+===========================================
+
+PROJECT ROOT
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren
+
+MODIFIED CODE FILES (2)
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/lib/presentation/viewmodels/da_liu_ren_viewmodel.dart
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/lib/domain/services/keti_data_service.dart
+
+TEST FILES (1)
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/test/keti_matching_test.dart
+
+DOCUMENTATION FILES (7)
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/KETI_DISPLAY_FIX_INDEX.md
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/KETI_DISPLAY_FIX_SUMMARY.md
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/KETI_DISPLAY_FIX_REPORT.md
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/QUICK_FIX_REFERENCE.md
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/EXACT_CHANGES.md
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/CHANGES_CHECKLIST.md
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/FILE_LOCATIONS.txt
+
+DIAGNOSTIC SCRIPT (1)
+  /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/verify_keti_fix.sh
+
+START HERE
+  Read: /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/KETI_DISPLAY_FIX_INDEX.md
+
+QUICK REFERENCE
+  Read: /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/QUICK_FIX_REFERENCE.md
+
+DETAILED ANALYSIS
+  Read: /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/KETI_DISPLAY_FIX_REPORT.md
+
+VERIFY CHANGES
+  Run: bash /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/verify_keti_fix.sh
+
+RUN TESTS
+  Run: flutter test /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/test/keti_matching_test.dart
+
+SEE CODE CHANGES
+  Read: /Users/jingtaiwei/Git/Public/xuan-migration/xuan-daliuren/EXACT_CHANGES.md

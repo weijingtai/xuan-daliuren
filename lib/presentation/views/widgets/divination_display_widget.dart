@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
+import 'package:daliuren/presentation/widgets/keti_detail_widget.dart';
 import 'package:daliuren/presentation/widgets/shen_sha_display_widget.dart';
 
 class DivinationDisplayWidget extends StatelessWidget {
@@ -37,6 +38,13 @@ class DivinationDisplayWidget extends StatelessWidget {
               _buildDivinationPanel(context, divination),
 
               const SizedBox(height: 16),
+
+              // 课体 Detail
+              if (viewModel.matchedLessons.isNotEmpty)
+                KetiDetailWidget(lessons: viewModel.matchedLessons),
+
+              if (viewModel.matchedLessons.isNotEmpty)
+                const SizedBox(height: 16),
 
               // Shen Sha Display
               ShenShaDisplayWidget(shenShaResults: viewModel.shenShaResults),

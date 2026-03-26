@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:daliuren/domain/entities/liu_ren_pan_model.dart';
+import 'package:daliuren/presentation/widgets/keti_detail_widget.dart';
 
 class PanDisplayWidget extends StatelessWidget {
   final LiuRenPanModel? liuRenPan;
@@ -24,7 +25,10 @@ class PanDisplayWidget extends StatelessWidget {
           Text("月将: ${liuRenPan!.monthGeneral}"),
           Text("贵人: ${liuRenPan!.timeGanZhi}"),
           const SizedBox(height: 16),
-          Text("课体: ${liuRenPan!.keTiComplement.join(', ')}"),
+          if (liuRenPan!.matchedLessons.isNotEmpty)
+            KetiDetailWidget(lessons: liuRenPan!.matchedLessons)
+          else if (liuRenPan!.keTiComplement.isNotEmpty)
+            Text("课体: ${liuRenPan!.keTiComplement.join(', ')}"),
           const SizedBox(height: 16),
           const Text("天地盘 (Placeholder):",
               style: TextStyle(fontWeight: FontWeight.bold)),

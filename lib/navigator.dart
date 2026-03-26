@@ -16,8 +16,11 @@ class NavigatorGenerator {
           providers: DependencyInjection.getProviders(),
           child: const DaLiuRenView(),
         ),
-    "/daliuren/old": (context, {arguments}) => const MyHomePage(
-          title: "大六壬(旧版)",
+    "/daliuren/old": (context, {arguments}) => MultiProvider(
+          providers: DependencyInjection.getProviders(),
+          child: const MyHomePage(
+            title: "大六壬(旧版)",
+          ),
         ),
     "/daliuren/dev": (context, {arguments}) => const DevMyWidget()
   };

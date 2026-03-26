@@ -40,7 +40,7 @@ class ShenShaCalculationServiceImpl implements ShenShaCalculationService {
       // 计算月支神煞
       final monthResults = await calculateMonthShenSha(monthJiaZi: monthJiaZi);
 
-      // 计算地支神煞
+      // 计算日支神煞（地支神煞）
       final diZhiResults = await calculateDiZhiShenSha(
         yearJiaZi: yearJiaZi,
         monthJiaZi: monthJiaZi,
@@ -54,6 +54,15 @@ class ShenShaCalculationServiceImpl implements ShenShaCalculationService {
       // 计算旬煞
       final xunShenShaResults = await calculateXunShenSha(dayJiaZi: dayJiaZi);
 
+      // 计算日煞（日干专属神煞）
+      final dayGanResults = await calculateDayGanShenSha(dayJiaZi: dayJiaZi);
+
+      // 计算年干神煞
+      final yearGanResults = await calculateYearGanShenSha(yearJiaZi: yearJiaZi);
+
+      // 计算月干神煞
+      final monthGanResults = await calculateMonthGanShenSha(monthJiaZi: monthJiaZi);
+
       // 合并所有结果
       final allResults = [
         ...tianGanResults,
@@ -62,10 +71,23 @@ class ShenShaCalculationServiceImpl implements ShenShaCalculationService {
         ...diZhiResults,
         ...jiShenShaResults,
         ...xunShenShaResults,
+        ...dayGanResults,
+        ...yearGanResults,
+        ...monthGanResults,
       ];
 
+      // 去重：相同 name + location 只保留一条
+      final seen = <String>{};
+      final deduplicated = <ShenShaResult>[];
+      for (final r in allResults) {
+        final key = '${r.shenSha.name}_${r.location.name}';
+        if (seen.add(key)) {
+          deduplicated.add(r);
+        }
+      }
+
       // 按位置分组
-      for (final shenShaResult in allResults) {
+      for (final shenShaResult in deduplicated) {
         result[shenShaResult.location]!.add(shenShaResult);
       }
 
@@ -284,6 +306,57 @@ class ShenShaCalculationServiceImpl implements ShenShaCalculationService {
       }
     }
 
+    return results;
+  }
+
+  /// 计算日煞（日干专属神煞）
+  Future<List<ShenShaResult>> calculateDayGanShenSha({
+    required JiaZi dayJiaZi,
+  }) async {
+    final results = <ShenShaResult>[];
+    try {
+      final dayGanList = await _dataService.loadDayGanShenSha();
+      for (final shenSha in dayGanList) {
+        final location = shenSha.getLocationByTianGan(dayJiaZi.gan);
+        if (location != null) {
+          results.add(ShenShaResult(shenSha: shenSha, location: location));
+        }
+      }
+    } catch (_) {}
+    return results;
+  }
+
+  /// 计算年干神煞
+  Future<List<ShenShaResult>> calculateYearGanShenSha({
+    required JiaZi yearJiaZi,
+  }) async {
+    final results = <ShenShaResult>[];
+    try {
+      final yearGanList = await _dataService.loadYearGanShenSha();
+      for (final shenSha in yearGanList) {
+        final location = shenSha.getLocationByTianGan(yearJiaZi.gan);
+        if (location != null) {
+          results.add(ShenShaResult(shenSha: shenSha, location: location));
+        }
+      }
+    } catch (_) {}
+    return results;
+  }
+
+  /// 计算月干神煞
+  Future<List<ShenShaResult>> calculateMonthGanShenSha({
+    required JiaZi monthJiaZi,
+  }) async {
+    final results = <ShenShaResult>[];
+    try {
+      final monthGanList = await _dataService.loadMonthGanShenSha();
+      for (final shenSha in monthGanList) {
+        final location = shenSha.getLocationByTianGan(monthJiaZi.gan);
+        if (location != null) {
+          results.add(ShenShaResult(shenSha: shenSha, location: location));
+        }
+      }
+    } catch (_) {}
     return results;
   }
 

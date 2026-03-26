@@ -17,7 +17,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
   List<ShenShaResult> get _allResults =>
       widget.shenShaResults?.values.expand((list) => list).toList() ?? [];
 
-  static const List<String> _typeOrder = ['干煞', '年煞', '月煞', '支煞', '季煞', '旬煞'];
+  static const List<String> _typeOrder = ['干煞', '日煞', '年煞', '年干', '月煞', '月干', '支煞', '季煞', '旬煞'];
 
   Map<String, List<ShenShaResult>> get _groupedByType {
     final map = <String, List<ShenShaResult>>{};
@@ -150,10 +150,16 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
     switch (type) {
       case '干煞':
         return Colors.purple;
+      case '日煞':
+        return Colors.deepPurple;
       case '年煞':
         return Colors.blue;
+      case '年干':
+        return Colors.lightBlue;
       case '月煞':
         return Colors.teal;
+      case '月干':
+        return Colors.cyan;
       case '支煞':
         return Colors.orange;
       case '季煞':

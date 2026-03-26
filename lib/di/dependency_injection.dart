@@ -7,6 +7,8 @@ import 'package:daliuren/domain/services/calculators/gui_ren_calculator.dart';
 import 'package:daliuren/domain/services/calculators/four_class_calculator.dart';
 import 'package:daliuren/domain/services/calculators/three_chuan_calculator.dart';
 import 'package:daliuren/domain/services/da_liu_ren_calculation_service.dart';
+import 'package:daliuren/domain/services/keti_data_service.dart';
+import 'package:daliuren/domain/services/yuding_keti_match_service.dart';
 import 'package:daliuren/domain/services/shen_sha_calculation_service_impl.dart';
 import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
@@ -46,10 +48,23 @@ class DependencyInjection {
         ),
       ),
 
+      // KeTi Data Service
+      Provider<KetiDataService>(
+        create: (_) => KetiDataService(),
+      ),
+
       // Repository
       Provider<DaLiuRenRepository>(
         create: (context) => DaLiuRenRepositoryImpl(
           calculationService: context.read<DaLiuRenCalculationService>(),
+          ketiDataService: context.read<KetiDataService>(),
+        ),
+      ),
+
+      // YuDing KeTi Match Service
+      Provider<YuDingKetiMatchService>(
+        create: (context) => YuDingKetiMatchService(
+          repository: context.read<DaLiuRenRepository>(),
         ),
       ),
 
@@ -76,6 +91,8 @@ class DependencyInjection {
             calculateDivinationUseCase: CalculateDivinationUseCase(repository),
             loadDivinationDataUseCase: LoadDivinationDataUseCase(repository),
             calculateShenShaUseCase: context.read<CalculateShenShaUseCase>(),
+            ketiDataService: context.read<KetiDataService>(),
+            yuDingKetiMatchService: context.read<YuDingKetiMatchService>(),
           );
         },
       ),
