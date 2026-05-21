@@ -1018,7 +1018,7 @@
   {
     "id": 47,
     "name": "天狱课",
-    "guaXiang": "噬（shi）嗑",
+    "guaXiang": "噬嗑",
     "keTiShi": "天狱墓作死囚用，天罡曰本之宫躔。",
     "conditions": [
       "发用必须是死气、囚气或墓气；",
@@ -1039,7 +1039,7 @@
   {
     "id": 48,
     "name": "天寇课",
-    "guaXiang": "蹇（jian）",
+    "guaXiang": "蹇",
     "keTiShi": "天寇分至前一日，月加离辰发用先。",
     "conditions": [
       "、占日为四离日（春分、秋分、夏至、冬至的前一日）；",
@@ -1405,7 +1405,7 @@
         "keTiShi": null,
         "conditions": [],
         "nameExplanation": null,
-        "introduction": "元-胎课若逢寅加亥，亥加申，申加巳，巳加寅，上神受下神之生。百事皆吉，怀孕大吉。",
+        "introduction": "元胎课若逢寅加亥，亥加申，申加巳，巳加寅，上神受下神之生。百事皆吉，怀孕大吉。",
         "notes": [],
         "explanation": null,
         "categories": []

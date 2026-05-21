@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'pages/dev.dart';
 import 'pages/my_home_page.dart';
+import 'pages/new/new_home_page.dart';
 import 'presentation/views/da_liu_ren_view.dart';
 import 'di/dependency_injection.dart';
 
@@ -21,6 +22,10 @@ class NavigatorGenerator {
           child: const MyHomePage(
             title: "大六壬(旧版)",
           ),
+        ),
+    "/daliuren/new": (context, {arguments}) => MultiProvider(
+          providers: DependencyInjection.getProviders(),
+          child: const NewHomePage(),
         ),
     "/daliuren/dev": (context, {arguments}) => const DevMyWidget()
   };

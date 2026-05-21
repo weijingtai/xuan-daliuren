@@ -1,0 +1,38 @@
+# .understandignore — patterns for files/dirs to exclude from analysis
+# Syntax: same as .gitignore (globs, # comments, ! negation, trailing / for dirs)
+
+# --- Active exclusions (per user) ---
+
+# Test directory: contains large JSON fixtures (御定大六壬.json, 甲午庚牛羊_*.json ~6MB)
+test/
+
+# Example wrapper app: separate Flutter app, not part of the module library
+example/
+
+# Generated JSON serializable code: mirrors handwritten .dart counterparts
+*.g.dart
+
+# Assets: pure divination data (JSON datasets + SQL seed) — not code logic
+assets/
+
+# --- Flutter platform/build artifacts (from .gitignore) ---
+
+.dart_tool/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+.android/
+.ios/
+.metadata
+*.pyc
+.DS_Store
+migrate_working_dir/
+app.*.symbols
+app.*.map.json
+
+# --- IDE / agent state ---
+
+.specify/
+.gemini/
+.claude/
+.chrome-profile/

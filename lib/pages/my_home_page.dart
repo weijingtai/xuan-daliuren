@@ -27,16 +27,14 @@ import '../model/da_liu_ren_panel.dart';
 import '../model/enum_gui_ren.dart';
 import '../model/four_class.dart';
 import '../model/three_chuan.dart';
-import '../model/yu_ding_da_liu_ren.dart';
-import '../domain/entities/shen_sha_entity.dart';
-import '../domain/services/shen_sha_calculation_service_impl.dart';
-import '../domain/usecases/calculate_shen_sha_usecase.dart';
-import '../data/services/shen_sha_data_service_impl.dart';
-import '../presentation/widgets/shen_sha_display_widget.dart';
-import '../domain/services/keti_data_service.dart';
-import '../domain/services/yuding_keti_match_service.dart';
-import '../domain/entities/daliuren_lesson.dart';
+import '../presentation/widgets/four_class_card.dart';
+import '../presentation/widgets/ke_pan_info_card.dart';
 import '../presentation/widgets/keti_detail_widget.dart';
+import '../presentation/widgets/shen_sha_display_widget.dart';
+import '../presentation/widgets/three_chuan_card.dart';
+import '../presentation/viewmodels/da_liu_ren_viewmodel.dart';
+import '../domain/services/keti_data_service.dart';
+import '../data/models/yu_ding_da_liu_ren_data_model.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -47,349 +45,89 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String ICONS_ASSETS_PATH = "icons";
+  static const double NORMAL_PAN_SIZE = 400.0;
+  static const double SMALL_PAN_SIZE = 280.0;
+  static const String ICONS_ASSETS_PATH = "icons";
+
   GlobalKey renYearGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
   GlobalKey renMonthGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
   GlobalKey renDayGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
   GlobalKey renTimeGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
   GlobalKey renDunGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
   GlobalKey renJuNumberShakeKey = GlobalKey<ShakeWidgetState>();
+  GlobalKey renMonthGeneralShakeKey = GlobalKey<ShakeWidgetState>();
 
   JiaZi? yearJiaZi;
   JiaZi? monthJiaZi;
   JiaZi? dayJiaZi;
   JiaZi? timeJiaZi;
+  MonthGeneral? monthGeneral;
   YinYang? yinYangDun;
   int? juNumber;
 
-  DateTime? prevDatetime;
-  final ValueNotifier<DateTime?> panDatetimeNotifier =
-      ValueNotifier<DateTime?>(null);
-  final ValueNotifier<DateTime?> selectedDatetimeNotifier =
-      ValueNotifier<DateTime?>(null);
-  final ValueNotifier<DaLiuRenKePan?> daLiuRenGongNotifier =
-      ValueNotifier<DaLiuRenKePan?>(null);
-  final ValueNotifier<DaLiuRenPanModel?> daLiuRenModelNotifier =
-      ValueNotifier(null);
-  final ValueNotifier<LunarDay?> lunarNotifier = ValueNotifier<LunarDay?>(null);
-  final ValueNotifier<Tuple2<JiaZi, DiZhi>?> classNumberNotifier =
-      ValueNotifier(null);
-  final ValueNotifier<int?> juNumberNotifier = ValueNotifier(null);
-  final ValueNotifier<Map<DiZhi, List<ShenShaResult>>?> shenShaNotifier =
-      ValueNotifier(null);
-  final ValueNotifier<List<DaliurenLesson>> matchedLessonsNotifier =
-      ValueNotifier([]);
-  final CalculateShenShaUseCase _shenShaUseCase = CalculateShenShaUseCase(
-    ShenShaCalculationServiceImpl(dataService: ShenShaDataServiceImpl()),
-  );
-
   final ValueNotifier<bool> _showMonthGeneralJieQi = ValueNotifier(false);
   final ValueNotifier<bool> isSmallPanNotifier = ValueNotifier(false);
+  final ValueNotifier<bool> showThreeChuanAsCard = ValueNotifier(false);
+  final ValueNotifier<bool> showFourClassAsCard = ValueNotifier(false);
+  final ValueNotifier<bool> showKePanInfoCard = ValueNotifier(false);
 
-  static const double NORMAL_PAN_SIZE = 400.0;
-  static const double SMALL_PAN_SIZE = 280.0;
+  Timer? _showMonthGeneralJieQiTimer;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    juNumberNotifier.dispose();
-    panDatetimeNotifier.dispose();
-    daLiuRenGongNotifier.dispose();
-    lunarNotifier.dispose();
-    selectedDatetimeNotifier.dispose();
-    daLiuRenModelNotifier.dispose();
     _showMonthGeneralJieQi.dispose();
-    matchedLessonsNotifier.dispose();
-
-    // release resources
-    if (_showMonthGeneralJieQiTimer != null) {
-      _showMonthGeneralJieQiTimer!.cancel();
-      _showMonthGeneralJieQiTimer = null;
-    }
+    isSmallPanNotifier.dispose();
+    showThreeChuanAsCard.dispose();
+    showFourClassAsCard.dispose();
+    showKePanInfoCard.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    // Load KeTi data for displaying lesson info in buildClassType
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final ketiService = context.read<KetiDataService>();
-      ketiService.loadData().catchError((e) {
-        logger.e('Failed to load KeTi data in legacy UI: $e');
-      });
-    });
-
-    panDatetimeNotifier.addListener(() {
-      if (prevDatetime != panDatetimeNotifier.value) {
-        prevDatetime = panDatetimeNotifier.value;
-        if (panDatetimeNotifier.value == null) {
-          lunarNotifier.value = null;
-          daLiuRenGongNotifier.value = null;
-          shenShaNotifier.value = null;
-          juNumberNotifier.value = null;
-        } else {
-          final dt = panDatetimeNotifier.value!;
-          final solarTime = SolarTime.fromYmdHms(
-            dt.year,
-            dt.month,
-            dt.day,
-            dt.hour,
-            dt.minute,
-            dt.second,
-          );
-          final lunarHour = solarTime.getLunarHour();
-          final eightChar = lunarHour.getEightChar();
-          final lunarDay =
-              SolarDay.fromYmd(dt.year, dt.month, dt.day).getLunarDay();
-          lunarNotifier.value = lunarDay;
-
-          final baZiStr = [
-            eightChar.getYear().getName(),
-            eightChar.getMonth().getName(),
-            eightChar.getDay().getName(),
-            eightChar.getHour().getName(),
-          ].join(" ");
-
-          // Get prev term for month general
-          final solarDay = SolarDay.fromYmd(dt.year, dt.month, dt.day);
-          final term = solarDay.getTerm();
-          final termJd = term.getJulianDay();
-          final termTime = termJd.getSolarTime();
-          final termAt = DateTime(
-            termTime.getYear(),
-            termTime.getMonth(),
-            termTime.getDay(),
-            termTime.getHour(),
-            termTime.getMinute(),
-            termTime.getSecond(),
-          );
-          String prevQiName;
-          if (termAt.isAfter(dt)) {
-            prevQiName = term.next(-1).getName();
-          } else {
-            prevQiName = term.getName();
-          }
-
-          var pan = DaLiuRenKePan(
-            panDateTime: panDatetimeNotifier.value!,
-            eightChatStr: baZiStr,
-            monthGeneral: MonthGeneral.fromByStartAtJie(prevQiName),
-          );
-          daLiuRenGongNotifier.value = pan;
-          _calculateShenShaForPan(pan);
-          _matchKeTiForPan(pan);
-          checkPanJu(pan.dayJiaZi, pan.timeJiaZi,
-                  pan.isDayGuiRen ? YinYang.YANG : YinYang.YIN)
-              .then((va) => juNumberNotifier.value = va);
-        }
-      }
-    });
-    lunarNotifier.addListener(() {});
-    // load json
-    daLiuRenGongNotifier.addListener(() {
-      if (daLiuRenGongNotifier.value != null) {
-        classNumberNotifier.value = Tuple2(daLiuRenGongNotifier.value!.dayJiaZi,
-            daLiuRenGongNotifier.value!.fourClass.first.sky);
-
-        // getPan(daLiuRenGongNotifier.value!.dayJiaZi, daLiuRenGongNotifier.value!.timeJiaZi,daLiuRenGongNotifier.value!.isDayGuiRen?YinYang.YANG:YinYang.YIN);
-      } else {
-        classNumberNotifier.value = null;
-      }
-    });
-    daLiuRenModelNotifier.addListener(() {
-      if (daLiuRenModelNotifier.value != null) {
-        classNumberNotifier.value = Tuple2(
-            daLiuRenModelNotifier.value!.dayJiaZi,
-            daLiuRenModelNotifier.value!.fourClass.first.sky);
-        // getPan(daLiuRenGongNotifier.value!.dayJiaZi, daLiuRenGongNotifier.value!.timeJiaZi,daLiuRenGongNotifier.value!.isDayGuiRen?YinYang.YANG:YinYang.YIN);
-      } else {
-        classNumberNotifier.value = null;
-      }
+      context.read<DaLiuRenViewModel>().initializeData();
     });
   }
 
-  List<DaLiuRenPanModel> _convertJsonToDaLiuRenPanModel(String jsonString) {
-    List<DaLiuRenPanModel> classList = (json.decode(jsonString)
-            as List<dynamic>)
-        .map((item) => DaLiuRenPanModel.fromJson(item as Map<String, dynamic>))
-        .toList();
-    return classList;
-  }
-
-  Future<int> checkPanJu(
-      JiaZi dayJiaZi, JiaZi timeJiaZi, YinYang yinYangDun) async {
-    Map<String, Map<String, Map<String, int>>> mapper = await loadJuMapper();
-    int juNumber = mapper[dayJiaZi.name]![timeJiaZi.diZhi.name]![
-        yinYangDun.isYang ? "yang" : "yin"]!;
-    return juNumber;
-  }
-
-  void _calculateShenShaForPan(DaLiuRenKePan pan) async {
-    try {
-      logger.d('🔵 [OldUI] Calculating ShenSha for ${pan.dayJiaZi.name}日...');
-      final params = CalculateShenShaParams(
-        yearJiaZi: pan.yearJiaZi,
-        monthJiaZi: pan.monthJiaZi,
-        dayJiaZi: pan.dayJiaZi,
-        hourJiaZi: pan.timeJiaZi,
-      );
-      shenShaNotifier.value = await _shenShaUseCase.call(params);
-      final count =
-          shenShaNotifier.value?.values.fold<int>(0, (s, l) => s + l.length) ??
-              0;
-      logger.d('🟢 [OldUI] ShenSha calculated: $count results');
-    } catch (e) {
-      logger.e('🔴 [OldUI] Error calculating shen sha: $e');
-    }
-  }
-
-  void _matchKeTiForPan(DaLiuRenPanel pan) async {
-    try {
-      final ketiService = context.read<KetiDataService>();
-      final yudingService = context.read<YuDingKetiMatchService>();
-
-      // Ensure data is loaded
-      if (!ketiService.isLoaded) {
-        await ketiService.loadData();
-      }
-
-      final patterns = await yudingService.getKeTiNames(pan);
-
-      if (patterns.isEmpty) {
-        matchedLessonsNotifier.value = [];
-        return;
-      }
-
-      logger.d('Matching KeTi for patterns: $patterns');
-      final results = ketiService.findByNames(patterns);
-      if (results.isNotEmpty) {
-        matchedLessonsNotifier.value = results.map((r) => r.lesson).toList();
-      } else {
-        matchedLessonsNotifier.value = [];
-      }
-    } catch (e) {
-      logger.e('🔴 [OldUI] Error matching KeTi in legacy UI: $e');
-    }
-  }
-
-  Future<Map<String, Map<String, Map<String, int>>>> loadJuMapper() async {
-    String jsonString =
-        await rootBundle.loadString("assets/da_liu_ren/ju_mapper.json");
-
-    Map<String, dynamic> decodedJson = jsonDecode(jsonString);
-    Map<String, Map<String, Map<String, int>>> convertedMap =
-        decodedJson.map((key, value) {
-      return MapEntry(
-        key,
-        (value as Map<String, dynamic>).map((subKey, subValue) {
-          return MapEntry(
-            subKey,
-            (subValue as Map<String, dynamic>).map((subSubKey, subSubValue) {
-              return MapEntry(subSubKey, subSubValue as int);
-            }),
-          );
-        }),
-      );
-    });
-
-    return convertedMap;
-  }
-
-  Future<List<DaLiuRenPanModel>> loadByYinYangDun(YinYang yinYangDun) async {
-    List<DaLiuRenPanModel> resultList;
-    if (yinYangDun.isYang) {
-      resultList = await rootBundle
-          .loadString("assets/da_liu_ren/甲午庚牛羊_阳.json")
-          .then(_convertJsonToDaLiuRenPanModel);
-    } else {
-      resultList = await rootBundle
-          .loadString("assets/da_liu_ren/甲午庚牛羊_阴.json")
-          .then(_convertJsonToDaLiuRenPanModel);
-    }
-    return resultList;
-  }
-
-  Future<DaLiuRenPanModel> loadPanByJuNumber(
-      JiaZi dayJiaZi, YinYang yinYangDun, int number) async {
-    // load DaLiuRenPanModel from json file at assets
-    List<DaLiuRenPanModel> resultList = await loadByYinYangDun(yinYangDun);
-    String juNumberName = ConstResourcesMapper.chineseNumberMapper[number]!;
-    return resultList.firstWhere(
-        (pan) => pan.dayJiaZi == dayJiaZi && pan.juNumberName == juNumberName);
-  }
-
-  Future<DaLiuRenPanModel> loadPanByTimeZhi(
-      JiaZi dayJiaZi, DiZhi shiZhi, YinYang yinYangDun) async {
-    // load DaLiuRenPanModel from json file at assets
-    List<DaLiuRenPanModel> resultList = await loadByYinYangDun(yinYangDun);
-    return resultList
-        .firstWhere((pan) => pan.dayJiaZi == dayJiaZi && pan.shiChen == shiZhi);
-  }
-
-  Future<DaLiuRenPanModel> getPan(
-      JiaZi dayJiaZi, JiaZi timeJiaZi, YinYang yinYangDun) async {
-    List<DaLiuRenPanModel> list;
-    if (yinYangDun.isYang) {
-      list = await rootBundle
-          .loadString("assets/da_liu_ren/甲午庚牛羊_阳.json")
-          .then(_convertJsonToDaLiuRenPanModel);
-    } else {
-      list = await rootBundle
-          .loadString("assets/da_liu_ren/甲午庚牛羊_阴.json")
-          .then(_convertJsonToDaLiuRenPanModel);
-    }
-    var res = list.firstWhere(
-        (p) => p.dayJiaZi == dayJiaZi && p.shiChen == timeJiaZi.diZhi);
-    // print(res.fourClass.first.tianGan);
-    return res;
-  }
-
-  Size panSize = const Size(400, 400);
-  Size gongSize = const Size(400 * .25, 400 * .25);
   @override
   Widget build(BuildContext context) {
-    if (panDatetimeNotifier.value == null) {
-      panDatetimeNotifier.value = DateTime.now();
-    }
+    final viewModel = context.watch<DaLiuRenViewModel>();
+    final daLiuRenGong = viewModel.currentDivination;
+    final juNumberFromVm = viewModel.juNumber;
+
+    Size panSize = const Size(NORMAL_PAN_SIZE, NORMAL_PAN_SIZE);
+    Size gongSize = const Size(NORMAL_PAN_SIZE * .25, NORMAL_PAN_SIZE * .25);
+
     // dev 三传 九宗门
     return Scaffold(
-      appBar: AppBar(
-        // title: Text("大六壬"),
-        title: ValueListenableBuilder(
-          valueListenable: daLiuRenGongNotifier,
-          builder: (ctx, daLiuRenGong, child) {
-            if (daLiuRenGong != null) {
-              return ValueListenableBuilder(
-                  valueListenable: juNumberNotifier,
-                  builder: (ctx, juNumber, _) {
-                    if (juNumber != null) {
-                      return Text(
-                          "${daLiuRenGong.dayJiaZi.name}日·${daLiuRenGong.timeJiaZi.diZhi.name}时·${daLiuRenGong.isDayGuiRen ? "阳" : "阴"}${ConstResourcesMapper.chineseNumberMapper[juNumber]}局");
-                    }
-                    return child!;
-                  });
-            }
-            return child!;
-          },
-          child: const Text("大六壬"),
-        ),
-        centerTitle: true,
-      ),
+ appBar: AppBar(
+ title: daLiuRenGong != null && juNumberFromVm != null
+ ? Text(
+ "${daLiuRenGong.dayJiaZi.name}日·${daLiuRenGong.timeJiaZi.diZhi.name}时·${daLiuRenGong.isDayGuiRen ? "阳" : "阴"}${ConstResourcesMapper.chineseNumberMapper[juNumberFromVm]}局")
+ : const Text("大六壬"),
+ centerTitle: true,
+ actions: [
+ IconButton(
+ icon: const Icon(Icons.auto_awesome),
+ tooltip: "新版UI",
+ onPressed: () => Navigator.pushNamed(context, '/daliuren/new'),
+ ),
+ ],
+ ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              pan_base_info(),
+              pan_base_info(viewModel),
               const SizedBox(
                 height: 16,
               ),
               // 竖屏是使用Column
-              main(),
+              main(viewModel),
 
               const SizedBox(
                 height: 32,
@@ -409,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         pickerType: DateTimePickerType.datetime,
                       );
                       if (result != null) {
-                        selectedDatetimeNotifier.value = result;
+                        viewModel.updateDateTime(result);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -426,9 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(width: 24),
                   ElevatedButton(
-                    onPressed: () async {
-                      selectedDatetimeNotifier.value = DateTime.now();
-                    },
+                    onPressed: () => viewModel.updateDateTime(DateTime.now()),
                     style: ElevatedButton.styleFrom(
                       // backgroundColor: Colors.green, // Background coloronPrimary: Colors.white, // Text color
                       padding: const EdgeInsets.symmetric(
@@ -444,17 +180,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(width: 24),
                   ElevatedButton(
                     onPressed: () async {
-                      if (panDatetimeNotifier.value == null &&
-                          daLiuRenGongNotifier.value == null &&
-                          daLiuRenModelNotifier.value == null) {
-                        panDatetimeNotifier.value =
-                            selectedDatetimeNotifier.value ?? DateTime.now();
+                      if (viewModel.currentDivination == null) {
+                        viewModel.updateDateTime(viewModel.selectedDateTime);
                       } else {
                         InteractiveToast.slide(
                           context: context,
-                          // leading: leadingWidget(),
                           title: const Text("不能重复"),
-                          // trailing: trailingWidget(),
                           toastStyle: const ToastStyle(titleLeadingGap: 10),
                           toastSetting: const SlidingToastSetting(
                             animationDuration: Duration(seconds: 1),
@@ -481,16 +212,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(width: 24),
                   ElevatedButton(
                     onPressed: () async {
-                      if (panDatetimeNotifier.value == null &&
-                          daLiuRenModelNotifier.value == null &&
-                          daLiuRenGongNotifier.value == null) {
-                        if ([
-                          yearJiaZi,
-                          monthJiaZi,
-                          dayJiaZi,
-                          timeJiaZi,
-                          yinYangDun
-                        ].any((e) => e == null)) {
+                      if (viewModel.currentDivination == null) {
+                        if ([yearJiaZi, monthJiaZi, dayJiaZi, yinYangDun]
+                                .any((e) => e == null) ||
+                            (timeJiaZi == null && juNumber == null)) {
                           if (yearJiaZi == null) {
                             (renYearGanZhiShakeKey.currentState!
                                     as ShakeWidgetState)
@@ -511,6 +236,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                     as ShakeWidgetState)
                                 .shake();
                           }
+                          if (monthGeneral == null) {
+                            (renMonthGeneralShakeKey.currentState!
+                                    as ShakeWidgetState)
+                                .shake();
+                          }
                           if (timeJiaZi == null && juNumber == null) {
                             (renTimeGanZhiShakeKey.currentState!
                                     as ShakeWidgetState)
@@ -520,22 +250,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                 .shake();
                           }
                         } else {
-                          if (timeJiaZi != null) {
-                            daLiuRenModelNotifier.value =
-                                await loadPanByTimeZhi(
-                                    dayJiaZi!, timeJiaZi!.diZhi, yinYangDun!);
-                          } else if (juNumber != null) {
-                            daLiuRenModelNotifier.value =
-                                await loadPanByJuNumber(
-                                    dayJiaZi!, yinYangDun!, juNumber!);
-                          }
+                          viewModel.updateManualJu(
+                            yearJiaZi: yearJiaZi!,
+                            monthJiaZi: monthJiaZi!,
+                            dayJiaZi: dayJiaZi!,
+                            yinYangDun: yinYangDun!,
+                            monthGeneral: monthGeneral!,
+                            timeJiaZi: timeJiaZi,
+                            juNumber: juNumber,
+                          );
                         }
                       } else {
                         InteractiveToast.slide(
                           context: context,
-                          // leading: leadingWidget(),
                           title: const Text("不能重复"),
-                          // trailing: trailingWidget(),
                           toastStyle: const ToastStyle(titleLeadingGap: 10),
                           toastSetting: const SlidingToastSetting(
                             animationDuration: Duration(seconds: 1),
@@ -562,25 +290,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(width: 24),
                   ElevatedButton(
                     onPressed: () async {
-                      panDatetimeNotifier.value = null;
-                      daLiuRenGongNotifier.value = null;
-                      daLiuRenModelNotifier.value = null;
+                      viewModel.clear();
                       yearJiaZi = null;
                       monthJiaZi = null;
                       dayJiaZi = null;
                       timeJiaZi = null;
+                      monthGeneral = null;
                       juNumber = null;
                       yinYangDun = null;
                     },
                     style: ElevatedButton.styleFrom(
-                      // backgroundColor: Colors.red, // Background coloronPrimary: Colors.white, // Text color
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15), // Padding
-                      textStyle: const TextStyle(
-                          fontSize: 18, color: Colors.white), // Text style
+                          horizontal: 20, vertical: 15),
+                      textStyle:
+                          const TextStyle(fontSize: 18, color: Colors.white),
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // Rounded corners
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: const Text('清除'),
@@ -597,7 +322,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget pan_base_info() {
+  Widget pan_base_info(DaLiuRenViewModel viewModel) {
+    final dateTime = viewModel.selectedDateTime;
+    final pan = viewModel.currentDivination;
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -606,23 +333,15 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(
             width: 240,
             height: 100,
-            child: ValueListenableBuilder<DateTime?>(
-                valueListenable: panDatetimeNotifier,
-                // builder: (ctx, dateTime, child) => dateTime != null ? Text(DateFormat("yyyy-MM-dd HH:mm").format(dateTime!)):child!,
-                builder: (ctx, dateTime, child) =>
-                    dateTime != null ? buildCenterPanTime(dateTime) : child!,
-                child: const SizedBox()),
+            child: buildCenterPanTime(dateTime),
           ),
           SizedBox(
             width: 260,
             height: 150,
-            child: ValueListenableBuilder<DaLiuRenKePan?>(
-                valueListenable: daLiuRenGongNotifier,
-                builder: (ctx, pan, child) => pan != null
-                    ? buildCenterFourZhu(pan.yearJiaZi, pan.monthJiaZi,
-                        pan.dayJiaZi, pan.timeJiaZi)
-                    : child!,
-                child: const SizedBox()),
+            child: pan != null
+                ? buildCenterFourZhu(
+                    pan.yearJiaZi, pan.monthJiaZi, pan.dayJiaZi, pan.timeJiaZi)
+                : const SizedBox(),
           )
         ],
       );
@@ -634,234 +353,228 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(
             width: 240,
             height: 100,
-            child: ValueListenableBuilder<DateTime?>(
-                valueListenable: panDatetimeNotifier,
-                // builder: (ctx, dateTime, child) => dateTime != null ? Text(DateFormat("yyyy-MM-dd HH:mm").format(dateTime!)):child!,
-                builder: (ctx, dateTime, child) =>
-                    dateTime != null ? buildCenterPanTime(dateTime) : child!,
-                child: const SizedBox()),
+            child: buildCenterPanTime(dateTime),
           ),
           SizedBox(
             width: 260,
             height: 150,
-            child: ValueListenableBuilder<DaLiuRenKePan?>(
-                valueListenable: daLiuRenGongNotifier,
-                builder: (ctx, pan, child) => pan != null
-                    ? buildCenterFourZhu(pan.yearJiaZi, pan.monthJiaZi,
-                        pan.dayJiaZi, pan.timeJiaZi)
-                    : child!,
-                child: const SizedBox()),
+            child: pan != null
+                ? buildCenterFourZhu(
+                    pan.yearJiaZi, pan.monthJiaZi, pan.dayJiaZi, pan.timeJiaZi)
+                : const SizedBox(),
           )
         ],
       );
     }
   }
 
-  Widget main() {
+  Widget main(DaLiuRenViewModel viewModel) {
+    final pan = viewModel.currentDivination;
+    final shenShaResults = viewModel.shenShaResults;
+    final matchedLessons = viewModel.matchedLessons;
+    final matchedKeTiNames = viewModel.matchedKeTiNames;
+    final matchedKetiResults = viewModel.matchedKetiResults;
+    final lessonSubLessons = <String, List<String>>{};
+    for (final r in matchedKetiResults) {
+      if (r.matchedSubLesson != null) {
+        lessonSubLessons.putIfAbsent(r.lesson.name, () => []);
+        lessonSubLessons[r.lesson.name]!.add(r.matchedSubLesson!.name);
+      }
+    }
+
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       return Column(
         children: [
           ValueListenableBuilder<bool>(
             valueListenable: isSmallPanNotifier,
             builder: (context, isSmall, _) {
+              const double normalPanSize = 400.0;
+              const double smallPanSize = 280.0;
               return SizedBox(
-                width: NORMAL_PAN_SIZE,
-                height: NORMAL_PAN_SIZE,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Center(
-                      child: TweenAnimationBuilder<double>(
-                        duration: const Duration(milliseconds: 600),
-                        curve: Curves.easeInOutQuart,
-                        tween: Tween<double>(
-                          begin: isSmall ? NORMAL_PAN_SIZE : SMALL_PAN_SIZE,
-                          end: isSmall ? SMALL_PAN_SIZE : NORMAL_PAN_SIZE,
-                        ),
-                        builder: (context, size, child) {
-                          final double currentScaleFactor =
-                              size / NORMAL_PAN_SIZE;
-                          final Size currentGongSize =
-                              Size(size * 0.25, size * 0.25);
-                          return Container(
-                            width: size,
-                            height: size,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(255, 251, 240, 1),
-                                borderRadius: BorderRadius.circular(
-                                    32 * currentScaleFactor),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 6 * currentScaleFactor,
-                                    spreadRadius: 6 * currentScaleFactor,
-                                  )
-                                ]),
-                            alignment: Alignment.center,
-                            child: ValueListenableBuilder<DaLiuRenKePan?>(
-                                valueListenable: daLiuRenGongNotifier,
-                                builder: (ct, pan, child) => pan == null
-                                    ? child!
-                                    : build_panel(pan, currentGongSize,
-                                        currentScaleFactor),
-                                child: ValueListenableBuilder(
-                                  valueListenable: daLiuRenModelNotifier,
-                                  builder: (ctx, pan, child) => pan == null
-                                      ? child!
-                                      : build_panel_model(pan, currentGongSize,
-                                          currentScaleFactor),
-                                  child: Container(
-                                    width: size,
-                                    height: size,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          32 * currentScaleFactor),
-                                    ),
-                                  ),
-                                )),
-                          );
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: Material(
-                        color: Colors.redAccent,
-                        elevation: 8,
-                        shape: const CircleBorder(),
-                        child: IconButton(
-                          icon: Icon(
-                            isSmall ? Icons.fullscreen : Icons.fullscreen_exit,
-                            color: Colors.white,
-                            size: 28,
+                  width: normalPanSize,
+                  height: normalPanSize,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Center(
+                        child: TweenAnimationBuilder<double>(
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeInOutQuart,
+                          tween: Tween<double>(
+                            begin: isSmall ? normalPanSize : smallPanSize,
+                            end: isSmall ? smallPanSize : normalPanSize,
                           ),
-                          onPressed: () => isSmallPanNotifier.value =
-                              !isSmallPanNotifier.value,
-                          tooltip: "切换大小",
+                          builder: (context, size, child) {
+                            final double currentScaleFactor =
+                                size / normalPanSize;
+                            final Size currentGongSize =
+                                Size(size * 0.25, size * 0.25);
+                            return Container(
+                              width: size,
+                              height: size,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(255, 251, 240, 1),
+                                  borderRadius: BorderRadius.circular(
+                                      32 * currentScaleFactor),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 6 * currentScaleFactor,
+                                      spreadRadius: 6 * currentScaleFactor,
+                                    )
+                                  ]),
+                              alignment: Alignment.center,
+child: pan == null
+                                   ? Container(
+                                       width: size,
+                                       height: size,
+                                       decoration: BoxDecoration(
+                                         borderRadius: BorderRadius.circular(
+                                             32 * currentScaleFactor),
+                                       ),
+                                     )
+                                   : ValueListenableBuilder<bool>(
+                                       valueListenable: showThreeChuanAsCard,
+                                       builder: (ctx, showThreeAsCard, _) {
+                                         return ValueListenableBuilder<bool>(
+                                           valueListenable: showFourClassAsCard,
+                                           builder: (ctx2, showFourAsCard, __) {
+                                             return build_panel(
+                                                 pan, currentGongSize,
+                                                 currentScaleFactor,
+                                                 hideThreeChuan: showThreeAsCard,
+                                                 hideFourClass: showFourAsCard);
+                                           },
+                                         );
+                                       },
+                                     ),
+                            );
+                          },
                         ),
                       ),
+                    ],
+                  ));
+            },
+          ),
+          // zoom toggle button (portrait) - below the pan, centered
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ValueListenableBuilder<bool>(
+                valueListenable: isSmallPanNotifier,
+                builder: (context, isSmall, _) {
+                  return Material(
+                    color: Colors.redAccent,
+                    elevation: 8,
+                    shape: const CircleBorder(),
+                    child: IconButton(
+                      icon: Icon(
+                        isSmall ? Icons.fullscreen : Icons.fullscreen_exit,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                      onPressed: () =>
+                          isSmallPanNotifier.value = !isSmallPanNotifier.value,
+                      tooltip: "切换大小",
                     ),
-                  ],
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ),
           ),
           const SizedBox(
             height: 16,
           ),
-          // Shen Sha Display
-          ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
-            valueListenable: shenShaNotifier,
-            builder: (ctx, shenShaResults, child) {
-              if (shenShaResults == null || shenShaResults.isEmpty) {
-                return const SizedBox();
-              }
-              return Container(
-                width: panSize.width,
-                child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
-              );
-            },
-          ),
+          if (pan != null) _buildToggleAndCards(pan),
           const SizedBox(
             height: 16,
           ),
-          // KeTi Detail Display
-          ValueListenableBuilder<List<DaliurenLesson>>(
-            valueListenable: matchedLessonsNotifier,
-            builder: (ctx, lessons, child) {
-              if (lessons.isEmpty) {
-                return const SizedBox();
-              }
-              return Container(
-                width: panSize.width,
-                child: KetiDetailWidget(lessons: lessons),
-              );
-            },
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          ValueListenableBuilder<Tuple2<JiaZi, DiZhi>?>(
-              valueListenable: classNumberNotifier,
-              builder: (ctx, tuple2, child) {
-                return tuple2 == null
-                    ? const SizedBox()
-                    : Container(
-                            width: panSize.width,
-                            // height: panSize.height,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 24, horizontal: 16),
-                            decoration: BoxDecoration(
+          pan == null
+              ? const SizedBox()
+              : Container(
+                  width: 400,
+                  height: 480,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  decoration: BoxDecoration(
+                      // color: Colors.blue.withOpacity(.1),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(32),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          spreadRadius: 6,
+                        )
+                      ]),
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        FutureBuilder(
+                            future:
+                                loadBy(pan.dayJiaZi, pan.fourClass.first.sky),
+                            builder: (ctx, snap) {
+                              if (snap.hasError) {
+                                logger.e(snap.error.toString());
+                              }
+                              if (snap.hasData) {
+                                return yu_ding(snap.data!);
+                              } else {
+                                return const SizedBox(
+                                    height: 64,
+                                    width: 64,
+                                    child: CircularProgressIndicator());
+                              }
+                            }),
+                        Positioned(
+                          top: -24,
+                          right: 0,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
                                 // color: Colors.blue.withOpacity(.1),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(32),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 6,
-                                    spreadRadius: 6,
-                                  )
-                                ]),
-                            child: SingleChildScrollView(
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  FutureBuilder(
-                                      future:
-                                          loadBy(tuple2.item1, tuple2.item2),
-                                      builder: (ctx, snap) {
-                                        if (snap.hasError) {
-                                          logger.e(snap.error.toString());
-                                        }
-                                        if (snap.hasData) {
-                                          return yu_ding(snap.data!);
-                                        } else {
-                                          return const SizedBox(
-                                              height: 64,
-                                              width: 64,
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-                                      }),
-                                  Positioned(
-                                    top: -24,
-                                    right: 0,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Container(
-                                          // color: Colors.blue.withOpacity(.1),
-                                          height: 128,
-                                          width: 64,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "${ICONS_ASSETS_PATH}/tag_virt.png"))),
-                                          // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
-                                        ),
-                                        const Column(
-                                          children: [Text("元"), Text("首")],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                height: 128,
+                                width: 64,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "${ICONS_ASSETS_PATH}/tag_virt.png"))),
+                                // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
                               ),
-                            ))
-                        .animate()
-                        .moveX(
-                            delay: const Duration(milliseconds: 1000),
-                            curve: Curves.easeInOutQuint,
-                            duration: const Duration(milliseconds: 1000),
-                            begin: -128,
-                            end: 0)
-                        .fadeIn(
-                            delay: const Duration(milliseconds: 800),
-                            curve: Curves.easeInOutQuint,
-                            duration: const Duration(milliseconds: 400),
-                            begin: 0);
-              })
+                              const Column(
+                                children: [Text("元"), Text("首")],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                  .animate()
+                  .moveX(
+                      delay: const Duration(milliseconds: 1000),
+                      curve: Curves.easeInOutQuint,
+                      duration: const Duration(milliseconds: 1000),
+                      begin: -128,
+                      end: 0)
+                  .fadeIn(
+                      delay: const Duration(milliseconds: 800),
+                      curve: Curves.easeInOutQuint,
+                      duration: const Duration(milliseconds: 400),
+                      begin: 0),
+          const SizedBox(height: 16),
+          // Shen Sha Display (portrait)
+          if (shenShaResults != null && shenShaResults.isNotEmpty)
+            ShenShaDisplayWidget(shenShaResults: shenShaResults),
+          const SizedBox(height: 16),
+          // KeTi Detail Display (portrait)
+          if (matchedLessons.isNotEmpty)
+            KetiDetailWidget(
+                lessons: matchedLessons,
+                highlightedSubLessons: lessonSubLessons),
         ],
       );
     } else {
@@ -874,9 +587,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ValueListenableBuilder<bool>(
                 valueListenable: isSmallPanNotifier,
                 builder: (context, isSmall, _) {
+                  const double normalPanSize = 400.0;
+                  const double smallPanSize = 280.0;
                   return SizedBox(
-                    width: NORMAL_PAN_SIZE,
-                    height: NORMAL_PAN_SIZE,
+                    width: normalPanSize,
+                    height: normalPanSize,
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
@@ -885,12 +600,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             duration: const Duration(milliseconds: 600),
                             curve: Curves.easeInOutQuart,
                             tween: Tween<double>(
-                              begin: isSmall ? NORMAL_PAN_SIZE : SMALL_PAN_SIZE,
-                              end: isSmall ? SMALL_PAN_SIZE : NORMAL_PAN_SIZE,
+                              begin: isSmall ? normalPanSize : smallPanSize,
+                              end: isSmall ? smallPanSize : normalPanSize,
                             ),
                             builder: (context, size, child) {
                               final double currentScaleFactor =
-                                  size / NORMAL_PAN_SIZE;
+                                  size / normalPanSize;
                               final Size currentGongSize =
                                   Size(size * 0.25, size * 0.25);
                               return Container(
@@ -909,48 +624,36 @@ class _MyHomePageState extends State<MyHomePage> {
                                       )
                                     ]),
                                 alignment: Alignment.center,
-                                child: ValueListenableBuilder<DaLiuRenKePan?>(
-                                    valueListenable: daLiuRenGongNotifier,
-                                    builder: (ct, pan, child) => pan == null
-                                        ? child!
-                                        : build_panel(pan, currentGongSize,
-                                            currentScaleFactor),
-                                    child: ValueListenableBuilder(
-                                      valueListenable: daLiuRenModelNotifier,
-                                      builder: (ctx, pan, child) => pan == null
-                                          ? child!
-                                          : build_panel_model(pan,
-                                              currentGongSize, currentScaleFactor),
-                                      child: Container(
-                                        width: size,
-                                        height: size,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              32 * currentScaleFactor),
-                                        ),
-                                      ),
-                                    )),
+child: pan == null
+                                     ? Container(
+                                         width: size,
+                                         height: size,
+                                         decoration: BoxDecoration(
+                                           borderRadius: BorderRadius.circular(
+                                               32 * currentScaleFactor),
+                                         ),
+                                       )
+                                     : ValueListenableBuilder<bool>(
+                                         valueListenable: showThreeChuanAsCard,
+                                         builder: (ctx, showThreeAsCard, _) {
+                                           return ValueListenableBuilder<bool>(
+                                             valueListenable:
+                                                 showFourClassAsCard,
+                                             builder:
+                                                 (ctx2, showFourAsCard, __) {
+                                               return build_panel(
+                                                   pan, currentGongSize,
+                                                   currentScaleFactor,
+                                                   hideThreeChuan:
+                                                       showThreeAsCard,
+                                                   hideFourClass:
+                                                       showFourAsCard);
+                                             },
+                                           );
+                                         },
+                                       ),
                               );
                             },
-                          ),
-                        ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: Material(
-                            color: Colors.redAccent,
-                            elevation: 8,
-                            shape: const CircleBorder(),
-                            child: IconButton(
-                              icon: Icon(
-                                isSmall ? Icons.fullscreen : Icons.fullscreen_exit,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                              onPressed: () => isSmallPanNotifier.value =
-                                  !isSmallPanNotifier.value,
-                              tooltip: "切换大小",
-                            ),
                           ),
                         ),
                       ],
@@ -958,116 +661,256 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
               ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: isSmallPanNotifier,
+                    builder: (context, isSmall, _) {
+                      return Material(
+                        color: Colors.redAccent,
+                        elevation: 8,
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          icon: Icon(
+                            isSmall ? Icons.fullscreen : Icons.fullscreen_exit,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                          onPressed: () => isSmallPanNotifier.value =
+                              !isSmallPanNotifier.value,
+                          tooltip: "切换大小",
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
               const SizedBox(
                 width: 32,
               ),
-              ValueListenableBuilder<Tuple2<JiaZi, DiZhi>?>(
-                  valueListenable: classNumberNotifier,
-                  builder: (ctx, tuple2, child) {
-                    return tuple2 == null
-                        ? const SizedBox()
-                        : Container(
-                                width: panSize.width,
-                                height: panSize.height,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 24, horizontal: 16),
-                                decoration: BoxDecoration(
-                                    // color: Colors.blue.withOpacity(.1),
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(32),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 6,
-                                        spreadRadius: 6,
-                                      )
-                                    ]),
-                                child: SingleChildScrollView(
+              pan == null
+                  ? const SizedBox()
+                  : Container(
+                          width: 400, // panSize.width
+                          height: 400, // panSize.height
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 24, horizontal: 16),
+                          decoration: BoxDecoration(
+                              // color: Colors.blue.withOpacity(.1),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(32),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 6,
+                                  spreadRadius: 6,
+                                )
+                              ]),
+                          child: SingleChildScrollView(
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                FutureBuilder(
+                                    future: loadBy(
+                                        pan.dayJiaZi, pan.fourClass.first.sky),
+                                    builder: (ctx, snap) {
+                                      if (snap.hasError) {
+                                        logger.d(snap.error.toString());
+                                      }
+                                      if (snap.hasData) {
+                                        return yu_ding(snap.data!);
+                                      } else {
+                                        return const SizedBox(
+                                            height: 64,
+                                            width: 64,
+                                            child: CircularProgressIndicator());
+                                      }
+                                    }),
+                                Positioned(
+                                  top: -24,
+                                  right: 0,
                                   child: Stack(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.center,
                                     children: [
-                                      FutureBuilder(
-                                          future: loadBy(
-                                              tuple2.item1, tuple2.item2),
-                                          builder: (ctx, snap) {
-                                            if (snap.hasError) {
-                                              logger.d(snap.error.toString());
-                                            }
-                                            if (snap.hasData) {
-                                              return yu_ding(snap.data!);
-                                            } else {
-                                              return const SizedBox(
-                                                  height: 64,
-                                                  width: 64,
-                                                  child:
-                                                      CircularProgressIndicator());
-                                            }
-                                          }),
-                                      Positioned(
-                                        top: -24,
-                                        right: 0,
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Container(
-                                              // color: Colors.blue.withOpacity(.1),
-                                              height: 128,
-                                              width: 64,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          "${ICONS_ASSETS_PATH}/tag_virt.png"))),
-                                              // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
-                                            ),
-                                            const Column(
-                                              children: [Text("元"), Text("首")],
-                                            ),
-                                          ],
-                                        ),
+                                      Container(
+                                        // color: Colors.blue.withOpacity(.1),
+                                        height: 128,
+                                        width: 64,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "${ICONS_ASSETS_PATH}/tag_virt.png"))),
+                                        // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
+                                      ),
+                                      const Column(
+                                        children: [Text("元"), Text("首")],
                                       ),
                                     ],
                                   ),
-                                ))
-                            .animate()
-                            .moveX(
-                                delay: const Duration(milliseconds: 1000),
-                                curve: Curves.easeInOutQuint,
-                                duration: const Duration(milliseconds: 1000),
-                                begin: -128,
-                                end: 0)
-                            .fadeIn(
-                                delay: const Duration(milliseconds: 800),
-                                curve: Curves.easeInOutQuint,
-                                duration: const Duration(milliseconds: 400),
-                                begin: 0);
-                  })
+                                ),
+                              ],
+                            ),
+                          ))
+                      .animate()
+                      .moveX(
+                          delay: const Duration(milliseconds: 1000),
+                          curve: Curves.easeInOutQuint,
+                          duration: const Duration(milliseconds: 1000),
+                          begin: -128,
+                          end: 0)
+                      .fadeIn(
+                          delay: const Duration(milliseconds: 800),
+                          curve: Curves.easeInOutQuint,
+                          duration: const Duration(milliseconds: 400),
+                          begin: 0)
             ],
           ),
           const SizedBox(height: 16),
+          if (pan != null) _buildToggleAndCards(pan),
+          const SizedBox(height: 16),
           // Shen Sha Display (landscape)
-          ValueListenableBuilder<Map<DiZhi, List<ShenShaResult>>?>(
-            valueListenable: shenShaNotifier,
-            builder: (ctx, shenShaResults, child) {
-              if (shenShaResults == null || shenShaResults.isEmpty) {
-                return const SizedBox();
-              }
-              return ShenShaDisplayWidget(shenShaResults: shenShaResults);
-            },
-          ),
+          if (shenShaResults != null && shenShaResults.isNotEmpty)
+            ShenShaDisplayWidget(shenShaResults: shenShaResults),
           const SizedBox(height: 16),
           // KeTi Detail Display (landscape)
-          ValueListenableBuilder<List<DaliurenLesson>>(
-            valueListenable: matchedLessonsNotifier,
-            builder: (ctx, lessons, child) {
-              if (lessons.isEmpty) {
-                return const SizedBox();
-              }
-              return KetiDetailWidget(lessons: lessons);
-            },
-          ),
+          if (matchedLessons.isNotEmpty)
+            KetiDetailWidget(
+                lessons: matchedLessons,
+                highlightedSubLessons: lessonSubLessons),
         ],
       );
     }
+  }
+
+  Widget _buildToggleAndCards(DaLiuRenKePan pan) {
+    final viewModel = context.read<DaLiuRenViewModel>();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ValueListenableBuilder<bool>(
+              valueListenable: showThreeChuanAsCard,
+              builder: (context, showAsCard, _) {
+                return _buildToggleChip(
+                  label: "三传Card",
+                  selected: showAsCard,
+                  onTap: () =>
+                      showThreeChuanAsCard.value = !showThreeChuanAsCard.value,
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+            ValueListenableBuilder<bool>(
+              valueListenable: showFourClassAsCard,
+              builder: (context, showAsCard, _) {
+                return _buildToggleChip(
+                  label: "四课Card",
+                  selected: showAsCard,
+                  onTap: () =>
+                      showFourClassAsCard.value = !showFourClassAsCard.value,
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+            ValueListenableBuilder<bool>(
+              valueListenable: showKePanInfoCard,
+              builder: (context, showCard, _) {
+                return _buildToggleChip(
+                  label: "课盘信息Card",
+                  selected: showCard,
+                  onTap: () =>
+                      showKePanInfoCard.value = !showKePanInfoCard.value,
+                );
+              },
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        ValueListenableBuilder<bool>(
+          valueListenable: showKePanInfoCard,
+          builder: (context, showCard, _) {
+            if (!showCard) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: KePanInfoCard(
+                kePan: pan,
+                juNumber: viewModel.juNumber,
+                keTiNames: viewModel.matchedKeTiNames,
+              ),
+            );
+          },
+        ),
+        ValueListenableBuilder<bool>(
+          valueListenable: showThreeChuanAsCard,
+          builder: (context, showThreeCard, _) {
+            if (!showThreeCard) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: ThreeChuanCard(
+                threeChuan: pan.getThreeChuan(),
+                gongSize: Size(NORMAL_PAN_SIZE * .25, NORMAL_PAN_SIZE * .25),
+                scaleFactor: 1.0,
+              ),
+            );
+          },
+        ),
+        ValueListenableBuilder<bool>(
+          valueListenable: showFourClassAsCard,
+          builder: (context, showFourCard, _) {
+            if (!showFourCard) return const SizedBox.shrink();
+            return FourClassCard(
+              fourClass: pan.getFourClass(),
+              gongSize: Size(NORMAL_PAN_SIZE * .25, NORMAL_PAN_SIZE * .25),
+              scaleFactor: 1.0,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildToggleChip({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected ? Colors.blue.shade50 : Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: selected ? Colors.blue : Colors.grey.shade300,
+            width: 1.5,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              selected ? Icons.card_giftcard : Icons.credit_card_off_outlined,
+              size: 16,
+              color: selected ? Colors.blue : Colors.grey,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: selected ? Colors.blue : Colors.grey,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget manuallyJu() {
@@ -1298,6 +1141,46 @@ class _MyHomePageState extends State<MyHomePage> {
             width: 12,
           ),
           ShakeMe(
+            key: renMonthGeneralShakeKey,
+            shakeCount: 3,
+            shakeOffset: 10,
+            shakeDuration: const Duration(milliseconds: 500),
+            child: SizedBox(
+              width: 128,
+              height: 48,
+              child: CustomDropdown<String>.search(
+                decoration: CustomDropdownDecoration(
+                    closedShadow: [
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 2)
+                    ],
+                    expandedShadow: [
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 2)
+                    ],
+                    searchFieldDecoration:
+                        const SearchFieldDecoration(prefixIcon: null)),
+                hintText: "月将",
+                items: MonthGeneral.values.map((e) => e.name).toList(),
+                onChanged: (val) {
+                  if (val != null) {
+                    monthGeneral =
+                        MonthGeneral.values.firstWhere((e) => e.name == val);
+                  } else {
+                    monthGeneral = null;
+                  }
+                },
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+          ShakeMe(
             // 4. pass the GlobalKey as an argument
             key: renJuNumberShakeKey,
             // 5. configure the animation parameters
@@ -1498,7 +1381,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static String _pad(int v) => v.toString().padLeft(2, '0');
 
-  Widget yu_ding(YuDingDaLiuRen yuDing) {
+  Widget yu_ding(YuDingDaLiuRenDataModel yuDing) {
     return Column(
       children: [
         Container(
@@ -1574,13 +1457,14 @@ class _MyHomePageState extends State<MyHomePage> {
   //   return "$res局";
   // }
 
-  Future<YuDingDaLiuRen> loadBy(JiaZi dayJiaZi, DiZhi dayUpperDiZhi) async {
+  Future<YuDingDaLiuRenDataModel> loadBy(
+      JiaZi dayJiaZi, DiZhi dayUpperDiZhi) async {
     try {
       String jsonString =
           await rootBundle.loadString('assets/da_liu_ren/御定大六壬.json');
       Iterable res = json.decode(jsonString);
-      List<YuDingDaLiuRen> all = List<YuDingDaLiuRen>.from(
-          res.map((model) => YuDingDaLiuRen.fromJson(model)));
+      List<YuDingDaLiuRenDataModel> all = List<YuDingDaLiuRenDataModel>.from(
+          res.map((model) => YuDingDaLiuRenDataModel.fromJson(model)));
       var result = all.firstWhere(
           (y) => y.dayJiaZi == dayJiaZi && y.juName == dayUpperDiZhi);
       return result;
@@ -1607,14 +1491,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: gongSize.height,
                 width: gongSize.width,
                 // color: Colors.orange.withOpacity(.2),
-                child: build_four_ke(panModel.getFourClass(), scaleFactor),
+                child: build_four_ke(
+                    panModel.getFourClass(), gongSize, scaleFactor),
               ),
               Container(
                 height: gongSize.height,
                 width: gongSize.width,
                 alignment: Alignment.center,
                 // color: Colors.orange.withOpacity(.4),
-                child: build_san_chuan(panModel.getThreeChuan(), scaleFactor),
+                child: build_san_chuan(
+                    panModel.getThreeChuan(), gongSize, scaleFactor),
               )
             ],
           ),
@@ -1624,18 +1510,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget build_panel(
-      DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor) {
+      DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor,
+      {bool hideThreeChuan = false, bool hideFourClass = false}) {
     return Stack(
       alignment: Alignment.center,
       children: [
         panel_gong(daLiuPan, gongSize, scaleFactor),
-        panel_center(daLiuPan, gongSize, scaleFactor),
+        panel_center(daLiuPan, gongSize, scaleFactor,
+            hideThreeChuan: hideThreeChuan, hideFourClass: hideFourClass),
       ],
     );
   }
 
   Widget panel_center(
-      DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor) {
+      DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor,
+      {bool hideThreeChuan = false, bool hideFourClass = false}) {
     double width = gongSize.width * 2;
     double height = gongSize.height * 2;
     return SizedBox(
@@ -1838,8 +1727,14 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              build_san_chuan(daLiuPan.getThreeChuan(), scaleFactor),
-              build_four_ke(daLiuPan.getFourClass(), scaleFactor),
+              if (!hideThreeChuan)
+                build_san_chuan(daLiuPan.getThreeChuan(), gongSize, scaleFactor)
+              else
+                SizedBox(height: gongSize.height * 2 * 0.25),
+              if (!hideFourClass)
+                build_four_ke(daLiuPan.getFourClass(), gongSize, scaleFactor)
+              else
+                SizedBox(height: gongSize.height * 2 * 0.25),
             ],
           )
         ],
@@ -2061,46 +1956,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildClassType(DaLiuRenKePan daLiuPan) {
-    // 通过 KetiDataService 匹配课体
-    final ketiService = context.read<KetiDataService>();
-    final nineZongMen = daLiuPan.threeChuan.nineZongMen;
-    final ketiResult = ketiService.isLoaded
-        ? ketiService.findByNineZongMen(nineZongMen)
-        : null;
+    final keTiNames = context.read<DaLiuRenViewModel>().matchedKeTiNames;
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            daLiuPan.threeChuan.nineZongMen.name,
-            style: eightSeasonTextStyle.copyWith(
-                fontSize: 24,
+          const Text(
+            '课格',
+            style: TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Colors.blueGrey.shade800),
+                color: Colors.blueGrey),
           ),
-          if (ketiResult != null) ...[
-            Text(
-              ketiResult.lesson.name,
-              style: eightSeasonTextStyle.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.blueGrey.shade600),
-            ),
-            if (ketiResult.lesson.keTiShi != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text(
-                  ketiResult.lesson.keTiShi!,
+          const SizedBox(height: 4),
+          if (keTiNames.isNotEmpty)
+            ...keTiNames.map((name) => Text(
+                  name,
                   style: eightSeasonTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
-                      fontStyle: FontStyle.italic,
                       color: Colors.blueGrey.shade500),
                   textAlign: TextAlign.center,
-                ),
-              ),
-          ],
+                )),
         ]);
   }
 
@@ -2126,9 +2004,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget build_four_ke(FourClass fourClass, double scaleFactor) {
+  Widget build_four_ke(FourClass fourClass, Size gongSize, double scaleFactor) {
     double diZhiFontSize = gongSize.width * .24;
-    double otherFontSize = gongSize.width * .24;
+    // double otherFontSize = gongSize.width * .24; // Removed duplicate variable
     TextStyle tianGanStyle = ConstUIResourcesMapper.tianGanTextStyle
         .copyWith(fontSize: diZhiFontSize, shadows: [
       Shadow(
@@ -2151,7 +2029,7 @@ class _MyHomePageState extends State<MyHomePage> {
           offset: const Offset(0, 0))
     ]);
     SizedBox intervalSize = SizedBox(width: 6 * scaleFactor);
-    double height = gongSize.height;
+    // double height = gongSize.height; // Removed unused variable
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2254,7 +2132,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget build_san_chuan(ThreeChuan chuan, double scaleFactor) {
+  Widget build_san_chuan(ThreeChuan chuan, Size gongSize, double scaleFactor) {
     double diZhiFontSize = gongSize.width * .24;
     TextStyle otherStyle =
         guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .16, shadows: [
@@ -2297,7 +2175,6 @@ class _MyHomePageState extends State<MyHomePage> {
             // Text("兄弟",style: otherStyle),
             Text(chuan.first.liuQin.name, style: otherStyle),
             offset,
-            // Text(chuan.first.tianGan?.value ?? "○", style: otherStyle,),
             chuan.first.tianGan == null
                 ? buildKongWangCircle(otherStyle.color, 16 * scaleFactor)
                 : Text(chuan.first.tianGan!.value,
@@ -2535,13 +2412,13 @@ class _MyHomePageState extends State<MyHomePage> {
       alignment: Alignment.center,
       children: [
         backgroundContent(diZhi, gongSize, scaleFactor),
-        buildTianGanJiZhi(diZhi, scaleFactor),
+        buildTianGanJiZhi(diZhi, gongSize, scaleFactor),
         eachGong(gong, gongSize, scaleFactor)
       ],
     );
   }
 
-  Widget buildTianGanJiZhi(DiZhi diZhi, double scaleFactor,
+  Widget buildTianGanJiZhi(DiZhi diZhi, Size gongSize, double scaleFactor,
       {bool isSecond = false}) {
     double defaultOpacity = .3;
     BoxDecoration boxDecoration = BoxDecoration(
@@ -2876,7 +2753,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   daLiuRenGong.guiRen == GuiRen.GUI_REN
                       ? SizedBox(
-                          width: gongSize.height * .34 + (scaleFactor < 1.0 ? 4 : 0),
+                          width: gongSize.height * .34 +
+                              (scaleFactor < 1.0 ? 4 : 0),
                           child: ColorFiltered(
                               colorFilter: const ColorFilter.mode(
                                   Color.fromRGBO(176, 31, 36, .7),
@@ -2907,8 +2785,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: ConstUIResourcesMapper.twelveDiZhiTextStyle.copyWith(
                       color: ConstResourcesMapper
                           .zodiacZhiColors[daLiuRenGong.skyPanDiZhi]!,
-                      fontSize: (gongSize.width * .4) -
-                          (scaleFactor < 1.0 ? 2 : 0)),
+                      fontSize:
+                          (gongSize.width * .4) - (scaleFactor < 1.0 ? 2 : 0)),
                 ),
               ),
               Container(
@@ -2991,7 +2869,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // 显示神将节气
-  Timer? _showMonthGeneralJieQiTimer;
   bool isLongSticky = false;
 
   void showMonthlyGeneralJieQi({bool autoHidden = true}) {

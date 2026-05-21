@@ -1,3 +1,5 @@
+import 'package:common/enums.dart';
+
 abstract class UseCase<Type, Params> {
   Future<Type> call(Params params);
 }
@@ -18,4 +20,24 @@ class DateTimeParams {
   final String? question;
 
   const DateTimeParams(this.dateTime, {this.question});
+}
+
+class ManualJuParams {
+  final JiaZi dayJiaZi;
+  final YinYang yinYangDun;
+  final MonthGeneral monthGeneral;
+  final DiZhi? timeZhi;
+  final int? juNumber;
+  final JiaZi? yearJiaZi;
+  final JiaZi? monthJiaZi;
+
+  const ManualJuParams(
+    this.dayJiaZi,
+    this.yinYangDun,
+    this.monthGeneral, {
+    this.timeZhi,
+    this.juNumber,
+    this.yearJiaZi,
+    this.monthJiaZi,
+  });
 }

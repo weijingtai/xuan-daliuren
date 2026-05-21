@@ -169,12 +169,16 @@ class KetiDataService {
   /// 从多个名称列表（如御定 body 字段）批量匹配课体
   List<KetiMatchResult> findByNames(List<String> names) {
     final results = <KetiMatchResult>[];
-    final seen = <String>{};
+    final seenLessons = <String>{};
     for (final name in names) {
       final result = findByPatternName(name);
-      if (result != null && !seen.contains(result.lesson.name)) {
-        seen.add(result.lesson.name);
-        results.add(result);
+      if (result != null) {
+        if (!seenLessons.contains(result.lesson.name)) {
+          seenLessons.add(result.lesson.name);
+          results.add(result);
+        } else if (result.matchedSubLesson != null) {
+          results.add(result);
+        }
       }
     }
     return results;

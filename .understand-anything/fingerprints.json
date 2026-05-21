@@ -1,0 +1,1127 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "e430ea4e5a6b48f893bfe5bc8b4a323ffe32cebf",
+  "generatedAt": "2026-05-12T20:35:19.151Z",
+  "files": {
+    "2026-03-23-182823-daliuren-xuan-daliuren.txt": {
+      "filePath": "2026-03-23-182823-daliuren-xuan-daliuren.txt",
+      "contentHash": "e36aa7d15a1cd92f8507f7a7a5b97c3b766d0b67b6e1ab2e865f312c37f1278f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 793,
+      "hasStructuralAnalysis": false
+    },
+    "analysis_options.yaml": {
+      "filePath": "analysis_options.yaml",
+      "contentHash": "df692318073ecc5f3b8a759a1f9338eb21995900d3c2bc1fbcd2c7780a1c7c6e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "analysis.txt": {
+      "filePath": "analysis.txt",
+      "contentHash": "568f4ed8f8f318db4fb767572774a4695d0310fc236cf5de44c12f908eb99e1d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 176,
+      "hasStructuralAnalysis": false
+    },
+    "ARCHITECTURE.md": {
+      "filePath": "ARCHITECTURE.md",
+      "contentHash": "47ef0fa32052e1900afbd38d129b30924c7fe71c119c5bb4277f467e95719613",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 187,
+      "hasStructuralAnalysis": true
+    },
+    "build.yaml": {
+      "filePath": "build.yaml",
+      "contentHash": "53f5b2402e269fd599f0b035c9e00536a39b6a5bdc6e6ef424c334c029f64363",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "f5f4d100b957be658281753e475bf502e95ebca8efe438e27dff950b9c9dfd1f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 118,
+      "hasStructuralAnalysis": true
+    },
+    "docs/claude/CODE_REVIEW.md": {
+      "filePath": "docs/claude/CODE_REVIEW.md",
+      "contentHash": "5bcb66bc421c8ea7f2f0173fffb8fe9dfe830cbe1cc4b8e7ef634adb2991f645",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 902,
+      "hasStructuralAnalysis": true
+    },
+    "docs/claude/MVVM_REFACTOR_COMPLETION_REPORT.md": {
+      "filePath": "docs/claude/MVVM_REFACTOR_COMPLETION_REPORT.md",
+      "contentHash": "558a28e6c5521a38b7b81b3142bd8ebb600247772b102b4cc6620cc7033129cc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 298,
+      "hasStructuralAnalysis": true
+    },
+    "docs/claude/MVVM_REFACTOR_REPORT.md": {
+      "filePath": "docs/claude/MVVM_REFACTOR_REPORT.md",
+      "contentHash": "d1d315ab732adfcd4ea292a6e16cf9d73994f9c4996f791061ad78528ad994d6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 139,
+      "hasStructuralAnalysis": true
+    },
+    "docs/claude/REFACTOR_PLAN.md": {
+      "filePath": "docs/claude/REFACTOR_PLAN.md",
+      "contentHash": "2e0e484b81f2f52c3dbd3600ba3b5ee711bb7e7fc438f9e5c5fb7c4d35f3496f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1145,
+      "hasStructuralAnalysis": true
+    },
+    "docs/PRD.md": {
+      "filePath": "docs/PRD.md",
+      "contentHash": "11a3e376e1a0da31e29d21caf26d647d69d78142c74b61ef0f35e315a7a3f6de",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 600,
+      "hasStructuralAnalysis": true
+    },
+    "FILE_LOCATIONS.txt": {
+      "filePath": "FILE_LOCATIONS.txt",
+      "contentHash": "a72e8fba47c64de80a6c0b7539edb1a6ecf3f9dd2a0ad656100f14939fcd216a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    "lib/core/constants/da_liu_ren_common_constants.dart": {
+      "filePath": "lib/core/constants/da_liu_ren_common_constants.dart",
+      "contentHash": "853d208b9c53959d5e016faace9de88005fca72dbe7b66f16eb61fb95788bf07",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 113,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/converters/four_class_converter.dart": {
+      "filePath": "lib/data/datasources/local/database/converters/four_class_converter.dart",
+      "contentHash": "587334a553dd4187c39523e31ba5783d2da3235db59cace3b4cb145f9799bfe6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/converters/map_string_string_converter.dart": {
+      "filePath": "lib/data/datasources/local/database/converters/map_string_string_converter.dart",
+      "contentHash": "bae6578136bee9202d309340037667f057486a661e7d878dc218efb7ea2d0c2e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/converters/set_string_converter.dart": {
+      "filePath": "lib/data/datasources/local/database/converters/set_string_converter.dart",
+      "contentHash": "fd0d2fae212b797d118c668ddb1c53d2bcbe2448fe74ad42eaf99546ceab34d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/converters/three_chuan_converter.dart": {
+      "filePath": "lib/data/datasources/local/database/converters/three_chuan_converter.dart",
+      "contentHash": "f51bb9b94a06ef3af7dae18cab3c2b5d4d034d799923c40ee9d1ebcfceabfa5e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/dao/liuren_dao.dart": {
+      "filePath": "lib/data/datasources/local/database/dao/liuren_dao.dart",
+      "contentHash": "069e9993ab40352ff552074e409d968e8e58da49ed59a83bd01655bcb24c8783",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 167,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/drift_database.dart": {
+      "filePath": "lib/data/datasources/local/database/drift_database.dart",
+      "contentHash": "4f9ab3af6a12bfba970a6d986f0de14c0cb324149ed5a1c6685c4109b4268a4d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 149,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/local_data_source.dart": {
+      "filePath": "lib/data/datasources/local/database/local_data_source.dart",
+      "contentHash": "10533d42e8dc366d984e80760efb2185714a72fe11a5677b8e0a66877dce4bee",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 174,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/tables/db_initialization_flags.dart": {
+      "filePath": "lib/data/datasources/local/database/tables/db_initialization_flags.dart",
+      "contentHash": "0c2ac1067c6082424d41a54783c14badbd749d90beb62f0037adaf0af190978e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/tables/ju_mappings.dart": {
+      "filePath": "lib/data/datasources/local/database/tables/ju_mappings.dart",
+      "contentHash": "c1e69a31e0a7cc947482e45ef15f9a5ef5ff62e909141629975614e89a7decef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/tables/preset_pans.dart": {
+      "filePath": "lib/data/datasources/local/database/tables/preset_pans.dart",
+      "contentHash": "f32b1108164e0e59d1878c326adcdcc01d31f49ff85f9c080997f12d9096dc42",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/local/database/tables/yu_ding_entries.dart": {
+      "filePath": "lib/data/datasources/local/database/tables/yu_ding_entries.dart",
+      "contentHash": "6d17138973197ba0f4964d3d47a797af09a0c45d00cf17e4b03ac1a4938848f5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/datasources/remote/remote_data_source.dart": {
+      "filePath": "lib/data/datasources/remote/remote_data_source.dart",
+      "contentHash": "c9b706c98c2cbf601588f954f0b5dfe5305a330365ab5965b2b79de2034e73a7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/da_liu_ren_gong_data_model.dart": {
+      "filePath": "lib/data/models/da_liu_ren_gong_data_model.dart",
+      "contentHash": "6435a28d7d1f483d0812831bac5763c6cecc2af63c275ebd4ce845ddd5cd70b9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/da_liu_ren_pan_data_model.dart": {
+      "filePath": "lib/data/models/da_liu_ren_pan_data_model.dart",
+      "contentHash": "b67971950ecc44083ddd6bd2703ea750e1cbc26e8debb94e3768ceabeef826fd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 67,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/each_chuan_data_model.dart": {
+      "filePath": "lib/data/models/each_chuan_data_model.dart",
+      "contentHash": "84a2359640b51cb57616780194f53ac8a9b745a3f73cc3cc27be974309d5bd3b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/each_class_data_model.dart": {
+      "filePath": "lib/data/models/each_class_data_model.dart",
+      "contentHash": "b92d5a64a376de150d32277bb6bb5155bcbf29a6c67fcf38c285bfb50bfc1410",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/four_class_data_model.dart": {
+      "filePath": "lib/data/models/four_class_data_model.dart",
+      "contentHash": "601d842d2511d30c7fece9a582a781b0097e59836802ab9c6255ba4f5534372b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/ju_mapping_data_model.dart": {
+      "filePath": "lib/data/models/ju_mapping_data_model.dart",
+      "contentHash": "1d534689a30e5e9396eb607f260a0013f569f5f90b89ce14dbdf778c8c9503b9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/placeholder_data_model.dart": {
+      "filePath": "lib/data/models/placeholder_data_model.dart",
+      "contentHash": "4fbdca2e6780e3e32e888924b4ebe58214d32a896eef913fecf00c9469f57d2d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/three_chuan_data_model.dart": {
+      "filePath": "lib/data/models/three_chuan_data_model.dart",
+      "contentHash": "0e48ebcb57302cd99c47008c53a28d9ab5eb17dd43cb6af1f23fc43d56c574af",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/models/yu_ding_da_liu_ren_data_model.dart": {
+      "filePath": "lib/data/models/yu_ding_da_liu_ren_data_model.dart",
+      "contentHash": "a8fec934df7abd3ae73d4c8331c787ee0de1a41a26d974d498b7739a21cc9d47",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/repositories/da_liu_ren_repository_impl.dart": {
+      "filePath": "lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "contentHash": "fd498449ed1f13fc36cabeb27fbc3f8104624559f795cc655d03b598a22c6f13",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 248,
+      "hasStructuralAnalysis": false
+    },
+    "lib/data/services/shen_sha_data_service_impl.dart": {
+      "filePath": "lib/data/services/shen_sha_data_service_impl.dart",
+      "contentHash": "065e48ede1207813d8761ff25c943c73fc87bc87bc157479eddc4a7509943c73",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 226,
+      "hasStructuralAnalysis": false
+    },
+    "lib/di/dependency_injection.dart": {
+      "filePath": "lib/di/dependency_injection.dart",
+      "contentHash": "29ccc7a59866185fb50397c30ed5cc87ab2487304c1b1264746630b5baeaa98d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/entities/daliuren_lesson.dart": {
+      "filePath": "lib/domain/entities/daliuren_lesson.dart",
+      "contentHash": "c197b6b933717b26664bea4dc002345a0565755c0cf366c54f14d2345e61613f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 124,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/entities/liu_ren_pan_model.dart": {
+      "filePath": "lib/domain/entities/liu_ren_pan_model.dart",
+      "contentHash": "aed1c1da86bec1102d9226d25d9a855ab1a7ef1d77943dfd98906bf6f53c179f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/entities/pan_input.dart": {
+      "filePath": "lib/domain/entities/pan_input.dart",
+      "contentHash": "93ab89f41573e20b03df4a4233312e09bd9e93acb099d88e8371fe386ea66302",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/entities/raw_pan_info_model.dart": {
+      "filePath": "lib/domain/entities/raw_pan_info_model.dart",
+      "contentHash": "e966b31f325e96e8b8ad7d7e5b19d9ac7885519379da72d9bf621e0d7962cbce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 100,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/entities/shen_sha_entity.dart": {
+      "filePath": "lib/domain/entities/shen_sha_entity.dart",
+      "contentHash": "a95453620abd1bfbfd8b9a6230621562ccbcbf35ea2364a84c7ea59b830c8f9b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 310,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/entities/yuding_entry.dart": {
+      "filePath": "lib/domain/entities/yuding_entry.dart",
+      "contentHash": "4fc704b1c0bba9164debede093ec9cb1256ac1a5599fb2ce7367027c799e9980",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/enums/gui_ren_type.dart": {
+      "filePath": "lib/domain/enums/gui_ren_type.dart",
+      "contentHash": "09bf42db8cb522e02d92ce2f8defadff5cf1d942549621b8114d967171404e81",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/enums/pan_type.dart": {
+      "filePath": "lib/domain/enums/pan_type.dart",
+      "contentHash": "5e98ca29fb3e41c43f95750ebc5bef626b30c01993a12b229c46a21803a40b03",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/enums/she_hai_type.dart": {
+      "filePath": "lib/domain/enums/she_hai_type.dart",
+      "contentHash": "45518fc80c4eed238d0c3dd2c040349785368733e74f88a022266a2c799fe99a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/enums/three_chuan_staff.dart": {
+      "filePath": "lib/domain/enums/three_chuan_staff.dart",
+      "contentHash": "7cfe5ce1a0bd55864a3901eac67d274b3f4974d54edd33e825b377ee44f70fa2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/enums/yao_ke_type.dart": {
+      "filePath": "lib/domain/enums/yao_ke_type.dart",
+      "contentHash": "718956ab90f0327174ed2a479c4529b050289fedb3fab14a1f1c4915703a63fb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/enums/zei_ke_pattern_type.dart": {
+      "filePath": "lib/domain/enums/zei_ke_pattern_type.dart",
+      "contentHash": "a7f54ab3178bbc27f680e165b4766f12fb809b5724edf3c27dec5906c6c24266",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/repositories/da_liu_ren_repository.dart": {
+      "filePath": "lib/domain/repositories/da_liu_ren_repository.dart",
+      "contentHash": "8d2512dde4fef739ddb44fc9a70b2c61863e0f9f046af552929572daaa994701",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculate_day_night_gui_ren.dart": {
+      "filePath": "lib/domain/services/calculate_day_night_gui_ren.dart",
+      "contentHash": "b9b72967576be26d9c4e95a7744f8bc19d6523d0db14be5f2efd825709f07ab5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculate_gui_ren_position_service.dart": {
+      "filePath": "lib/domain/services/calculate_gui_ren_position_service.dart",
+      "contentHash": "d1ec4696756e1375c16480f1ad4ffcd91dca832ace1cc66d1095f62d2cc6ec16",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 107,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculate_month_general_service.dart": {
+      "filePath": "lib/domain/services/calculate_month_general_service.dart",
+      "contentHash": "474b083be795c732eaaa6e5abe11cbfe9a615b2708ec7728c7b4343e44604601",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 206,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculate_raw_pan_service.dart": {
+      "filePath": "lib/domain/services/calculate_raw_pan_service.dart",
+      "contentHash": "f25a972f63cf4fa1f676d889eafdf0b2f9e07214f2c677c000cd68ebea37c58c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 329,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculate_upon_gan_service.dart": {
+      "filePath": "lib/domain/services/calculate_upon_gan_service.dart",
+      "contentHash": "90a5530dafda6c5859e10f13fe960d7f42059606620fd73b54b70a2e265216f8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/base_calculator.dart": {
+      "filePath": "lib/domain/services/calculators/base_calculator.dart",
+      "contentHash": "a8610e1507c11fc156c4c8d2f00e7dbe8007f04c097dc69449fd2f2b527c8c7b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/four_class_calculator.dart": {
+      "filePath": "lib/domain/services/calculators/four_class_calculator.dart",
+      "contentHash": "c730f832c553ba962ff6738d2ec8449f2df7a89d1db46b003ebe2ed238af02a7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/gui_ren_calculator.dart": {
+      "filePath": "lib/domain/services/calculators/gui_ren_calculator.dart",
+      "contentHash": "7e608f1e325ef1d790820ec4319e2bbb78d3f7e1863f841f75d0e060607ec2ce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 169,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/lunar_calculator.dart": {
+      "filePath": "lib/domain/services/calculators/lunar_calculator.dart",
+      "contentHash": "41eb32e542acd6c89da4a8668cbedec779ffe9047e8cef823ac8a991e220e10f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/three_chuan_calculator.dart": {
+      "filePath": "lib/domain/services/calculators/three_chuan_calculator.dart",
+      "contentHash": "9f03d6aa930d67cbc996ef2ef953f15f8d1e7cf21650dd941581dd758356ca61",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/three_chuan_strategies/three_chuan_strategy.dart": {
+      "filePath": "lib/domain/services/calculators/three_chuan_strategies/three_chuan_strategy.dart",
+      "contentHash": "70621aeee0ae9582c53bd90c0c51676364c24ebf926a4e3309ed0b6cead622d9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/calculators/tian_di_pan_calculator.dart": {
+      "filePath": "lib/domain/services/calculators/tian_di_pan_calculator.dart",
+      "contentHash": "06dcefab8b37c16a4cb640cf32af51eacd93cb8b0ed0b896d60c6538ba47a367",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 129,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/da_liu_ren_calculation_service.dart": {
+      "filePath": "lib/domain/services/da_liu_ren_calculation_service.dart",
+      "contentHash": "e27f9f09d0299b5287107de64b116326f0ec85fbf82902da5017998e9b6a9610",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 118,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/keti_data_service.dart": {
+      "filePath": "lib/domain/services/keti_data_service.dart",
+      "contentHash": "18bd3dd7a48e4b1af840419f5f7b9c031fb2d88300498eba35eab075c96cd2e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 253,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/nine_zong_men_calculator_v1_2.dart": {
+      "filePath": "lib/domain/services/nine_zong_men_calculator_v1_2.dart",
+      "contentHash": "72b29bc200400f1286ce0a088f553e56a840122e0c98d5e0c9e98ec0fe09ed7b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1592,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/shen_sha_calculation_service_impl.dart": {
+      "filePath": "lib/domain/services/shen_sha_calculation_service_impl.dart",
+      "contentHash": "6d444d0b43b28b27b367c960c08c8c341e22ea0f300c71d59884f162fa8e9f88",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 429,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/shen_sha_calculation_service.dart": {
+      "filePath": "lib/domain/services/shen_sha_calculation_service.dart",
+      "contentHash": "adcbab70b87b35e9d5feb57762590795378329f8174813b9c86c63fe7eb0843c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 100,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/three_chuan_calculator_v1.dart": {
+      "filePath": "lib/domain/services/three_chuan_calculator_v1.dart",
+      "contentHash": "284978b7e87afb920d251fa1b0edacf282c15ea544fdc1b46d436856818ba868",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1456,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/services/yuding_keti_match_service.dart": {
+      "filePath": "lib/domain/services/yuding_keti_match_service.dart",
+      "contentHash": "92e1c2fe5f36833e1af83f9086f595c3f0bff1ed7fc89996333937320b99551e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 70,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/usecases/base_usecase.dart": {
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "contentHash": "b7dc249ee248de6061d5a845b08b2322cc50a95cd20ea768763f6786c4f8d0c8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/usecases/calculate_divination_usecase.dart": {
+      "filePath": "lib/domain/usecases/calculate_divination_usecase.dart",
+      "contentHash": "80e7f483f754b402a4be3484e0e548b1abe648ce89919be34a0d397ddea674e0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/usecases/calculate_shen_sha_usecase.dart": {
+      "filePath": "lib/domain/usecases/calculate_shen_sha_usecase.dart",
+      "contentHash": "b640582eea376f2c7c6a06238282af956b66e6e2490e4bb15c44eca785835d3d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 99,
+      "hasStructuralAnalysis": false
+    },
+    "lib/domain/usecases/load_divination_data_usecase.dart": {
+      "filePath": "lib/domain/usecases/load_divination_data_usecase.dart",
+      "contentHash": "dca1074e94fe69fc9437b26537ae8d245ebc746bb3ce11512e583a812414ec36",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/da_liu_ren_gong.dart": {
+      "filePath": "lib/model/da_liu_ren_gong.dart",
+      "contentHash": "3a2bdc0326756064d6041497839e1b69f8dfdd0ded929b3777014a8d0da12b86",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/da_liu_ren_ke_pan.dart": {
+      "filePath": "lib/model/da_liu_ren_ke_pan.dart",
+      "contentHash": "5e78f74498ee469b8b7e06bb3a5b2dc61924160b5ca70a457a3f4ed20bef0902",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1827,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/da_liu_ren_pan_model.dart": {
+      "filePath": "lib/model/da_liu_ren_pan_model.dart",
+      "contentHash": "a76170b3ffef06027b92612e3563e2abec32b5a3f36d2df59dbbfada204d4ad0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/da_liu_ren_panel.dart": {
+      "filePath": "lib/model/da_liu_ren_panel.dart",
+      "contentHash": "0fb9f12668b8b89089a38af9f1706e28d60dfd41af11c395f69648be76de6648",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/each_chuan.dart": {
+      "filePath": "lib/model/each_chuan.dart",
+      "contentHash": "ddf7e4b7c4a442db1c2f78d150c8fd041a10ec9f9b80ddfedf76a21c60e91f84",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/each_class.dart": {
+      "filePath": "lib/model/each_class.dart",
+      "contentHash": "e6c628cd197eb4a1adb2fded046dc20ce4ab9060cf3640846889376fe967bbc5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/enum_gui_ren.dart": {
+      "filePath": "lib/model/enum_gui_ren.dart",
+      "contentHash": "346361575a529e3a928d2f5f7f78a999974771b0f6117d6f6fea7c58e59ede3f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/enum_nine_zong_men.dart": {
+      "filePath": "lib/model/enum_nine_zong_men.dart",
+      "contentHash": "75d9466c9483279fce8c82408bbf6eb628244e07e9592f0537040c209d94252d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/first_class.dart": {
+      "filePath": "lib/model/first_class.dart",
+      "contentHash": "19093b1c490d444cc3d87635db61489909a9e6f17166ba0c3c94f94a178a483a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/four_class.dart": {
+      "filePath": "lib/model/four_class.dart",
+      "contentHash": "ccc7e2c22e9d8e40c71c26d40949b8d853d1a1ad0ce72011e41ccc94454ad00b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 304,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/pan_config.dart": {
+      "filePath": "lib/model/pan_config.dart",
+      "contentHash": "7c4ea6d5930aefc12ffeaf421ab5e85abe61447120d9a5e8c485c6f1f0ae99b1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/raw_pan_datamodel.dart": {
+      "filePath": "lib/model/raw_pan_datamodel.dart",
+      "contentHash": "e4517aef47cce2280f9583283d9de7e3c317b838813d37e46d098027e98d3845",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 157,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/three_chuan_bi_yong.dart": {
+      "filePath": "lib/model/three_chuan_bi_yong.dart",
+      "contentHash": "3397c78732a52f5b5872d6d286a5d686c296b2d0063c2ab754b87e07b1b36048",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/three_chuan_detail_type.dart": {
+      "filePath": "lib/model/three_chuan_detail_type.dart",
+      "contentHash": "6258617be6c00ae9cc3f59b457c6181924f5866f346eab006a2059a8c579b75c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/three_chuan_she_hai.dart": {
+      "filePath": "lib/model/three_chuan_she_hai.dart",
+      "contentHash": "92ba03f797ff976f35ea9b0e51688b94a06dc14027f153136f876926a21ea4af",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/three_chuan_yao_ke.dart": {
+      "filePath": "lib/model/three_chuan_yao_ke.dart",
+      "contentHash": "bcb91b8964a70e863b2f2a74a0bcecf13fbe1228b785b1fe6eca33d52fd45c03",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/three_chuan_zei_ke.dart": {
+      "filePath": "lib/model/three_chuan_zei_ke.dart",
+      "contentHash": "e5cf73d2d090a84e7f1ec1d7da1a36321891d0492d4c786595e7c3c4e65654e6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/three_chuan.dart": {
+      "filePath": "lib/model/three_chuan.dart",
+      "contentHash": "cdfa903c3758a82f9c2b28b524b6fab985d02d8f8d7895fcf1756b2519d9e05a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/yu_ding_da_liu_ren.dart": {
+      "filePath": "lib/model/yu_ding_da_liu_ren.dart",
+      "contentHash": "dce4f9340e1f630f97d3b69f84c043a025649cd6584b987748c3bb11650e1860",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": false
+    },
+    "lib/model/zei_key_type.dart": {
+      "filePath": "lib/model/zei_key_type.dart",
+      "contentHash": "64f1700168888e4807eb83c3e1469bfbc8502bf500615248a7264145bbe7122f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "lib/navigator.dart": {
+      "filePath": "lib/navigator.dart",
+      "contentHash": "a8f2f68ae18c3db1450358f5c0151cb2f8d76da329efa2f2bed93774a8b81024",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": false
+    },
+    "lib/pages/dev.dart": {
+      "filePath": "lib/pages/dev.dart",
+      "contentHash": "49c16a2929fa38ca3784f9cd32c579969d7c2d6830114c661ac522c413370264",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 194,
+      "hasStructuralAnalysis": false
+    },
+    "lib/pages/my_home_page.dart": {
+      "filePath": "lib/pages/my_home_page.dart",
+      "contentHash": "6f88cdf17ff777e9f5f3024eeb27ad8f6e80a12a4cf4ff338d6c389728ba82d9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2892,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/viewmodels/base_viewmodel.dart": {
+      "filePath": "lib/presentation/viewmodels/base_viewmodel.dart",
+      "contentHash": "1afbdf55cf1305fb4d3bff9724b62079091e35352d1becf722cf576c69d66677",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart": {
+      "filePath": "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "contentHash": "874218361952fddf52f77db11ae1718708d18e3ec4794d7fbc007f30c5a7d721",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 269,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/views/da_liu_ren_view.dart": {
+      "filePath": "lib/presentation/views/da_liu_ren_view.dart",
+      "contentHash": "dcaa4656d1a3c70ea25876c25fd75dff5fd3fe47113f1d365b37b3d2bcbaec5e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 88,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/views/widgets/datetime_selector_widget.dart": {
+      "filePath": "lib/presentation/views/widgets/datetime_selector_widget.dart",
+      "contentHash": "5f5eea4e90cf5b98dac7b9edc6c984539686fe57aa83000959f528cd6d1db5a6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/views/widgets/divination_display_widget.dart": {
+      "filePath": "lib/presentation/views/widgets/divination_display_widget.dart",
+      "contentHash": "bad25126f5ea1fb24cdcad7151e4764a2f183094dbb87cb78db725e9eddd55d7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 343,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/views/widgets/error_widget.dart": {
+      "filePath": "lib/presentation/views/widgets/error_widget.dart",
+      "contentHash": "ad89e3aa0f7e96e8987f24dd3401782c2248c2e1d2716bbbd9f0de14810f481b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/views/widgets/loading_widget.dart": {
+      "filePath": "lib/presentation/views/widgets/loading_widget.dart",
+      "contentHash": "67f60addf8a3954f84addf4d2b3e1871583b368274c8dd874880f8f852953d77",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/widgets/four_class_widget.dart": {
+      "filePath": "lib/presentation/widgets/four_class_widget.dart",
+      "contentHash": "0140640bcedd569b62672ed7e02ce89e6fe65f8886b9030eff361916a0f225ab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/widgets/keti_detail_widget.dart": {
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "contentHash": "d3627029be08ea43c25b92516cf7417ae9b4e065a4b5a7070032a91778de66a1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 263,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/widgets/pan_display_widget.dart": {
+      "filePath": "lib/presentation/widgets/pan_display_widget.dart",
+      "contentHash": "63a6ca58f7689ed3cac3f710f79603de903265369a3a5e6ff479891e8b175538",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/widgets/shen_sha_display_widget.dart": {
+      "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
+      "contentHash": "669dca20b309b4da0ca2da7333fae6e91cf1739be386b059942194354cf8426b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 292,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/widgets/three_chuan_widget.dart": {
+      "filePath": "lib/presentation/widgets/three_chuan_widget.dart",
+      "contentHash": "e516bd3461c03026b9061e20f70ea5c44c4745bd893475017e36296023d7a395",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": false
+    },
+    "lib/presentation/widgets/yu_ding_display_widget.dart": {
+      "filePath": "lib/presentation/widgets/yu_ding_display_widget.dart",
+      "contentHash": "cf5af6bf0a0c7e0faba164a86329407e87dfa71efcd595697bf2d7423d088361",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 85,
+      "hasStructuralAnalysis": false
+    },
+    "pubspec.yaml": {
+      "filePath": "pubspec.yaml",
+      "contentHash": "92e0d0160b438b0191401bb9b84e8aca35e4040160f3e3db354a880255c7da56",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 118,
+      "hasStructuralAnalysis": true
+    },
+    "READ_ME_NOTICE": {
+      "filePath": "READ_ME_NOTICE",
+      "contentHash": "ed0891ae48b46f73b3dc33af62a82dd826e8caa165dd9a3db58b3c1765a3675e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "da7ce49f807c5711e00690aaf5ecb89a53ac46dfe9d5ae0ce8c6768fb1665220",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

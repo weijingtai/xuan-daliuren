@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 
-/// 课体详情展示组件
-///
-/// 展示匹配到的六十四课体详细信息，包括课体诗、条件、释名、总论、详解、注意事项和子课体。
 class KetiDetailWidget extends StatelessWidget {
   final List<DaliurenLesson> lessons;
+  final Map<String, List<String>>? highlightedSubLessons;
 
-  const KetiDetailWidget({Key? key, required this.lessons}) : super(key: key);
+  const KetiDetailWidget({
+    Key? key,
+    required this.lessons,
+    this.highlightedSubLessons,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,12 @@ class KetiDetailWidget extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 8),
-        ...lessons.map((lesson) => _LessonCard(lesson: lesson)),
+        ...lessons.map(
+          (lesson) => _LessonCard(
+            lesson: lesson,
+            highlightedSubLessons: highlightedSubLessons,
+          ),
+        ),
       ],
     );
   }
@@ -31,12 +38,23 @@ class KetiDetailWidget extends StatelessWidget {
 
 class _LessonCard extends StatelessWidget {
   final DaliurenLesson lesson;
+  final Map<String, List<String>>? highlightedSubLessons;
 
-  const _LessonCard({required this.lesson});
+  const _LessonCard({
+    required this.lesson,
+    this.highlightedSubLessons,
+  });
+
+  Set<String> get _highlightedNames {
+    if (highlightedSubLessons == null) return const {};
+    return highlightedSubLessons![lesson.name]?.toSet() ?? const {};
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final highlightedNames = _highlightedNames;
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ExpansionTile(
@@ -89,11 +107,16 @@ class _LessonCard extends StatelessWidget {
                   const Divider(),
                   const Text(
                     '子课体',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   const SizedBox(height: 4),
-                  ...lesson.subLessons
-                      .map((sub) => _SubLessonTile(subLesson: sub)),
+                  ...lesson.subLessons.map(
+                    (sub) => _SubLessonTile(
+                      subLesson: sub,
+                      isHighlighted: highlightedNames.contains(sub.name),
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -106,16 +129,43 @@ class _LessonCard extends StatelessWidget {
 
 class _SubLessonTile extends StatelessWidget {
   final DaliurenSubLesson subLesson;
+  final bool isHighlighted;
 
-  const _SubLessonTile({required this.subLesson});
+  const _SubLessonTile({
+    required this.subLesson,
+    this.isHighlighted = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
+    final tile = ExpansionTile(
       tilePadding: const EdgeInsets.symmetric(horizontal: 8),
-      title: Text(
-        subLesson.name,
-        style: const TextStyle(fontSize: 14),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              subLesson.name,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          if (isHighlighted)
+            Container(
+              margin: const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.green.shade100,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                '格',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Colors.green.shade800,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
       ),
       subtitle: subLesson.keTiShi != null
           ? Text(subLesson.keTiShi!, style: const TextStyle(fontSize: 12))
@@ -141,6 +191,20 @@ class _SubLessonTile extends StatelessWidget {
         ),
       ],
     );
+
+    if (isHighlighted) {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 4),
+        decoration: BoxDecoration(
+          color: Colors.green.shade50,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.green.shade200),
+        ),
+        child: tile,
+      );
+    }
+
+    return tile;
   }
 }
 

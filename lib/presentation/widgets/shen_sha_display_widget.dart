@@ -116,7 +116,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: _typeColor(type).withOpacity(0.15),
+              color: _typeColor(type).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
@@ -130,7 +130,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
                 const SizedBox(width: 6),
                 Text('(${results.length})',
                     style: TextStyle(
-                        fontSize: 11, color: _typeColor(type).withOpacity(0.7))),
+                        fontSize: 11, color: _typeColor(type).withValues(alpha: 0.7))),
               ],
             ),
           ),
@@ -279,7 +279,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
         decoration: BoxDecoration(
           color: chipColor,
           borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: textColor.withOpacity(0.3)),
+          border: Border.all(color: textColor.withValues(alpha: 0.3)),
         ),
         child: Text(
           label.toString(),

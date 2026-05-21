@@ -40,12 +40,19 @@ class SelectionPage extends StatelessWidget {
               child: const Text('老架构 (Direct View)'),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/daliuren');
-              },
-              child: const Text('新架构 (DaLiuRenView)'),
-            ),
+ ElevatedButton(
+ onPressed: () {
+ Navigator.of(context).pushNamed('/daliuren');
+ },
+ child: const Text('新架构 (DaLiuRenView)'),
+ ),
+ const SizedBox(height: 24),
+ ElevatedButton(
+ onPressed: () {
+ Navigator.of(context).pushNamed('/daliuren/new');
+ },
+ child: const Text('旧架构新UI (Design System)'),
+ ),
           ],
         ),
       ),

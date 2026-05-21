@@ -49,6 +49,8 @@ class DaLiuRenViewModel extends BaseViewModel {
 
   // Matched 课体 results
   List<DaliurenLesson> _matchedLessons = [];
+  List<String> _matchedKeTiNames = [];
+  List<KetiMatchResult> _matchedKetiResults = [];
 
   // Getters
   DateTime get selectedDateTime => _selectedDateTime;
@@ -63,6 +65,8 @@ class DaLiuRenViewModel extends BaseViewModel {
   bool get isDataLoaded => _isDataLoaded;
   Map<DiZhi, List<ShenShaResult>>? get shenShaResults => _shenShaResults;
   List<DaliurenLesson> get matchedLessons => _matchedLessons;
+  List<String> get matchedKeTiNames => _matchedKeTiNames;
+  List<KetiMatchResult> get matchedKetiResults => _matchedKetiResults;
 
   // Initialize data
   Future<void> initializeData() async {
@@ -146,18 +150,68 @@ class DaLiuRenViewModel extends BaseViewModel {
     updateDateTime(DateTime.now());
   }
 
+  // Clear state
+  void clear() {
+    _currentDivination = null;
+    _shenShaResults = null;
+    _matchedLessons = [];
+    _matchedKeTiNames = [];
+    _matchedKetiResults = [];
+    _yearJiaZi = null;
+    _monthJiaZi = null;
+    _dayJiaZi = null;
+    _timeJiaZi = null;
+    notifyListeners();
+  }
+
+  // Update manual Ju
+  Future<void> updateManualJu({
+    required JiaZi yearJiaZi,
+    required JiaZi monthJiaZi,
+    required JiaZi dayJiaZi,
+    required YinYang yinYangDun,
+    required MonthGeneral monthGeneral,
+    JiaZi? timeJiaZi,
+    int? juNumber,
+  }) async {
+    setLoading();
+    try {
+      final params = ManualJuParams(
+        dayJiaZi,
+        yinYangDun,
+        monthGeneral,
+        timeZhi: timeJiaZi?.diZhi,
+        juNumber: juNumber,
+        yearJiaZi: yearJiaZi,
+        monthJiaZi: monthJiaZi,
+      );
+      final divination = await _calculateDivinationUseCase.call(params);
+      _currentDivination = divination;
+      _updateDivinationProperties();
+      await _matchKeTi();
+      await _calculateShenSha();
+      setSuccess();
+    } catch (e) {
+      setError(e is DivinationFailure ? e.message : e.toString());
+    }
+  }
+
   Future<void> _matchKeTi() async {
     if (_ketiDataService == null ||
         _currentDivination == null ||
         _yuDingKetiMatchService == null) {
       print('🟡 [ViewModel] _matchKeTi: Service or divination is null');
       _matchedLessons = [];
+      _matchedKeTiNames = [];
+      _matchedKetiResults = [];
       return;
     }
 
     if (!_ketiDataService.isLoaded) {
       print('🟡 [ViewModel] _matchKeTi: KetiDataService not loaded yet');
       _matchedLessons = [];
+      _matchedKeTiNames = [];
+      _matchedKetiResults = [];
       return;
     }
 
@@ -165,13 +219,25 @@ class DaLiuRenViewModel extends BaseViewModel {
       final patternNames =
           await _yuDingKetiMatchService.getKeTiNames(_currentDivination!);
       print('🔵 [ViewModel] _matchKeTi: Pattern names from Service: $patternNames');
+      _matchedKeTiNames = patternNames;
       final results = _ketiDataService.findByNames(patternNames);
-      _matchedLessons = results.map((r) => r.lesson).toList();
+      _matchedKetiResults = results;
+      _matchedLessons = [];
+      final seen = <String>{};
+      for (final r in results) {
+        if (!seen.contains(r.lesson.name)) {
+          seen.add(r.lesson.name);
+          _matchedLessons.add(r.lesson);
+        }
+      }
       print('🟢 [ViewModel] _matchKeTi: Final matched lessons: ${_matchedLessons.map((l) => l.name).toList()}');
+      print('🟢 [ViewModel] _matchKeTi: Sub-lessons matched: ${results.where((r) => r.matchedSubLesson != null).map((r) => r.matchedSubLesson!.name).toList()}');
       // Do NOT call notifyListeners here – let the caller (_calculateDivination) do it via setSuccess()
     } catch (e) {
       print('🔴 [ViewModel] Error in _matchKeTi: $e');
       _matchedLessons = [];
+      _matchedKeTiNames = [];
+      _matchedKetiResults = [];
     }
   }
 

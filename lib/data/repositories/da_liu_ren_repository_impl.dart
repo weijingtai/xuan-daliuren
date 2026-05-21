@@ -7,6 +7,7 @@ import 'package:common/const_resources_mapper.dart';
 import 'package:daliuren/domain/repositories/da_liu_ren_repository.dart';
 import 'package:daliuren/domain/services/da_liu_ren_calculation_service.dart';
 import 'package:daliuren/domain/services/keti_data_service.dart';
+import 'package:daliuren/domain/usecases/base_usecase.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/model/da_liu_ren_pan_model.dart';
 
@@ -137,6 +138,39 @@ class DaLiuRenRepositoryImpl implements DaLiuRenRepository {
       // 返回空列表而不是崩溃
       return <DaLiuRenPanModel>[];
     }
+  }
+
+  @override
+  Future<DaLiuRenKePan> calculateManualDivination({
+    required JiaZi dayJiaZi,
+    required YinYang yinYangDun,
+    required MonthGeneral monthGeneral,
+    DiZhi? timeZhi,
+    int? juNumber,
+    required JiaZi yearJiaZi,
+    required JiaZi monthJiaZi,
+  }) async {
+    await loadDivinationData();
+    DaLiuRenPanModel panModel;
+    if (timeZhi != null) {
+      panModel = await _getPanByTimeZhi(dayJiaZi, timeZhi, yinYangDun);
+    } else if (juNumber != null) {
+      panModel = await _getPanByJuNumber(dayJiaZi, yinYangDun, juNumber);
+    } else {
+      throw const DivinationFailure('Either timeZhi or juNumber must be provided');
+    }
+
+    final timeJiaZi = timeZhi != null
+        ? JiaZi.getFromGanZhiEnum(TianGan.JIA, timeZhi)
+        : JiaZi.getFromGanZhiEnum(TianGan.JIA, panModel.shiChen);
+    final eightChar =
+        "${yearJiaZi.ganZhiStr} ${monthJiaZi.ganZhiStr} ${dayJiaZi.ganZhiStr} ${timeJiaZi.ganZhiStr}";
+
+    return DaLiuRenKePan(
+      panDateTime: DateTime.now(),
+      eightChatStr: eightChar,
+      monthGeneral: monthGeneral,
+    );
   }
 
   @override
