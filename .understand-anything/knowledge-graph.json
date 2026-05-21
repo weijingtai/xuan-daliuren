@@ -19,8 +19,8 @@
       "json_serializable"
     ],
     "description": "A Flutter module implementing the Da Liu Ren (大六壬) divination system, part of the larger xuan (玄学) Chinese metaphysics project. Built with clean architecture using Provider, Drift (SQLite), and json_serializable.",
-    "analyzedAt": "2026-05-12T07:37:33.428Z",
-    "gitCommitHash": "e430ea4e5a6b48f893bfe5bc8b4a323ffe32cebf"
+    "analyzedAt": "2026-05-21T23:09:48.633Z",
+    "gitCommitHash": "48cbd975e7f8a3256e4156859d8b38da39f9ac12"
   },
   "nodes": [
     {
@@ -797,36 +797,6 @@
       "complexity": "simple"
     },
     {
-      "id": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "type": "file",
-      "name": "da_liu_ren_repository_impl.dart",
-      "filePath": "lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "summary": "Concrete repository implementation orchestrating local + remote data sources to satisfy the da liu ren repository contract.",
-      "tags": [
-        "repository",
-        "data-layer",
-        "implementation"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "class:lib/data/repositories/da_liu_ren_repository_impl.dart:DaLiuRenRepositoryImpl",
-      "type": "class",
-      "name": "DaLiuRenRepositoryImpl",
-      "filePath": "lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "lineRange": [
-        14,
-        247
-      ],
-      "summary": "Concrete implementation of the DaLiuRenRepository contract.",
-      "tags": [
-        "dart-class",
-        "repository",
-        "hierarchical"
-      ],
-      "complexity": "complex"
-    },
-    {
       "id": "file:lib/data/services/shen_sha_data_service_impl.dart",
       "type": "file",
       "name": "shen_sha_data_service_impl.dart",
@@ -1258,36 +1228,6 @@
       "complexity": "simple"
     },
     {
-      "id": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "type": "file",
-      "name": "da_liu_ren_repository.dart",
-      "filePath": "lib/domain/repositories/da_liu_ren_repository.dart",
-      "summary": "Abstract repository contract defining the operations the data layer must expose for da liu ren.",
-      "tags": [
-        "repository",
-        "domain-layer",
-        "contract"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "class:lib/domain/repositories/da_liu_ren_repository.dart:DaLiuRenRepository",
-      "type": "class",
-      "name": "DaLiuRenRepository",
-      "filePath": "lib/domain/repositories/da_liu_ren_repository.dart",
-      "lineRange": [
-        4,
-        18
-      ],
-      "summary": "Abstract DaLiuRenRepository — defines the contract for concrete implementations.",
-      "tags": [
-        "dart-class",
-        "abstract",
-        "repository"
-      ],
-      "complexity": "simple"
-    },
-    {
       "id": "file:lib/domain/services/calculate_day_night_gui_ren.dart",
       "type": "file",
       "name": "calculate_day_night_gui_ren.dart",
@@ -1658,34 +1598,6 @@
       "complexity": "moderate"
     },
     {
-      "id": "file:lib/domain/services/keti_data_service.dart",
-      "type": "file",
-      "name": "keti_data_service.dart",
-      "filePath": "lib/domain/services/keti_data_service.dart",
-      "summary": "Loads and indexes the 御定大六壬 (Imperial Da Liu Ren) ketis from JSON assets; supports lookup by name or normalized alias.",
-      "tags": [
-        "service",
-        "domain-layer"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "class:lib/domain/services/keti_data_service.dart:KetiDataService",
-      "type": "class",
-      "name": "KetiDataService",
-      "filePath": "lib/domain/services/keti_data_service.dart",
-      "lineRange": [
-        13,
-        233
-      ],
-      "summary": "KetiDataService class with 22 methods.",
-      "tags": [
-        "dart-class",
-        "service"
-      ],
-      "complexity": "complex"
-    },
-    {
       "id": "file:lib/domain/services/nine_zong_men_calculator_v1_2.dart",
       "type": "file",
       "name": "nine_zong_men_calculator_v1_2.dart",
@@ -1904,95 +1816,6 @@
         "service"
       ],
       "complexity": "moderate"
-    },
-    {
-      "id": "file:lib/domain/usecases/base_usecase.dart",
-      "type": "file",
-      "name": "base_usecase.dart",
-      "filePath": "lib/domain/usecases/base_usecase.dart",
-      "summary": "Single-purpose application use case wrapping base business logic with a uniform call signature.",
-      "tags": [
-        "usecase",
-        "domain-layer"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "class:lib/domain/usecases/base_usecase.dart:UseCase",
-      "type": "class",
-      "name": "UseCase",
-      "filePath": "lib/domain/usecases/base_usecase.dart",
-      "lineRange": [
-        3,
-        5
-      ],
-      "summary": "Abstract UseCase — defines the contract for concrete implementations.",
-      "tags": [
-        "dart-class",
-        "abstract",
-        "usecase"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "class:lib/domain/usecases/base_usecase.dart:Failure",
-      "type": "class",
-      "name": "Failure",
-      "filePath": "lib/domain/usecases/base_usecase.dart",
-      "lineRange": [
-        7,
-        10
-      ],
-      "summary": "Abstract Failure — defines the contract for concrete implementations.",
-      "tags": [
-        "dart-class",
-        "abstract"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "class:lib/domain/usecases/base_usecase.dart:DivinationFailure",
-      "type": "class",
-      "name": "DivinationFailure",
-      "filePath": "lib/domain/usecases/base_usecase.dart",
-      "lineRange": [
-        12,
-        14
-      ],
-      "summary": "DivinationFailure (0 methods) extends Failure.",
-      "tags": [
-        "dart-class",
-        "hierarchical"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "type": "file",
-      "name": "calculate_divination_usecase.dart",
-      "filePath": "lib/domain/usecases/calculate_divination_usecase.dart",
-      "summary": "Single-purpose application use case wrapping calculate divination business logic with a uniform call signature.",
-      "tags": [
-        "usecase",
-        "domain-layer"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "class:lib/domain/usecases/calculate_divination_usecase.dart:CalculateDivinationUseCase",
-      "type": "class",
-      "name": "CalculateDivinationUseCase",
-      "filePath": "lib/domain/usecases/calculate_divination_usecase.dart",
-      "lineRange": [
-        6,
-        36
-      ],
-      "summary": "CalculateDivinationUseCase class with 2 methods.",
-      "tags": [
-        "dart-class",
-        "usecase"
-      ],
-      "complexity": "simple"
     },
     {
       "id": "file:lib/domain/usecases/calculate_shen_sha_usecase.dart",
@@ -2565,34 +2388,6 @@
       "complexity": "simple"
     },
     {
-      "id": "file:lib/navigator.dart",
-      "type": "file",
-      "name": "navigator.dart",
-      "filePath": "lib/navigator.dart",
-      "summary": "Module routing entry point; registers /daliuren and /daliuren/dev routes for the host application.",
-      "tags": [
-        "routing",
-        "entry-point"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "class:lib/navigator.dart:NavigatorGenerator",
-      "type": "class",
-      "name": "NavigatorGenerator",
-      "filePath": "lib/navigator.dart",
-      "lineRange": [
-        11,
-        89
-      ],
-      "summary": "NavigatorGenerator class with 6 methods.",
-      "tags": [
-        "dart-class",
-        "untagged"
-      ],
-      "complexity": "moderate"
-    },
-    {
       "id": "file:lib/pages/dev.dart",
       "type": "file",
       "name": "dev.dart",
@@ -2617,34 +2412,6 @@
       "tags": [
         "dart-class",
         "widget",
-        "hierarchical"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "file:lib/pages/my_home_page.dart",
-      "type": "file",
-      "name": "my_home_page.dart",
-      "filePath": "lib/pages/my_home_page.dart",
-      "summary": "Legacy home page — ~3000-line StatefulWidget that wires divination calculations, date pickers, and result panels prior to the MVVM refactor.",
-      "tags": [
-        "page",
-        "legacy-ui"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "class:lib/pages/my_home_page.dart:MyHomePage",
-      "type": "class",
-      "name": "MyHomePage",
-      "filePath": "lib/pages/my_home_page.dart",
-      "lineRange": [
-        39,
-        45
-      ],
-      "summary": "MyHomePage (0 methods) extends StatefulWidget.",
-      "tags": [
-        "dart-class",
         "hierarchical"
       ],
       "complexity": "simple"
@@ -2679,37 +2446,6 @@
         "hierarchical"
       ],
       "complexity": "simple"
-    },
-    {
-      "id": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "type": "file",
-      "name": "da_liu_ren_viewmodel.dart",
-      "filePath": "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "summary": "ChangeNotifier-based viewmodel managing UI state and orchestrating use cases for the da liu ren screen.",
-      "tags": [
-        "viewmodel",
-        "presentation-layer",
-        "state-management"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "class:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart:DaLiuRenViewModel",
-      "type": "class",
-      "name": "DaLiuRenViewModel",
-      "filePath": "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "lineRange": [
-        14,
-        268
-      ],
-      "summary": "DaLiuRenViewModel (19 methods) extends BaseViewModel.",
-      "tags": [
-        "dart-class",
-        "viewmodel",
-        "data-model",
-        "hierarchical"
-      ],
-      "complexity": "complex"
     },
     {
       "id": "file:lib/presentation/views/da_liu_ren_view.dart",
@@ -2891,36 +2627,6 @@
       "complexity": "simple"
     },
     {
-      "id": "file:lib/presentation/widgets/keti_detail_widget.dart",
-      "type": "file",
-      "name": "keti_detail_widget.dart",
-      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
-      "summary": "Reusable Flutter widget rendering keti detail content within the divination UI.",
-      "tags": [
-        "widget",
-        "presentation-layer",
-        "ui"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "class:lib/presentation/widgets/keti_detail_widget.dart:KetiDetailWidget",
-      "type": "class",
-      "name": "KetiDetailWidget",
-      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
-      "lineRange": [
-        4,
-        37
-      ],
-      "summary": "KetiDetailWidget (2 methods) extends StatelessWidget.",
-      "tags": [
-        "dart-class",
-        "widget",
-        "hierarchical"
-      ],
-      "complexity": "simple"
-    },
-    {
       "id": "file:lib/presentation/widgets/pan_display_widget.dart",
       "type": "file",
       "name": "pan_display_widget.dart",
@@ -2943,36 +2649,6 @@
         49
       ],
       "summary": "PanDisplayWidget (2 methods) extends StatelessWidget.",
-      "tags": [
-        "dart-class",
-        "widget",
-        "hierarchical"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
-      "type": "file",
-      "name": "shen_sha_display_widget.dart",
-      "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
-      "summary": "Reusable Flutter widget rendering shen sha display content within the divination UI.",
-      "tags": [
-        "widget",
-        "presentation-layer",
-        "ui"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "class:lib/presentation/widgets/shen_sha_display_widget.dart:ShenShaDisplayWidget",
-      "type": "class",
-      "name": "ShenShaDisplayWidget",
-      "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
-      "lineRange": [
-        5,
-        12
-      ],
-      "summary": "ShenShaDisplayWidget (0 methods) extends StatefulWidget.",
       "tags": [
         "dart-class",
         "widget",
@@ -3041,19 +2717,6 @@
       "complexity": "moderate"
     },
     {
-      "id": "config:pubspec.yaml",
-      "type": "config",
-      "name": "pubspec.yaml",
-      "filePath": "pubspec.yaml",
-      "summary": "Flutter module manifest — declares the module shape (androidPackage, iosBundleIdentifier), Dart SDK constraints, dependencies (drift, provider, fpdart, json_serializable, tyme, common), and bundled assets.",
-      "tags": [
-        "configuration",
-        "dependency-manifest",
-        "flutter-manifest"
-      ],
-      "complexity": "moderate"
-    },
-    {
       "id": "file:READ_ME_NOTICE",
       "type": "file",
       "name": "READ_ME_NOTICE",
@@ -3073,6 +2736,870 @@
       "tags": [
         "documentation",
         "overview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/refactor_old_ui_analysis_report.md",
+      "type": "document",
+      "name": "refactor_old_ui_analysis_report.md",
+      "filePath": "docs/refactor_old_ui_analysis_report.md",
+      "summary": "Documentation file refactor_old_ui_analysis_report.md describing project analysis, architecture, or refactor notes.",
+      "tags": [
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "type": "file",
+      "name": "da_liu_ren_repository_impl.dart",
+      "filePath": "lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "summary": "Data-layer Dart source da_liu_ren_repository_impl.dart for persistence, models, or repository implementation.",
+      "tags": [
+        "data",
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/data/repositories/da_liu_ren_repository_impl.dart:DaLiuRenRepositoryImpl",
+      "type": "class",
+      "name": "DaLiuRenRepositoryImpl",
+      "filePath": "lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "lineRange": [
+        13,
+        13
+      ],
+      "summary": "Dart class DaLiuRenRepositoryImpl defined in lib/data/repositories/da_liu_ren_repository_impl.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/design/daliuren_colors.dart",
+      "type": "file",
+      "name": "daliuren_colors.dart",
+      "filePath": "lib/design/daliuren_colors.dart",
+      "summary": "Design system helper daliuren_colors.dart used by the redesigned Da Liu Ren presentation UI.",
+      "tags": [
+        "design-system",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/design/daliuren_colors.dart:DaliurenColors",
+      "type": "class",
+      "name": "DaliurenColors",
+      "filePath": "lib/design/daliuren_colors.dart",
+      "lineRange": [
+        2,
+        2
+      ],
+      "summary": "Dart class DaliurenColors defined in lib/design/daliuren_colors.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/design/daliuren_colors.dart:DaliurenOpacity",
+      "type": "class",
+      "name": "DaliurenOpacity",
+      "filePath": "lib/design/daliuren_colors.dart",
+      "lineRange": [
+        28,
+        28
+      ],
+      "summary": "Dart class DaliurenOpacity defined in lib/design/daliuren_colors.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/design/daliuren_spacing.dart",
+      "type": "file",
+      "name": "daliuren_spacing.dart",
+      "filePath": "lib/design/daliuren_spacing.dart",
+      "summary": "Design system helper daliuren_spacing.dart used by the redesigned Da Liu Ren presentation UI.",
+      "tags": [
+        "design-system",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/design/daliuren_spacing.dart:DaliurenSpacing",
+      "type": "class",
+      "name": "DaliurenSpacing",
+      "filePath": "lib/design/daliuren_spacing.dart",
+      "lineRange": [
+        1,
+        1
+      ],
+      "summary": "Dart class DaliurenSpacing defined in lib/design/daliuren_spacing.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/design/daliuren_typography.dart",
+      "type": "file",
+      "name": "daliuren_typography.dart",
+      "filePath": "lib/design/daliuren_typography.dart",
+      "summary": "Design system helper daliuren_typography.dart used by the redesigned Da Liu Ren presentation UI.",
+      "tags": [
+        "design-system",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/design/daliuren_typography.dart:DaliurenTypography",
+      "type": "class",
+      "name": "DaliurenTypography",
+      "filePath": "lib/design/daliuren_typography.dart",
+      "lineRange": [
+        4,
+        4
+      ],
+      "summary": "Dart class DaliurenTypography defined in lib/design/daliuren_typography.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/domain/repositories/da_liu_ren_repository.dart",
+      "type": "file",
+      "name": "da_liu_ren_repository.dart",
+      "filePath": "lib/domain/repositories/da_liu_ren_repository.dart",
+      "summary": "Domain-layer Dart source da_liu_ren_repository.dart for Da Liu Ren business logic.",
+      "tags": [
+        "domain",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/repositories/da_liu_ren_repository.dart:DaLiuRenRepository",
+      "type": "class",
+      "name": "DaLiuRenRepository",
+      "filePath": "lib/domain/repositories/da_liu_ren_repository.dart",
+      "lineRange": [
+        3,
+        3
+      ],
+      "summary": "Dart class DaLiuRenRepository defined in lib/domain/repositories/da_liu_ren_repository.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/domain/services/keti_data_service.dart",
+      "type": "file",
+      "name": "keti_data_service.dart",
+      "filePath": "lib/domain/services/keti_data_service.dart",
+      "summary": "Domain-layer Dart source keti_data_service.dart for Da Liu Ren business logic.",
+      "tags": [
+        "domain",
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/domain/services/keti_data_service.dart:KetiDataService",
+      "type": "class",
+      "name": "KetiDataService",
+      "filePath": "lib/domain/services/keti_data_service.dart",
+      "lineRange": [
+        8,
+        8
+      ],
+      "summary": "Dart class KetiDataService defined in lib/domain/services/keti_data_service.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/domain/services/keti_data_service.dart:_SubLessonMatch",
+      "type": "class",
+      "name": "_SubLessonMatch",
+      "filePath": "lib/domain/services/keti_data_service.dart",
+      "lineRange": [
+        187,
+        187
+      ],
+      "summary": "Dart class _SubLessonMatch defined in lib/domain/services/keti_data_service.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/domain/services/keti_data_service.dart:KetiMatchResult",
+      "type": "class",
+      "name": "KetiMatchResult",
+      "filePath": "lib/domain/services/keti_data_service.dart",
+      "lineRange": [
+        195,
+        195
+      ],
+      "summary": "Dart class KetiMatchResult defined in lib/domain/services/keti_data_service.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/domain/usecases/base_usecase.dart",
+      "type": "file",
+      "name": "base_usecase.dart",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "summary": "Domain-layer Dart source base_usecase.dart for Da Liu Ren business logic.",
+      "tags": [
+        "domain",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/base_usecase.dart:UseCase",
+      "type": "class",
+      "name": "UseCase",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "lineRange": [
+        2,
+        2
+      ],
+      "summary": "Dart class UseCase defined in lib/domain/usecases/base_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/base_usecase.dart:Failure",
+      "type": "class",
+      "name": "Failure",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "lineRange": [
+        6,
+        6
+      ],
+      "summary": "Dart class Failure defined in lib/domain/usecases/base_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/base_usecase.dart:DivinationFailure",
+      "type": "class",
+      "name": "DivinationFailure",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "lineRange": [
+        11,
+        11
+      ],
+      "summary": "Dart class DivinationFailure defined in lib/domain/usecases/base_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/base_usecase.dart:NoParams",
+      "type": "class",
+      "name": "NoParams",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "lineRange": [
+        15,
+        15
+      ],
+      "summary": "Dart class NoParams defined in lib/domain/usecases/base_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/base_usecase.dart:DateTimeParams",
+      "type": "class",
+      "name": "DateTimeParams",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "lineRange": [
+        17,
+        17
+      ],
+      "summary": "Dart class DateTimeParams defined in lib/domain/usecases/base_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/base_usecase.dart:ManualJuParams",
+      "type": "class",
+      "name": "ManualJuParams",
+      "filePath": "lib/domain/usecases/base_usecase.dart",
+      "lineRange": [
+        24,
+        24
+      ],
+      "summary": "Dart class ManualJuParams defined in lib/domain/usecases/base_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/domain/usecases/calculate_divination_usecase.dart",
+      "type": "file",
+      "name": "calculate_divination_usecase.dart",
+      "filePath": "lib/domain/usecases/calculate_divination_usecase.dart",
+      "summary": "Domain-layer Dart source calculate_divination_usecase.dart for Da Liu Ren business logic.",
+      "tags": [
+        "domain",
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/domain/usecases/calculate_divination_usecase.dart:CalculateDivinationUseCase",
+      "type": "class",
+      "name": "CalculateDivinationUseCase",
+      "filePath": "lib/domain/usecases/calculate_divination_usecase.dart",
+      "lineRange": [
+        5,
+        5
+      ],
+      "summary": "Dart class CalculateDivinationUseCase defined in lib/domain/usecases/calculate_divination_usecase.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/navigator.dart",
+      "type": "file",
+      "name": "navigator.dart",
+      "filePath": "lib/navigator.dart",
+      "summary": "Dart source navigator.dart defining NavigatorGenerator.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/navigator.dart:NavigatorGenerator",
+      "type": "class",
+      "name": "NavigatorGenerator",
+      "filePath": "lib/navigator.dart",
+      "lineRange": [
+        10,
+        10
+      ],
+      "summary": "Dart class NavigatorGenerator defined in lib/navigator.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/pages/my_home_page.dart",
+      "type": "file",
+      "name": "my_home_page.dart",
+      "filePath": "lib/pages/my_home_page.dart",
+      "summary": "Dart source my_home_page.dart defining MyHomePage, _MyHomePageState.",
+      "tags": [
+        "presentation",
+        "class",
+        "widget"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/pages/my_home_page.dart:MyHomePage",
+      "type": "class",
+      "name": "MyHomePage",
+      "filePath": "lib/pages/my_home_page.dart",
+      "lineRange": [
+        38,
+        38
+      ],
+      "summary": "Flutter widget MyHomePage defined in lib/pages/my_home_page.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/pages/my_home_page.dart:_MyHomePageState",
+      "type": "class",
+      "name": "_MyHomePageState",
+      "filePath": "lib/pages/my_home_page.dart",
+      "lineRange": [
+        46,
+        46
+      ],
+      "summary": "Dart class _MyHomePageState defined in lib/pages/my_home_page.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/pages/new/new_home_page.dart",
+      "type": "file",
+      "name": "new_home_page.dart",
+      "filePath": "lib/pages/new/new_home_page.dart",
+      "summary": "New Flutter page implementation for the redesigned Da Liu Ren user experience.",
+      "tags": [
+        "presentation",
+        "class",
+        "widget"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/pages/new/new_home_page.dart:NewHomePage",
+      "type": "class",
+      "name": "NewHomePage",
+      "filePath": "lib/pages/new/new_home_page.dart",
+      "lineRange": [
+        32,
+        32
+      ],
+      "summary": "Flutter widget NewHomePage defined in lib/pages/new/new_home_page.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/pages/new/new_home_page.dart:_NewHomePageState",
+      "type": "class",
+      "name": "_NewHomePageState",
+      "filePath": "lib/pages/new/new_home_page.dart",
+      "lineRange": [
+        39,
+        39
+      ],
+      "summary": "Dart class _NewHomePageState defined in lib/pages/new/new_home_page.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:lib/pages/new/new_home_page.dart:_CirclePainter",
+      "type": "class",
+      "name": "_CirclePainter",
+      "filePath": "lib/pages/new/new_home_page.dart",
+      "lineRange": [
+        888,
+        888
+      ],
+      "summary": "Dart class _CirclePainter defined in lib/pages/new/new_home_page.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "type": "file",
+      "name": "da_liu_ren_viewmodel.dart",
+      "filePath": "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "summary": "Provider/ChangeNotifier viewmodel da_liu_ren_viewmodel.dart coordinating Da Liu Ren presentation state.",
+      "tags": [
+        "presentation",
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart:DaLiuRenViewModel",
+      "type": "class",
+      "name": "DaLiuRenViewModel",
+      "filePath": "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "lineRange": [
+        13,
+        13
+      ],
+      "summary": "Dart class DaLiuRenViewModel defined in lib/presentation/viewmodels/da_liu_ren_viewmodel.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "type": "file",
+      "name": "ancient_text_card.dart",
+      "filePath": "lib/presentation/widgets/ancient_text_card.dart",
+      "summary": "Reusable Flutter presentation widget ancient_text_card.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "class",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/ancient_text_card.dart:AncientTextCard",
+      "type": "class",
+      "name": "AncientTextCard",
+      "filePath": "lib/presentation/widgets/ancient_text_card.dart",
+      "lineRange": [
+        6,
+        6
+      ],
+      "summary": "Flutter widget AncientTextCard defined in lib/presentation/widgets/ancient_text_card.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/ancient_text_card.dart:_TextPart",
+      "type": "class",
+      "name": "_TextPart",
+      "filePath": "lib/presentation/widgets/ancient_text_card.dart",
+      "lineRange": [
+        201,
+        201
+      ],
+      "summary": "Dart class _TextPart defined in lib/presentation/widgets/ancient_text_card.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/presentation/widgets/collapsible_section.dart",
+      "type": "file",
+      "name": "collapsible_section.dart",
+      "filePath": "lib/presentation/widgets/collapsible_section.dart",
+      "summary": "Reusable Flutter presentation widget collapsible_section.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "class",
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/presentation/widgets/collapsible_section.dart:CollapsibleSection",
+      "type": "class",
+      "name": "CollapsibleSection",
+      "filePath": "lib/presentation/widgets/collapsible_section.dart",
+      "lineRange": [
+        5,
+        5
+      ],
+      "summary": "Flutter widget CollapsibleSection defined in lib/presentation/widgets/collapsible_section.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/presentation/widgets/collapsible_section.dart:_CollapsibleSectionState",
+      "type": "class",
+      "name": "_CollapsibleSectionState",
+      "filePath": "lib/presentation/widgets/collapsible_section.dart",
+      "lineRange": [
+        23,
+        23
+      ],
+      "summary": "Dart class _CollapsibleSectionState defined in lib/presentation/widgets/collapsible_section.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/presentation/widgets/four_class_card.dart",
+      "type": "file",
+      "name": "four_class_card.dart",
+      "filePath": "lib/presentation/widgets/four_class_card.dart",
+      "summary": "Reusable Flutter presentation widget four_class_card.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/four_class_card.dart:FourClassCard",
+      "type": "class",
+      "name": "FourClassCard",
+      "filePath": "lib/presentation/widgets/four_class_card.dart",
+      "lineRange": [
+        8,
+        8
+      ],
+      "summary": "Flutter widget FourClassCard defined in lib/presentation/widgets/four_class_card.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "type": "file",
+      "name": "ke_pan_info_card.dart",
+      "filePath": "lib/presentation/widgets/ke_pan_info_card.dart",
+      "summary": "Reusable Flutter presentation widget ke_pan_info_card.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/ke_pan_info_card.dart:KePanInfoCard",
+      "type": "class",
+      "name": "KePanInfoCard",
+      "filePath": "lib/presentation/widgets/ke_pan_info_card.dart",
+      "lineRange": [
+        9,
+        9
+      ],
+      "summary": "Flutter widget KePanInfoCard defined in lib/presentation/widgets/ke_pan_info_card.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "type": "file",
+      "name": "keti_detail_widget.dart",
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "summary": "Reusable Flutter presentation widget keti_detail_widget.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/keti_detail_widget.dart:KetiDetailWidget",
+      "type": "class",
+      "name": "KetiDetailWidget",
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "lineRange": [
+        3,
+        3
+      ],
+      "summary": "Flutter widget KetiDetailWidget defined in lib/presentation/widgets/keti_detail_widget.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/keti_detail_widget.dart:_LessonCard",
+      "type": "class",
+      "name": "_LessonCard",
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "lineRange": [
+        38,
+        38
+      ],
+      "summary": "Flutter widget _LessonCard defined in lib/presentation/widgets/keti_detail_widget.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/keti_detail_widget.dart:_SubLessonTile",
+      "type": "class",
+      "name": "_SubLessonTile",
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "lineRange": [
+        129,
+        129
+      ],
+      "summary": "Flutter widget _SubLessonTile defined in lib/presentation/widgets/keti_detail_widget.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/keti_detail_widget.dart:_Section",
+      "type": "class",
+      "name": "_Section",
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "lineRange": [
+        210,
+        210
+      ],
+      "summary": "Flutter widget _Section defined in lib/presentation/widgets/keti_detail_widget.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/keti_detail_widget.dart:_TextSection",
+      "type": "class",
+      "name": "_TextSection",
+      "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
+      "lineRange": [
+        237,
+        237
+      ],
+      "summary": "Flutter widget _TextSection defined in lib/presentation/widgets/keti_detail_widget.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/presentation/widgets/responsive_layout.dart",
+      "type": "file",
+      "name": "responsive_layout.dart",
+      "filePath": "lib/presentation/widgets/responsive_layout.dart",
+      "summary": "Reusable Flutter presentation widget responsive_layout.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/presentation/widgets/responsive_layout.dart:ResponsiveLayout",
+      "type": "class",
+      "name": "ResponsiveLayout",
+      "filePath": "lib/presentation/widgets/responsive_layout.dart",
+      "lineRange": [
+        2,
+        2
+      ],
+      "summary": "Flutter widget ResponsiveLayout defined in lib/presentation/widgets/responsive_layout.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/presentation/widgets/semantic_chip.dart",
+      "type": "file",
+      "name": "semantic_chip.dart",
+      "filePath": "lib/presentation/widgets/semantic_chip.dart",
+      "summary": "Reusable Flutter presentation widget semantic_chip.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:lib/presentation/widgets/semantic_chip.dart:SemanticChip",
+      "type": "class",
+      "name": "SemanticChip",
+      "filePath": "lib/presentation/widgets/semantic_chip.dart",
+      "lineRange": [
+        5,
+        5
+      ],
+      "summary": "Flutter widget SemanticChip defined in lib/presentation/widgets/semantic_chip.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+      "type": "file",
+      "name": "shen_sha_display_widget.dart",
+      "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
+      "summary": "Reusable Flutter presentation widget shen_sha_display_widget.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "class",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/shen_sha_display_widget.dart:ShenShaDisplayWidget",
+      "type": "class",
+      "name": "ShenShaDisplayWidget",
+      "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
+      "lineRange": [
+        4,
+        4
+      ],
+      "summary": "Flutter widget ShenShaDisplayWidget defined in lib/presentation/widgets/shen_sha_display_widget.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/shen_sha_display_widget.dart:_ShenShaDisplayWidgetState",
+      "type": "class",
+      "name": "_ShenShaDisplayWidgetState",
+      "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
+      "lineRange": [
+        13,
+        13
+      ],
+      "summary": "Dart class _ShenShaDisplayWidgetState defined in lib/presentation/widgets/shen_sha_display_widget.dart.",
+      "tags": [
+        "class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:lib/presentation/widgets/three_chuan_card.dart",
+      "type": "file",
+      "name": "three_chuan_card.dart",
+      "filePath": "lib/presentation/widgets/three_chuan_card.dart",
+      "summary": "Reusable Flutter presentation widget three_chuan_card.dart for rendering Da Liu Ren divination UI.",
+      "tags": [
+        "presentation",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:lib/presentation/widgets/three_chuan_card.dart:ThreeChuanCard",
+      "type": "class",
+      "name": "ThreeChuanCard",
+      "filePath": "lib/presentation/widgets/three_chuan_card.dart",
+      "lineRange": [
+        8,
+        8
+      ],
+      "summary": "Flutter widget ThreeChuanCard defined in lib/presentation/widgets/three_chuan_card.dart.",
+      "tags": [
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:pubspec.yaml",
+      "type": "config",
+      "name": "pubspec.yaml",
+      "filePath": "pubspec.yaml",
+      "summary": "Flutter/Dart package manifest and dependency configuration for the Da Liu Ren module.",
+      "tags": [
+        "flutter",
+        "configuration"
       ],
       "complexity": "simple"
     }
@@ -3233,13 +3760,6 @@
       "weight": 1
     },
     {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "class:lib/data/repositories/da_liu_ren_repository_impl.dart:DaLiuRenRepositoryImpl",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:lib/data/services/shen_sha_data_service_impl.dart",
       "target": "class:lib/data/services/shen_sha_data_service_impl.dart:ShenShaDataServiceImpl",
       "type": "contains",
@@ -3352,13 +3872,6 @@
       "weight": 1
     },
     {
-      "source": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "target": "class:lib/domain/repositories/da_liu_ren_repository.dart:DaLiuRenRepository",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:lib/domain/services/calculate_day_night_gui_ren.dart",
       "target": "class:lib/domain/services/calculate_day_night_gui_ren.dart:CalculateDayNightGuiRen",
       "type": "contains",
@@ -3450,13 +3963,6 @@
       "weight": 1
     },
     {
-      "source": "file:lib/domain/services/keti_data_service.dart",
-      "target": "class:lib/domain/services/keti_data_service.dart:KetiDataService",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:lib/domain/services/nine_zong_men_calculator_v1_2.dart",
       "target": "class:lib/domain/services/nine_zong_men_calculator_v1_2.dart:ThreeChuanOutput",
       "type": "contains",
@@ -3522,34 +4028,6 @@
     {
       "source": "file:lib/domain/services/yuding_keti_match_service.dart",
       "target": "class:lib/domain/services/yuding_keti_match_service.dart:YuDingKetiMatchService",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:lib/domain/usecases/base_usecase.dart",
-      "target": "class:lib/domain/usecases/base_usecase.dart:UseCase",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:lib/domain/usecases/base_usecase.dart",
-      "target": "class:lib/domain/usecases/base_usecase.dart:Failure",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:lib/domain/usecases/base_usecase.dart",
-      "target": "class:lib/domain/usecases/base_usecase.dart:DivinationFailure",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "target": "class:lib/domain/usecases/calculate_divination_usecase.dart:CalculateDivinationUseCase",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -3688,13 +4166,6 @@
       "weight": 1
     },
     {
-      "source": "file:lib/navigator.dart",
-      "target": "class:lib/navigator.dart:NavigatorGenerator",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:lib/pages/dev.dart",
       "target": "class:lib/pages/dev.dart:DevMyWidget",
       "type": "contains",
@@ -3702,22 +4173,8 @@
       "weight": 1
     },
     {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "class:lib/pages/my_home_page.dart:MyHomePage",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:lib/presentation/viewmodels/base_viewmodel.dart",
       "target": "class:lib/presentation/viewmodels/base_viewmodel.dart:BaseViewModel",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "class:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart:DaLiuRenViewModel",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -3765,22 +4222,8 @@
       "weight": 1
     },
     {
-      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
-      "target": "class:lib/presentation/widgets/keti_detail_widget.dart:KetiDetailWidget",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:lib/presentation/widgets/pan_display_widget.dart",
       "target": "class:lib/presentation/widgets/pan_display_widget.dart:PanDisplayWidget",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
-      "target": "class:lib/presentation/widgets/shen_sha_display_widget.dart:ShenShaDisplayWidget",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -4052,48 +4495,6 @@
       "weight": 0.7
     },
     {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "file:lib/domain/services/da_liu_ren_calculation_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "file:lib/domain/services/keti_data_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "file:lib/domain/usecases/base_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "target": "file:lib/model/da_liu_ren_pan_model.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
       "source": "file:lib/data/services/shen_sha_data_service_impl.dart",
       "target": "file:lib/domain/entities/shen_sha_entity.dart",
       "type": "imports",
@@ -4109,21 +4510,7 @@
     },
     {
       "source": "file:lib/di/dependency_injection.dart",
-      "target": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/di/dependency_injection.dart",
       "target": "file:lib/data/services/shen_sha_data_service_impl.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/di/dependency_injection.dart",
-      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -4172,13 +4559,6 @@
     },
     {
       "source": "file:lib/di/dependency_injection.dart",
-      "target": "file:lib/domain/services/keti_data_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/di/dependency_injection.dart",
       "target": "file:lib/domain/services/shen_sha_calculation_service_impl.dart",
       "type": "imports",
       "direction": "forward",
@@ -4193,13 +4573,6 @@
     },
     {
       "source": "file:lib/di/dependency_injection.dart",
-      "target": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/di/dependency_injection.dart",
       "target": "file:lib/domain/usecases/calculate_shen_sha_usecase.dart",
       "type": "imports",
       "direction": "forward",
@@ -4208,13 +4581,6 @@
     {
       "source": "file:lib/di/dependency_injection.dart",
       "target": "file:lib/domain/usecases/load_divination_data_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/di/dependency_injection.dart",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -4271,13 +4637,6 @@
     {
       "source": "file:lib/domain/entities/raw_pan_info_model.dart",
       "target": "file:lib/model/enum_gui_ren.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -4362,13 +4721,6 @@
     {
       "source": "file:lib/domain/services/calculate_raw_pan_service.dart",
       "target": "file:lib/domain/services/calculate_upon_gan_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/services/calculate_raw_pan_service.dart",
-      "target": "file:lib/domain/services/keti_data_service.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -4563,20 +4915,6 @@
       "weight": 0.7
     },
     {
-      "source": "file:lib/domain/services/keti_data_service.dart",
-      "target": "file:lib/domain/entities/daliuren_lesson.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/services/keti_data_service.dart",
-      "target": "file:lib/model/enum_nine_zong_men.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
       "source": "file:lib/domain/services/nine_zong_men_calculator_v1_2.dart",
       "target": "file:lib/domain/enums/pan_type.dart",
       "type": "imports",
@@ -4711,35 +5049,7 @@
     },
     {
       "source": "file:lib/domain/services/yuding_keti_match_service.dart",
-      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/services/yuding_keti_match_service.dart",
       "target": "file:lib/model/da_liu_ren_panel.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "target": "file:lib/domain/usecases/base_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -4754,20 +5064,6 @@
     {
       "source": "file:lib/domain/usecases/calculate_shen_sha_usecase.dart",
       "target": "file:lib/domain/services/shen_sha_calculation_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/usecases/load_divination_data_usecase.dart",
-      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/domain/usecases/load_divination_data_usecase.dart",
-      "target": "file:lib/domain/usecases/base_usecase.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -5130,34 +5426,6 @@
       "weight": 0.7
     },
     {
-      "source": "file:lib/navigator.dart",
-      "target": "file:lib/di/dependency_injection.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/navigator.dart",
-      "target": "file:lib/pages/dev.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/navigator.dart",
-      "target": "file:lib/pages/my_home_page.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/navigator.dart",
-      "target": "file:lib/presentation/views/da_liu_ren_view.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
       "source": "file:lib/pages/dev.dart",
       "target": "file:lib/model/each_class.dart",
       "type": "imports",
@@ -5181,167 +5449,6 @@
     {
       "source": "file:lib/pages/dev.dart",
       "target": "file:lib/model/four_class.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/data/models/yu_ding_da_liu_ren_data_model.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/domain/services/keti_data_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/da_liu_ren_gong.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/da_liu_ren_pan_model.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/da_liu_ren_panel.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/enum_gui_ren.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/four_class.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/model/three_chuan.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/presentation/widgets/keti_detail_widget.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/pages/my_home_page.dart",
-      "target": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/entities/daliuren_lesson.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/entities/shen_sha_entity.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/services/keti_data_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/services/yuding_keti_match_service.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/usecases/base_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/usecases/calculate_divination_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/usecases/calculate_shen_sha_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/domain/usecases/load_divination_data_usecase.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "target": "file:lib/presentation/viewmodels/base_viewmodel.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/views/da_liu_ren_view.dart",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -5375,57 +5482,8 @@
       "weight": 0.7
     },
     {
-      "source": "file:lib/presentation/views/widgets/datetime_selector_widget.dart",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/views/widgets/divination_display_widget.dart",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/views/widgets/divination_display_widget.dart",
-      "target": "file:lib/presentation/widgets/keti_detail_widget.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/views/widgets/divination_display_widget.dart",
-      "target": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
-      "target": "file:lib/domain/entities/daliuren_lesson.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
       "source": "file:lib/presentation/widgets/pan_display_widget.dart",
       "target": "file:lib/domain/entities/liu_ren_pan_model.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/widgets/pan_display_widget.dart",
-      "target": "file:lib/presentation/widgets/keti_detail_widget.dart",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
-      "target": "file:lib/domain/entities/shen_sha_entity.dart",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -5447,13 +5505,6 @@
     {
       "source": "class:lib/data/datasources/remote/remote_data_source.dart:LiuRenRemoteDataSourceImpl",
       "target": "class:lib/data/datasources/remote/remote_data_source.dart:LiuRenRemoteDataSource",
-      "type": "implements",
-      "direction": "forward",
-      "weight": 0.9
-    },
-    {
-      "source": "class:lib/data/repositories/da_liu_ren_repository_impl.dart:DaLiuRenRepositoryImpl",
-      "target": "class:lib/domain/repositories/da_liu_ren_repository.dart:DaLiuRenRepository",
       "type": "implements",
       "direction": "forward",
       "weight": 0.9
@@ -5550,13 +5601,6 @@
       "weight": 0.9
     },
     {
-      "source": "class:lib/domain/usecases/base_usecase.dart:DivinationFailure",
-      "target": "class:lib/domain/usecases/base_usecase.dart:Failure",
-      "type": "inherits",
-      "direction": "forward",
-      "weight": 0.9
-    },
-    {
       "source": "class:lib/model/da_liu_ren_ke_pan.dart:DaLiuRenKePan",
       "target": "class:lib/model/da_liu_ren_panel.dart:DaLiuRenPanel",
       "type": "inherits",
@@ -5578,46 +5622,11 @@
       "weight": 0.9
     },
     {
-      "source": "class:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart:DaLiuRenViewModel",
-      "target": "class:lib/presentation/viewmodels/base_viewmodel.dart:BaseViewModel",
-      "type": "inherits",
-      "direction": "forward",
-      "weight": 0.9
-    },
-    {
-      "source": "config:pubspec.yaml",
-      "target": "file:lib/navigator.dart",
-      "type": "configures",
-      "direction": "forward",
-      "weight": 0.6
-    },
-    {
       "source": "config:build.yaml",
       "target": "file:lib/data/datasources/local/database/drift_database.dart",
       "type": "configures",
       "direction": "forward",
       "weight": 0.6
-    },
-    {
-      "source": "config:analysis_options.yaml",
-      "target": "file:lib/navigator.dart",
-      "type": "configures",
-      "direction": "forward",
-      "weight": 0.6
-    },
-    {
-      "source": "document:README.md",
-      "target": "file:lib/navigator.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:ARCHITECTURE.md",
-      "target": "file:lib/navigator.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
     },
     {
       "source": "document:ARCHITECTURE.md",
@@ -5627,36 +5636,8 @@
       "weight": 0.5
     },
     {
-      "source": "document:CLAUDE.md",
-      "target": "file:lib/navigator.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/PRD.md",
-      "target": "file:lib/pages/my_home_page.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/claude/MVVM_REFACTOR_REPORT.md",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
       "source": "document:docs/claude/MVVM_REFACTOR_REPORT.md",
       "target": "file:lib/presentation/views/da_liu_ren_view.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/claude/MVVM_REFACTOR_COMPLETION_REPORT.md",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -5670,21 +5651,7 @@
     },
     {
       "source": "document:docs/claude/REFACTOR_PLAN.md",
-      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/claude/REFACTOR_PLAN.md",
       "target": "file:lib/presentation/views/da_liu_ren_view.dart",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/claude/CODE_REVIEW.md",
-      "target": "file:lib/pages/my_home_page.dart",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -5695,6 +5662,776 @@
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "class:lib/data/repositories/da_liu_ren_repository_impl.dart:DaLiuRenRepositoryImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/design/daliuren_colors.dart",
+      "target": "class:lib/design/daliuren_colors.dart:DaliurenColors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/design/daliuren_colors.dart",
+      "target": "class:lib/design/daliuren_colors.dart:DaliurenOpacity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/design/daliuren_spacing.dart",
+      "target": "class:lib/design/daliuren_spacing.dart:DaliurenSpacing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/design/daliuren_typography.dart",
+      "target": "class:lib/design/daliuren_typography.dart:DaliurenTypography",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/repositories/da_liu_ren_repository.dart",
+      "target": "class:lib/domain/repositories/da_liu_ren_repository.dart:DaLiuRenRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/services/keti_data_service.dart",
+      "target": "class:lib/domain/services/keti_data_service.dart:KetiDataService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/services/keti_data_service.dart",
+      "target": "class:lib/domain/services/keti_data_service.dart:_SubLessonMatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/services/keti_data_service.dart",
+      "target": "class:lib/domain/services/keti_data_service.dart:KetiMatchResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/base_usecase.dart",
+      "target": "class:lib/domain/usecases/base_usecase.dart:UseCase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/base_usecase.dart",
+      "target": "class:lib/domain/usecases/base_usecase.dart:Failure",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/base_usecase.dart",
+      "target": "class:lib/domain/usecases/base_usecase.dart:DivinationFailure",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/base_usecase.dart",
+      "target": "class:lib/domain/usecases/base_usecase.dart:NoParams",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/base_usecase.dart",
+      "target": "class:lib/domain/usecases/base_usecase.dart:DateTimeParams",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/base_usecase.dart",
+      "target": "class:lib/domain/usecases/base_usecase.dart:ManualJuParams",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
+      "target": "class:lib/domain/usecases/calculate_divination_usecase.dart:CalculateDivinationUseCase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/navigator.dart",
+      "target": "class:lib/navigator.dart:NavigatorGenerator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "class:lib/pages/my_home_page.dart:MyHomePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "class:lib/pages/my_home_page.dart:_MyHomePageState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "class:lib/pages/new/new_home_page.dart:NewHomePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "class:lib/pages/new/new_home_page.dart:_NewHomePageState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "class:lib/pages/new/new_home_page.dart:_CirclePainter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "class:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart:DaLiuRenViewModel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "target": "class:lib/presentation/widgets/ancient_text_card.dart:AncientTextCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "target": "class:lib/presentation/widgets/ancient_text_card.dart:_TextPart",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/collapsible_section.dart",
+      "target": "class:lib/presentation/widgets/collapsible_section.dart:CollapsibleSection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/collapsible_section.dart",
+      "target": "class:lib/presentation/widgets/collapsible_section.dart:_CollapsibleSectionState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/four_class_card.dart",
+      "target": "class:lib/presentation/widgets/four_class_card.dart:FourClassCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "target": "class:lib/presentation/widgets/ke_pan_info_card.dart:KePanInfoCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "target": "class:lib/presentation/widgets/keti_detail_widget.dart:KetiDetailWidget",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "target": "class:lib/presentation/widgets/keti_detail_widget.dart:_LessonCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "target": "class:lib/presentation/widgets/keti_detail_widget.dart:_SubLessonTile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "target": "class:lib/presentation/widgets/keti_detail_widget.dart:_Section",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "target": "class:lib/presentation/widgets/keti_detail_widget.dart:_TextSection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/responsive_layout.dart",
+      "target": "class:lib/presentation/widgets/responsive_layout.dart:ResponsiveLayout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/semantic_chip.dart",
+      "target": "class:lib/presentation/widgets/semantic_chip.dart:SemanticChip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+      "target": "class:lib/presentation/widgets/shen_sha_display_widget.dart:ShenShaDisplayWidget",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+      "target": "class:lib/presentation/widgets/shen_sha_display_widget.dart:_ShenShaDisplayWidgetState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/presentation/widgets/three_chuan_card.dart",
+      "target": "class:lib/presentation/widgets/three_chuan_card.dart:ThreeChuanCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "file:lib/domain/services/da_liu_ren_calculation_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "file:lib/domain/services/keti_data_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "file:lib/domain/usecases/base_usecase.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
+      "target": "file:lib/model/da_liu_ren_pan_model.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/domain/repositories/da_liu_ren_repository.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/domain/services/keti_data_service.dart",
+      "target": "file:lib/model/enum_nine_zong_men.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/domain/services/keti_data_service.dart",
+      "target": "file:lib/domain/entities/daliuren_lesson.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
+      "target": "file:lib/domain/repositories/da_liu_ren_repository.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
+      "target": "file:lib/domain/usecases/base_usecase.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/domain/usecases/calculate_divination_usecase.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/da_liu_ren_gong.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/da_liu_ren_pan_model.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/da_liu_ren_panel.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/enum_gui_ren.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/four_class.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/model/three_chuan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/presentation/widgets/four_class_card.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/presentation/widgets/three_chuan_card.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/domain/services/keti_data_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/my_home_page.dart",
+      "target": "file:lib/data/models/yu_ding_da_liu_ren_data_model.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/data/models/yu_ding_da_liu_ren_data_model.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/design/daliuren_colors.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/design/daliuren_spacing.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/design/daliuren_typography.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/domain/entities/daliuren_lesson.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/model/da_liu_ren_gong.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/model/each_chuan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/model/four_class.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/domain/entities/shen_sha_entity.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/widgets/collapsible_section.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/widgets/responsive_layout.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/pages/new/new_home_page.dart",
+      "target": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/entities/daliuren_lesson.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/entities/shen_sha_entity.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/services/keti_data_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/services/yuding_keti_match_service.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/usecases/base_usecase.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/usecases/calculate_divination_usecase.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/usecases/calculate_shen_sha_usecase.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/domain/usecases/load_divination_data_usecase.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+      "target": "file:lib/presentation/viewmodels/base_viewmodel.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "target": "file:lib/data/models/yu_ding_da_liu_ren_data_model.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "target": "file:lib/design/daliuren_colors.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "target": "file:lib/design/daliuren_spacing.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ancient_text_card.dart",
+      "target": "file:lib/design/daliuren_typography.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/collapsible_section.dart",
+      "target": "file:lib/design/daliuren_colors.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/collapsible_section.dart",
+      "target": "file:lib/design/daliuren_spacing.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/collapsible_section.dart",
+      "target": "file:lib/design/daliuren_typography.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/four_class_card.dart",
+      "target": "file:lib/model/four_class.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "target": "file:lib/model/da_liu_ren_gong.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "target": "file:lib/model/da_liu_ren_ke_pan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/ke_pan_info_card.dart",
+      "target": "file:lib/model/enum_gui_ren.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/keti_detail_widget.dart",
+      "target": "file:lib/domain/entities/daliuren_lesson.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/semantic_chip.dart",
+      "target": "file:lib/design/daliuren_colors.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/semantic_chip.dart",
+      "target": "file:lib/design/daliuren_spacing.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/semantic_chip.dart",
+      "target": "file:lib/design/daliuren_typography.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+      "target": "file:lib/domain/entities/shen_sha_entity.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:lib/presentation/widgets/three_chuan_card.dart",
+      "target": "file:lib/model/three_chuan.dart",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
     }
   ],
   "layers": [
@@ -5728,20 +6465,31 @@
       "description": "Flutter widgets, views, and ChangeNotifier-based viewmodels — the user-facing UI plus the legacy my_home_page.dart still pending full MVVM migration.",
       "nodeIds": [
         "file:lib/pages/dev.dart",
-        "file:lib/pages/my_home_page.dart",
         "file:lib/presentation/viewmodels/base_viewmodel.dart",
-        "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
         "file:lib/presentation/views/da_liu_ren_view.dart",
         "file:lib/presentation/views/widgets/datetime_selector_widget.dart",
         "file:lib/presentation/views/widgets/divination_display_widget.dart",
         "file:lib/presentation/views/widgets/error_widget.dart",
         "file:lib/presentation/views/widgets/loading_widget.dart",
         "file:lib/presentation/widgets/four_class_widget.dart",
-        "file:lib/presentation/widgets/keti_detail_widget.dart",
         "file:lib/presentation/widgets/pan_display_widget.dart",
-        "file:lib/presentation/widgets/shen_sha_display_widget.dart",
         "file:lib/presentation/widgets/three_chuan_widget.dart",
-        "file:lib/presentation/widgets/yu_ding_display_widget.dart"
+        "file:lib/presentation/widgets/yu_ding_display_widget.dart",
+        "file:lib/design/daliuren_colors.dart",
+        "file:lib/design/daliuren_spacing.dart",
+        "file:lib/design/daliuren_typography.dart",
+        "file:lib/pages/my_home_page.dart",
+        "file:lib/pages/new/new_home_page.dart",
+        "file:lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
+        "file:lib/presentation/widgets/ancient_text_card.dart",
+        "file:lib/presentation/widgets/collapsible_section.dart",
+        "file:lib/presentation/widgets/four_class_card.dart",
+        "file:lib/presentation/widgets/ke_pan_info_card.dart",
+        "file:lib/presentation/widgets/keti_detail_widget.dart",
+        "file:lib/presentation/widgets/responsive_layout.dart",
+        "file:lib/presentation/widgets/semantic_chip.dart",
+        "file:lib/presentation/widgets/shen_sha_display_widget.dart",
+        "file:lib/presentation/widgets/three_chuan_card.dart"
       ]
     },
     {
@@ -5761,7 +6509,6 @@
         "file:lib/domain/enums/three_chuan_staff.dart",
         "file:lib/domain/enums/yao_ke_type.dart",
         "file:lib/domain/enums/zei_ke_pattern_type.dart",
-        "file:lib/domain/repositories/da_liu_ren_repository.dart",
         "file:lib/domain/services/calculate_day_night_gui_ren.dart",
         "file:lib/domain/services/calculate_gui_ren_position_service.dart",
         "file:lib/domain/services/calculate_month_general_service.dart",
@@ -5775,16 +6522,17 @@
         "file:lib/domain/services/calculators/three_chuan_strategies/three_chuan_strategy.dart",
         "file:lib/domain/services/calculators/tian_di_pan_calculator.dart",
         "file:lib/domain/services/da_liu_ren_calculation_service.dart",
-        "file:lib/domain/services/keti_data_service.dart",
         "file:lib/domain/services/nine_zong_men_calculator_v1_2.dart",
         "file:lib/domain/services/shen_sha_calculation_service.dart",
         "file:lib/domain/services/shen_sha_calculation_service_impl.dart",
         "file:lib/domain/services/three_chuan_calculator_v1.dart",
         "file:lib/domain/services/yuding_keti_match_service.dart",
-        "file:lib/domain/usecases/base_usecase.dart",
-        "file:lib/domain/usecases/calculate_divination_usecase.dart",
         "file:lib/domain/usecases/calculate_shen_sha_usecase.dart",
-        "file:lib/domain/usecases/load_divination_data_usecase.dart"
+        "file:lib/domain/usecases/load_divination_data_usecase.dart",
+        "file:lib/domain/repositories/da_liu_ren_repository.dart",
+        "file:lib/domain/services/keti_data_service.dart",
+        "file:lib/domain/usecases/base_usecase.dart",
+        "file:lib/domain/usecases/calculate_divination_usecase.dart"
       ]
     },
     {
@@ -5813,8 +6561,8 @@
         "file:lib/data/models/placeholder_data_model.dart",
         "file:lib/data/models/three_chuan_data_model.dart",
         "file:lib/data/models/yu_ding_da_liu_ren_data_model.dart",
-        "file:lib/data/repositories/da_liu_ren_repository_impl.dart",
-        "file:lib/data/services/shen_sha_data_service_impl.dart"
+        "file:lib/data/services/shen_sha_data_service_impl.dart",
+        "file:lib/data/repositories/da_liu_ren_repository_impl.dart"
       ]
     },
     {
@@ -5860,7 +6608,8 @@
         "document:docs/claude/MVVM_REFACTOR_COMPLETION_REPORT.md",
         "document:docs/claude/MVVM_REFACTOR_REPORT.md",
         "document:docs/claude/REFACTOR_PLAN.md",
-        "file:READ_ME_NOTICE"
+        "file:READ_ME_NOTICE",
+        "document:docs/refactor_old_ui_analysis_report.md"
       ]
     },
     {

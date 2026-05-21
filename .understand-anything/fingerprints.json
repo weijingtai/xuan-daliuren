@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "gitCommitHash": "e430ea4e5a6b48f893bfe5bc8b4a323ffe32cebf",
-  "generatedAt": "2026-05-12T20:35:19.151Z",
+  "gitCommitHash": "48cbd975e7f8a3256e4156859d8b38da39f9ac12",
+  "generatedAt": "2026-05-21T23:09:48.633Z",
   "files": {
     "2026-03-23-182823-daliuren-xuan-daliuren.txt": {
       "filePath": "2026-03-23-182823-daliuren-xuan-daliuren.txt",
@@ -346,12 +346,124 @@
     "lib/data/repositories/da_liu_ren_repository_impl.dart": {
       "filePath": "lib/data/repositories/da_liu_ren_repository_impl.dart",
       "contentHash": "fd498449ed1f13fc36cabeb27fbc3f8104624559f795cc655d03b598a22c6f13",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "loadDivinationData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_loadYuDingData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_loadJuMapperData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_loadPanData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_convertJsonToDaLiuRenPanModel",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_getPanByJuNumber",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_getPanByTimeZhi",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_checkPanJu",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_getJuMapper",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "getYuDingData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "getJuMapperData",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "DaLiuRenRepositoryImpl",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "dart:convert",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/foundation.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/services.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/module.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/const_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/repositories/da_liu_ren_repository.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/services/da_liu_ren_calculation_service.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/services/keti_data_service.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/usecases/base_usecase.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/model/da_liu_ren_pan_model.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 248,
-      "hasStructuralAnalysis": false
+      "totalLines": 247,
+      "hasStructuralAnalysis": true
     },
     "lib/data/services/shen_sha_data_service_impl.dart": {
       "filePath": "lib/data/services/shen_sha_data_service_impl.dart",
@@ -497,11 +609,27 @@
       "filePath": "lib/domain/repositories/da_liu_ren_repository.dart",
       "contentHash": "8d2512dde4fef739ddb44fc9a70b2c61863e0f9f046af552929572daaa994701",
       "functions": [],
-      "classes": [],
-      "imports": [],
+      "classes": [
+        {
+          "name": "DaLiuRenRepository",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
       "totalLines": 18,
-      "hasStructuralAnalysis": false
+      "hasStructuralAnalysis": true
     },
     "lib/domain/services/calculate_day_night_gui_ren.dart": {
       "filePath": "lib/domain/services/calculate_day_night_gui_ren.dart",
@@ -636,12 +764,93 @@
     "lib/domain/services/keti_data_service.dart": {
       "filePath": "lib/domain/services/keti_data_service.dart",
       "contentHash": "18bd3dd7a48e4b1af840419f5f7b9c031fb2d88300498eba35eab075c96cd2e8",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "loadData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildLookupMaps",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "findByName",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "findById",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "findByPatternName",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "findByNames",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "findByNineZongMen",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_stripSuffix",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "KetiDataService",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_SubLessonMatch",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "KetiMatchResult",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "dart:convert",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/module.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/model/enum_nine_zong_men.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/services.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../entities/daliuren_lesson.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 253,
-      "hasStructuralAnalysis": false
+      "totalLines": 252,
+      "hasStructuralAnalysis": true
     },
     "lib/domain/services/nine_zong_men_calculator_v1_2.dart": {
       "filePath": "lib/domain/services/nine_zong_men_calculator_v1_2.dart",
@@ -697,21 +906,93 @@
       "filePath": "lib/domain/usecases/base_usecase.dart",
       "contentHash": "b7dc249ee248de6061d5a845b08b2322cc50a95cd20ea768763f6786c4f8d0c8",
       "functions": [],
-      "classes": [],
-      "imports": [],
+      "classes": [
+        {
+          "name": "UseCase",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "Failure",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "DivinationFailure",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "NoParams",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "DateTimeParams",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "ManualJuParams",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 44,
-      "hasStructuralAnalysis": false
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
     },
     "lib/domain/usecases/calculate_divination_usecase.dart": {
       "filePath": "lib/domain/usecases/calculate_divination_usecase.dart",
       "contentHash": "80e7f483f754b402a4be3484e0e548b1abe648ce89919be34a0d397ddea674e0",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "call",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "CalculateDivinationUseCase",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:daliuren/domain/repositories/da_liu_ren_repository.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/usecases/base_usecase.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 37,
-      "hasStructuralAnalysis": false
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
     },
     "lib/domain/usecases/calculate_shen_sha_usecase.dart": {
       "filePath": "lib/domain/usecases/calculate_shen_sha_usecase.dart",
@@ -936,12 +1217,68 @@
     "lib/navigator.dart": {
       "filePath": "lib/navigator.dart",
       "contentHash": "a8f2f68ae18c3db1450358f5c0151cb2f8d76da329efa2f2bed93774a8b81024",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "generateRoute",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_errorPage",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "generateRoute1",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "NavigatorGenerator",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:logger/logger.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:provider/provider.dart",
+          "specifiers": []
+        },
+        {
+          "source": "pages/dev.dart",
+          "specifiers": []
+        },
+        {
+          "source": "pages/my_home_page.dart",
+          "specifiers": []
+        },
+        {
+          "source": "pages/new/new_home_page.dart",
+          "specifiers": []
+        },
+        {
+          "source": "presentation/views/da_liu_ren_view.dart",
+          "specifiers": []
+        },
+        {
+          "source": "di/dependency_injection.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 90,
-      "hasStructuralAnalysis": false
+      "totalLines": 89,
+      "hasStructuralAnalysis": true
     },
     "lib/pages/dev.dart": {
       "filePath": "lib/pages/dev.dart",
@@ -956,12 +1293,332 @@
     "lib/pages/my_home_page.dart": {
       "filePath": "lib/pages/my_home_page.dart",
       "contentHash": "6f88cdf17ff777e9f5f3024eeb27ad8f6e80a12a4cf4ff338d6c389728ba82d9",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "createState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "dispose",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "initState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "pan_base_info",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "main",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildToggleAndCards",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildToggleChip",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildToggleChip",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildToggleChip",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "manuallyJu",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "buildCenterFourZhu",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "buildCenterPanTime",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_pad",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "yu_ding",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "loadBy",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build_panel_model",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "buildMonthGeneral",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "buildFourZhuEightChar",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "buildClassType",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "wrappedDiZhiText",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build_four_ke",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build_san_chuan",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "each_zhu",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "panel_gong",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "content",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "eachGong",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "backgroundContent",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "centerContent",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "buildKongWangCircle",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "getGanColor",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "getZhiColor",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "hideMonthlyGeneralJieQi",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "MyHomePage",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_MyHomePageState",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "dart:async",
+          "specifiers": []
+        },
+        {
+          "source": "dart:convert",
+          "specifiers": []
+        },
+        {
+          "source": "package:animated_custom_dropdown/custom_dropdown.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:board_datetime_picker/board_datetime_picker.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/const_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/module.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/widgets/const_ui_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/widgets/four_zhu_eight_char.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/widgets/twenty_four_jie_qi_tag.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/services.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter_animate/flutter_animate.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter_shakemywidget/flutter_shakemywidget.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter_sliding_toast/flutter_sliding_toast.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:google_fonts/google_fonts.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:intl/intl.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:provider/provider.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:tyme/tyme.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:tuple/tuple.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/da_liu_ren_gong.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/da_liu_ren_pan_model.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/da_liu_ren_panel.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/enum_gui_ren.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/four_class.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../model/three_chuan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../presentation/widgets/four_class_card.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../presentation/widgets/ke_pan_info_card.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../presentation/widgets/keti_detail_widget.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../presentation/widgets/shen_sha_display_widget.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../presentation/widgets/three_chuan_card.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../presentation/viewmodels/da_liu_ren_viewmodel.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../domain/services/keti_data_service.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../data/models/yu_ding_da_liu_ren_data_model.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 2892,
-      "hasStructuralAnalysis": false
+      "totalLines": 2891,
+      "hasStructuralAnalysis": true
     },
     "lib/presentation/viewmodels/base_viewmodel.dart": {
       "filePath": "lib/presentation/viewmodels/base_viewmodel.dart",
@@ -976,12 +1633,124 @@
     "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart": {
       "filePath": "lib/presentation/viewmodels/da_liu_ren_viewmodel.dart",
       "contentHash": "874218361952fddf52f77db11ae1718708d18e3ec4794d7fbc007f30c5a7d721",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "initializeData",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "updateDateTime",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "updateQuestion",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_calculateDivination",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_updateDivinationProperties",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "triggerShakeAnimation",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "recalculate",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "resetToNow",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "clear",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_matchKeTi",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_calculateShenSha",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "DaLiuRenViewModel",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/module.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/entities/daliuren_lesson.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/entities/shen_sha_entity.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/services/keti_data_service.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/services/yuding_keti_match_service.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/usecases/base_usecase.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/usecases/calculate_divination_usecase.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/usecases/load_divination_data_usecase.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/presentation/viewmodels/base_viewmodel.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 269,
-      "hasStructuralAnalysis": false
+      "totalLines": 268,
+      "hasStructuralAnalysis": true
     },
     "lib/presentation/views/da_liu_ren_view.dart": {
       "filePath": "lib/presentation/views/da_liu_ren_view.dart",
@@ -1046,12 +1815,78 @@
     "lib/presentation/widgets/keti_detail_widget.dart": {
       "filePath": "lib/presentation/widgets/keti_detail_widget.dart",
       "contentHash": "d3627029be08ea43c25b92516cf7417ae9b4e065a4b5a7070032a91778de66a1",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "KetiDetailWidget",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_LessonCard",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_SubLessonTile",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_Section",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_TextSection",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/entities/daliuren_lesson.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
       "totalLines": 263,
-      "hasStructuralAnalysis": false
+      "hasStructuralAnalysis": true
     },
     "lib/presentation/widgets/pan_display_widget.dart": {
       "filePath": "lib/presentation/widgets/pan_display_widget.dart",
@@ -1066,12 +1901,74 @@
     "lib/presentation/widgets/shen_sha_display_widget.dart": {
       "filePath": "lib/presentation/widgets/shen_sha_display_widget.dart",
       "contentHash": "669dca20b309b4da0ca2da7333fae6e91cf1739be386b059942194354cf8426b",
-      "functions": [],
-      "classes": [],
-      "imports": [],
+      "functions": [
+        {
+          "name": "createState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildByTypeView",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildTypeSection",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_typeColor",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildByPositionView",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildPositionCell",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "ShenShaDisplayWidget",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_ShenShaDisplayWidgetState",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:daliuren/domain/entities/shen_sha_entity.dart",
+          "specifiers": []
+        }
+      ],
       "exports": [],
-      "totalLines": 292,
-      "hasStructuralAnalysis": false
+      "totalLines": 291,
+      "hasStructuralAnalysis": true
     },
     "lib/presentation/widgets/three_chuan_widget.dart": {
       "filePath": "lib/presentation/widgets/three_chuan_widget.dart",
@@ -1095,13 +1992,13 @@
     },
     "pubspec.yaml": {
       "filePath": "pubspec.yaml",
-      "contentHash": "92e0d0160b438b0191401bb9b84e8aca35e4040160f3e3db354a880255c7da56",
+      "contentHash": "1da11b8f3264d1d908f74acd1f5b1404b10486b15fbe4c777467f06e63c37ee0",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 118,
-      "hasStructuralAnalysis": true
+      "totalLines": 115,
+      "hasStructuralAnalysis": false
     },
     "READ_ME_NOTICE": {
       "filePath": "READ_ME_NOTICE",
@@ -1121,6 +2018,897 @@
       "imports": [],
       "exports": [],
       "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "docs/refactor_old_ui_analysis_report.md": {
+      "filePath": "docs/refactor_old_ui_analysis_report.md",
+      "contentHash": "20c7e09f684dee860b8b9000b28e5fcb40ea90bde966437e956c983c2783f81b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": false
+    },
+    "lib/design/daliuren_colors.dart": {
+      "filePath": "lib/design/daliuren_colors.dart",
+      "contentHash": "a3e59b64b13181a5698af48569b1f75c0bafe87d9d53af1505a548cec53225e4",
+      "functions": [
+        {
+          "name": "auspicious",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "inauspicious",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "neutral",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "DaliurenColors",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "DaliurenOpacity",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "lib/design/daliuren_spacing.dart": {
+      "filePath": "lib/design/daliuren_spacing.dart",
+      "contentHash": "8714dc6c4088824149a4e8a37c93e92b42388f20a20c5f0a5c2290f93a036885",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DaliurenSpacing",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "lib/design/daliuren_typography.dart": {
+      "filePath": "lib/design/daliuren_typography.dart",
+      "contentHash": "7a98f349a106410f6d45bf6bd042d102c472d6ab3a79400f561c558be8f4659e",
+      "functions": [
+        {
+          "name": "h1",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "h2",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "h3",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "body",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "caption",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "tag",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "ganZiTianGan",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "ganZiDiZhi",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "sectionLabel",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "DaliurenTypography",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:google_fonts/google_fonts.dart",
+          "specifiers": []
+        },
+        {
+          "source": "daliuren_colors.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 66,
+      "hasStructuralAnalysis": true
+    },
+    "lib/pages/new/new_home_page.dart": {
+      "filePath": "lib/pages/new/new_home_page.dart",
+      "contentHash": "817c52c4b6c981e2c82027e2dd176f0fb2711fa040e8eeca5d613c08bd891e8b",
+      "functions": [
+        {
+          "name": "createState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "initState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildEmptyState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildContent",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildMobileLayout",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildTabletLayout",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildDesktopLayout",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildActionButtons",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_actionButton",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_actionButton",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_actionButton",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_actionButton",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_actionButton",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildPanArea",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildGongGrid",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildGongCell",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildCenter",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildMonthGeneralCenter",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildFourKeCompact",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_keColumn",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildKePanInfoSection",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildSanChuanSection",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildShenShaSection",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildAncientTextSection",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_loadYuDing",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildManualInput",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_dropdown",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_dropdown",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_dropdown",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_shakeMissing",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_toast",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "paint",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "shouldRepaint",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "NewHomePage",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_NewHomePageState",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_CirclePainter",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "dart:async",
+          "specifiers": []
+        },
+        {
+          "source": "dart:convert",
+          "specifiers": []
+        },
+        {
+          "source": "package:animated_custom_dropdown/custom_dropdown.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:board_datetime_picker/board_datetime_picker.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/const_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/module.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/services.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter_shakemywidget/flutter_shakemywidget.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter_sliding_toast/flutter_sliding_toast.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:provider/provider.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../data/models/yu_ding_da_liu_ren_data_model.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_colors.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_spacing.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_typography.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../domain/entities/daliuren_lesson.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/da_liu_ren_gong.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/each_chuan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/four_class.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../domain/entities/shen_sha_entity.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/viewmodels/da_liu_ren_viewmodel.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/widgets/ancient_text_card.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/widgets/collapsible_section.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/widgets/ke_pan_info_card.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/widgets/keti_detail_widget.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/widgets/responsive_layout.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../presentation/widgets/shen_sha_display_widget.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 905,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/ancient_text_card.dart": {
+      "filePath": "lib/presentation/widgets/ancient_text_card.dart",
+      "contentHash": "bcc21b5d42fb23ca4f5fd8c775c9f6e10ebbdc363a9670aeb866cb73e8c60999",
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildTitleRow",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildBody",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildParagraph",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildDivider",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_chineseNumber",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_parseHighlight",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "AncientTextCard",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_TextPart",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../data/models/yu_ding_da_liu_ren_data_model.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_colors.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_spacing.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_typography.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 206,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/collapsible_section.dart": {
+      "filePath": "lib/presentation/widgets/collapsible_section.dart",
+      "contentHash": "aeeb12e8b188339bd0695bfb7edb7ce7e30ade3acb91fab7d9194661862dbe01",
+      "functions": [
+        {
+          "name": "createState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "initState",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildDivider",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "CollapsibleSection",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_CollapsibleSectionState",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_colors.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_spacing.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_typography.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 109,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/four_class_card.dart": {
+      "filePath": "lib/presentation/widgets/four_class_card.dart",
+      "contentHash": "a7d6fe21e5f5a189bd931c54779e8b96e2677adfbab6b1ece5373d5d29387196",
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildContent",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildClassColumn",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "FourClassCard",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:common/const_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/widgets/const_ui_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:google_fonts/google_fonts.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/four_class.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/ke_pan_info_card.dart": {
+      "filePath": "lib/presentation/widgets/ke_pan_info_card.dart",
+      "contentHash": "6a4facaea8a876a5033f868ff0b348e366b6075d49674eac85e18da0273e302a",
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildDivider",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildTitleRow",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildEightCharRow",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildGodsGrid",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_godsTable",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_godCell",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildKeGeRow",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildMiniTag",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_dynasty",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "KePanInfoCard",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:common/const_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:google_fonts/google_fonts.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/da_liu_ren_gong.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/da_liu_ren_ke_pan.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/enum_gui_ren.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 500,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/responsive_layout.dart": {
+      "filePath": "lib/presentation/widgets/responsive_layout.dart",
+      "contentHash": "240186e0cfd3d461675720a8c723da51cd93056017f1c7546e3ae49fe7c7897f",
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "ResponsiveLayout",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/semantic_chip.dart": {
+      "filePath": "lib/presentation/widgets/semantic_chip.dart",
+      "contentHash": "f7e60c22688e412a064efa8ab995b0c164e30697566e7fe5196d33325c216ad9",
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "SemanticChip",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_colors.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_spacing.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../design/daliuren_typography.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 67,
+      "hasStructuralAnalysis": true
+    },
+    "lib/presentation/widgets/three_chuan_card.dart": {
+      "filePath": "lib/presentation/widgets/three_chuan_card.dart",
+      "contentHash": "a26e57d8f5802d5247d8490566b7c75686d74b4fd1f1ee03e5d5eadd54416d73",
+      "functions": [
+        {
+          "name": "build",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildContent",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildChuanRow",
+          "params": [],
+          "lineCount": 1
+        },
+        {
+          "name": "_buildKongWangCircle",
+          "params": [],
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "ThreeChuanCard",
+          "methods": [],
+          "properties": [],
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "package:common/const_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/enums.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:common/widgets/const_ui_resources_mapper.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:flutter/material.dart",
+          "specifiers": []
+        },
+        {
+          "source": "package:google_fonts/google_fonts.dart",
+          "specifiers": []
+        },
+        {
+          "source": "../../model/three_chuan.dart",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 149,
       "hasStructuralAnalysis": true
     }
   }
