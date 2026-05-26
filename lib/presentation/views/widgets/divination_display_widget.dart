@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:daliuren/domain/schools/school_catalog.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
 import 'package:daliuren/presentation/widgets/keti_detail_widget.dart';
+import 'package:daliuren/presentation/widgets/school_explanation_panel.dart';
+import 'package:daliuren/presentation/widgets/school_slider_bar.dart';
 import 'package:daliuren/presentation/widgets/shen_sha_display_widget.dart';
 
 class DivinationDisplayWidget extends StatelessWidget {
@@ -48,6 +51,21 @@ class DivinationDisplayWidget extends StatelessWidget {
 
               // Shen Sha Display
               ShenShaDisplayWidget(shenShaResults: viewModel.shenShaResults),
+
+              const SizedBox(height: 12),
+
+              // School slider + explanation panel.
+              //
+              // Inserted strictly AFTER the pan / four-class / three-chuan /
+              // keti / shen-sha sections so the formal pan rendering above
+              // remains untouched. Tab switching is owned by the local
+              // [_SchoolSwitcherSection] and never calls the viewmodel — no
+              // recalculate() / calculateDivination() invocations occur here.
+              const _SchoolSwitcherSection(
+                key: Key('school_switcher_section'),
+              ),
+
+              const SizedBox(height: 24),
             ],
           ),
         );
@@ -335,6 +353,71 @@ class DivinationDisplayWidget extends StatelessWidget {
                 ),
               );
             },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Local stateful container for the school slider + explanation panel.
+///
+/// Owns the `_selectedSchoolId` state so tab switches only rebuild this
+/// subtree. Tab callbacks intentionally call **only** `setState` — they must
+/// never invoke `DaLiuRenViewModel.recalculate()` or
+/// `DaLiuRenViewModel.calculateDivination()` so that switching schools does
+/// not re-trigger pan calculation (per Story 7 UI contract §Integration &
+/// State Boundary and ZenTao Task #38 Step 4).
+class _SchoolSwitcherSection extends StatefulWidget {
+  const _SchoolSwitcherSection({super.key});
+
+  @override
+  State<_SchoolSwitcherSection> createState() => _SchoolSwitcherSectionState();
+}
+
+class _SchoolSwitcherSectionState extends State<_SchoolSwitcherSection> {
+  String _selectedSchoolId = 'yuding';
+
+  void _handleSchoolChanged(String id) {
+    if (id == _selectedSchoolId) return;
+    setState(() {
+      _selectedSchoolId = id;
+    });
+  }
+
+  Duration _motionDuration(BuildContext context) {
+    return MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 200);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SchoolSliderBar(
+          key: const Key('divination_school_slider_bar'),
+          schools: SchoolCatalog.all,
+          selectedSchoolId: _selectedSchoolId,
+          onChanged: _handleSchoolChanged,
+        ),
+        const SizedBox(height: 8),
+        AnimatedSwitcher(
+          duration: _motionDuration(context),
+          transitionBuilder: (child, animation) =>
+              FadeTransition(opacity: animation, child: child),
+          child: SchoolExplanationPanel(
+            key: ValueKey<String>(
+                'school_explanation_panel_$_selectedSchoolId'),
+            selectedSchoolId: _selectedSchoolId,
+            // The formal yuding display path (pan / keti / shen-sha) is
+            // already rendered above this section by the parent widget. The
+            // viewmodel does not currently expose a `YuDingEntry`, so we
+            // intentionally leave [availableYudingBuilder] unset and let the
+            // panel surface its built-in yuding fallback copy. This preserves
+            // the contract that the yuding tab must never be substituted by
+            // `SchoolEntryDisplayWidget`.
           ),
         ),
       ],

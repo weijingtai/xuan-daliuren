@@ -69,16 +69,16 @@ void main() {
       }
       expect(tianPanSeq.first, mapper[DiZhi.ZI]!.skyPanDiZhi);
       expect(diPanSeq.first, mapper[DiZhi.ZI]!.groundPanDiZhi);
-      expect(godsSeq.first, mapper[DiZhi.ZI]!.guiRen.name);
+      expect(godsSeq.first.name, mapper[DiZhi.ZI]!.guiRen.name);
       expect(tianGanSeq.first, mapper[DiZhi.ZI]!.tianGan);
 
       // 四课
       FourClass theFour =
           FourClass.fastGenerate(dayGanZhi: dayJiaZi, eachGongMapper: mapper);
-      expect("阴", theFour.first.guiRen.name);
-      expect("空", theFour.second.guiRen.name);
-      expect("贵", theFour.third.guiRen.name);
-      expect("常", theFour.fourth.guiRen.name);
+      expect("阴", theFour.first.guiRen.singleName);
+      expect("空", theFour.second.guiRen.singleName);
+      expect("贵", theFour.third.guiRen.singleName);
+      expect("常", theFour.fourth.guiRen.singleName);
 
       expect(DiZhi.HAI, theFour.first.sky);
       expect(DiZhi.MAO, theFour.second.sky);
@@ -93,16 +93,16 @@ void main() {
       ThreeChuan threeChuan =
           DaLiuRenKePan.calculateThreeChuan(dayJiaZi, theFour, mapper);
 
-      expect('贵', threeChuan.first.guiRen.name);
-      expect('常', threeChuan.second.guiRen.name);
-      expect('勾', threeChuan.third.guiRen.name);
+      expect('贵', threeChuan.first.guiRen.singleName);
+      expect('常', threeChuan.second.guiRen.singleName);
+      expect('勾', threeChuan.third.guiRen.singleName);
 
       expect(DiZhi.YOU, threeChuan.first.diZhi);
       expect(DiZhi.CHOU, threeChuan.second.diZhi);
       expect(DiZhi.SI, threeChuan.third.diZhi);
 
       expect(TianGan.XIN, threeChuan.first.tianGan);
-      expect(null, threeChuan.second.tianGan);
+      expect(TianGan.KONG_WANG, threeChuan.second.tianGan);
       expect(TianGan.DING, threeChuan.third.tianGan);
 
       // print(tianGanSeq.map((e)=>e==TianGan.KONG_WANG ? "○" : e.value));

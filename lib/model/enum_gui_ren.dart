@@ -71,11 +71,11 @@ enum GuiRen{
         return BAI_HU;
       case "常":
         return TAI_CHANG;
-      case "武":
+      case '武':
       case '玄':
         return XUAN_WU;
       case '阴':
-        return TIAN_HOU;
+        return TAI_YIN;
       case '后':
         return TIAN_HOU;
       default:

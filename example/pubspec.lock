@@ -157,9 +157,11 @@ packages:
   daliuren:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "44d7d987b690cd0d90a09fdbf78ae1df82eacdbd"
+      url: "http://xuan:***@192.168.0.165:3000/xuan/xuan-daliuren.git"
+    source: git
     version: "1.0.0+1"
   dart_earcut:
     dependency: transitive
