@@ -55,3 +55,8 @@ app.*.map.json
 # Chrome profile
 .chrome-profile/
 example/.chrome-profile/
+
+# Playwright / CI evidence
+playwright-report/
+test-results/
+node_modules/

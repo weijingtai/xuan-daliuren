@@ -53,6 +53,13 @@ class SelectionPage extends StatelessWidget {
  },
  child: const Text('旧架构新UI (Design System)'),
  ),
+ const SizedBox(height: 24),
+ ElevatedButton(
+ onPressed: () {
+ Navigator.of(context).pushNamed('/daliuren/dev');
+ },
+ child: const Text('多流派调试 (DevPage)'),
+ ),
           ],
         ),
       ),

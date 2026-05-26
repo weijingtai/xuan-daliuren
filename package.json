@@ -1,0 +1,12 @@
+{
+  "name": "xuan-daliuren-acceptance",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:story7": "playwright test tests/story7-multi-school.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}

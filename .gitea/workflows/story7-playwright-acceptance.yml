@@ -1,0 +1,59 @@
+name: Story 7 Playwright Acceptance
+
+on:
+  push:
+    branches:
+      - main
+      - codex-story7-gitea-actions
+      - feat/**
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  story7-acceptance:
+    runs-on: flutter-playwright
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show tool versions
+        run: |
+          flutter --version
+          dart --version
+          node --version
+          npm --version
+
+      - name: Install Flutter dependencies
+        run: |
+          flutter pub get
+          cd example
+          flutter pub get
+
+      - name: Run Flutter regression tests
+        run: |
+          flutter test
+          flutter test test/presentation/widgets/school_slider_bar_test.dart test/presentation/widgets/school_explanation_panel_test.dart
+
+      - name: Install Playwright dependencies
+        run: |
+          npm ci
+          npx playwright install chromium
+
+      - name: Build Flutter Web Example (Debug)
+        run: |
+          cd example
+          flutter build web --debug --dart-define=FLUTTER_WEB_RENDERER=html --no-wasm-dry-run
+
+      - name: Run Story 7 Playwright acceptance
+        run: npm run test:e2e:story7
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: story7-playwright-report
+          path: |
+            playwright-report/
+            test-results/
