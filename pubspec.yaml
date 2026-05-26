@@ -44,7 +44,7 @@ dependencies:
   json_annotation: ^4.10.0
   board_datetime_picker: 2.8.5
   flutter_sliding_toast: ^1.5.3
-  common:
+  xuan_common:
     git:
       url: https://github.com/weijingtai/xuan-common.git
       ref: main
