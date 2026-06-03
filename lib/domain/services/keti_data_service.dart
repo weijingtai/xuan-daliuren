@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:xuan_common/module.dart';
+import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:flutter/services.dart';
 

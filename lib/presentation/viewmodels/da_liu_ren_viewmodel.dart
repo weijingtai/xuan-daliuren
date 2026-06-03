@@ -1,6 +1,6 @@
 import 'package:metaphysics_core/enums.dart';
 import 'package:metaphysics_core/models/shen_sha.dart';
-import 'package:xuan_common/module.dart';
+import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:daliuren/domain/services/keti_data_service.dart';

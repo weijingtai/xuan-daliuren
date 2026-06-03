@@ -6,7 +6,7 @@ import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:theme/const_resources_mapper.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:metaphysics_core/models/shen_sha.dart';
-import 'package:xuan_common/module.dart';
+import 'package:xuan_logger/xuan_logger.dart';
 import 'package:theme/const_ui_resources_mapper.dart';
 import 'package:xuan_four_zhu_card/widgets/four_zhu_eight_char.dart';
 import 'package:xuan_four_zhu_card/widgets/twenty_four_jie_qi_tag.dart';

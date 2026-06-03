@@ -52,6 +52,8 @@ dependencies:
   flutter_sliding_toast: ^1.5.3
   xuan_common:
     path: ../xuan-common
+  xuan_logger:
+    path: ../xuan-logger
   drift: ^2.30.1
   drift_flutter: ^0.2.8
   sqlite3_flutter_libs: ^0.5.41
