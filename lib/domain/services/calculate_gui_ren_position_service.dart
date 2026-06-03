@@ -4,7 +4,7 @@
 
 // enum EnumDayNight { day, night }
 
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 
 import 'calculate_month_general_service.dart';
 

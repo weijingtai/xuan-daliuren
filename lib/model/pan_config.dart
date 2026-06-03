@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../domain/services/calculate_month_general_service.dart';

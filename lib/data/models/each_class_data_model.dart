@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/enum_gui_ren.dart'; // Updated import
 // import 'package:daliuren/model/zei_key_type.dart'; // This enum also needs to be moved or handled
 // For now, let's assume ZeiKeType will be a domain enum or a simple string if not complex

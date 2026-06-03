@@ -21,6 +21,12 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
+  theme:
+    path: ../theme
+  xuan_four_zhu_card:
+    path: ../xuan-four-zhu-card
+  metaphysics_core:
+    path: ../xuan-metaphysics-core
   flutter:
     sdk: flutter
   logger: ^2.6.2

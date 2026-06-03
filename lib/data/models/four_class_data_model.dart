@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:common/enums.dart'; // For TianGan
+import 'package:metaphysics_core/enums.dart'; // For TianGan
 import 'each_class_data_model.dart'; // Updated import
 
 part 'four_class_data_model.g.dart';

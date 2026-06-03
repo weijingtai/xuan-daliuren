@@ -1,5 +1,5 @@
-import 'package:common/enums.dart';
-import 'package:common/models/divination_datetime.dart';
+import 'package:metaphysics_core/enums.dart';
+import 'package:metaphysics_core/models/divination_datetime.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/raw_pan_info_model.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';

@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 
 abstract class DaLiuRenRepository {

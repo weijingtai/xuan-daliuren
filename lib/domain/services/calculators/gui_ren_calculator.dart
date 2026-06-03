@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
 import 'package:tuple/tuple.dart';
 import 'base_calculator.dart';

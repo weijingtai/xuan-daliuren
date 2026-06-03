@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'da_liu_ren_gong_data_model.dart'; // Updated import

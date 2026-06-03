@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 
 abstract class UseCase<Type, Params> {
   Future<Type> call(Params params);

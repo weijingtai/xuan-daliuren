@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 
 /// 神煞基础实体类
 abstract class ShenShaEntity {

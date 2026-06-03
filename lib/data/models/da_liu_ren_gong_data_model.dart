@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:daliuren/model/enum_gui_ren.dart'; // Updated import path for GuiRen
 

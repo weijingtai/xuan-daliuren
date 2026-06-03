@@ -1,5 +1,5 @@
-import 'package:common/enums.dart';
-import 'package:common/models/divination_datetime.dart';
+import 'package:metaphysics_core/enums.dart';
+import 'package:metaphysics_core/models/divination_datetime.dart';
 
 ///
 /// 计算干上神（干上地支）

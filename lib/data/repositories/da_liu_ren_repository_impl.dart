@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:common/enums.dart';
-import 'package:common/module.dart';
-import 'package:common/const_resources_mapper.dart';
+import 'package:metaphysics_core/enums.dart';
+import 'package:xuan_common/module.dart';
+import 'package:theme/const_resources_mapper.dart';
 import 'package:daliuren/domain/repositories/da_liu_ren_repository.dart';
 import 'package:daliuren/domain/services/da_liu_ren_calculation_service.dart';
 import 'package:daliuren/domain/services/keti_data_service.dart';

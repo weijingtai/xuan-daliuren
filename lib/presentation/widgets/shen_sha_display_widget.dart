@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 
 class ShenShaDisplayWidget extends StatefulWidget {

@@ -1,7 +1,7 @@
-import 'package:common/const_resources_mapper.dart';
-import 'package:common/enums.dart';
-import 'package:common/module.dart';
-import 'package:common/widgets/const_ui_resources_mapper.dart';
+import 'package:theme/const_resources_mapper.dart';
+import 'package:metaphysics_core/enums.dart';
+import 'package:xuan_common/module.dart';
+import 'package:xuan_common/widgets/const_ui_resources_mapper.dart';
 import 'package:daliuren/domain/interfaces/school_entry.dart';
 import 'package:daliuren/domain/schools/school_catalog.dart';
 import 'package:daliuren/model/each_class.dart';

@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/da_liu_ren_gong.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';

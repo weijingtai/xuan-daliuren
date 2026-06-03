@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import '../entities/shen_sha_entity.dart';
 import '../services/shen_sha_calculation_service.dart';
 

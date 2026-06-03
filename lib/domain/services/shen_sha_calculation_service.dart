@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import '../entities/shen_sha_entity.dart';
 
 /// 大六壬神煞计算服务接口

@@ -1,4 +1,4 @@
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/zei_key_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 

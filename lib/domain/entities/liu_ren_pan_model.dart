@@ -1,6 +1,6 @@
 /// Represents the complete Liu Ren divination盤 (Pan).
 /// This is a core domain entity holding all calculated and contextual information of a divination.
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/raw_pan_info_model.dart';
 import 'package:daliuren/model/da_liu_ren_gong.dart';

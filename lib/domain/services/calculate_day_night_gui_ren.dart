@@ -1,5 +1,5 @@
-import 'package:common/enums.dart';
-import 'package:common/models/divination_datetime.dart';
+import 'package:metaphysics_core/enums.dart';
+import 'package:metaphysics_core/models/divination_datetime.dart';
 import 'package:daliuren/domain/services/calculate_month_general_service.dart';
 
 class CalculateDayNightGuiRen {

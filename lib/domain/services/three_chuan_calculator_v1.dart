@@ -3,7 +3,7 @@
 // ignore_for_file: constant_identifier_names, unused_local_variable // Example linter ignores
 
 import 'package:collection/collection.dart';
-import 'package:common/enums.dart';
+import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/core/constants/da_liu_ren_common_constants.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:daliuren/domain/enums/pan_type.dart';
