@@ -1,6 +1,5 @@
 import 'package:theme/const_resources_mapper.dart';
 import 'package:metaphysics_core/enums.dart';
-import 'package:xuan_common/module.dart';
 import 'package:theme/const_ui_resources_mapper.dart';
 import 'package:daliuren/domain/interfaces/school_entry.dart';
 import 'package:daliuren/domain/schools/school_catalog.dart';
