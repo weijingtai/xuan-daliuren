@@ -5,11 +5,10 @@
 import 'package:collection/collection.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/core/constants/da_liu_ren_common_constants.dart';
+import 'package:daliuren/model/da_liu_ren_gong.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:daliuren/domain/enums/pan_type.dart';
-import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/model/raw_pan_datamodel.dart';
-import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 import '../entities/raw_pan_info_model.dart';
@@ -108,7 +107,7 @@ class DaLiuRenModelCalculator {
   final JiaZi timeJiaZi;
   // final RawPan rawPanData;
   List<RawEachClass> fourClass;
-  Map<DiZhi, EachGong> gong;
+  Map<DiZhi, DaLiuRenGong> gong;
 
   final DiZhi guiRenPosition;
 
@@ -1032,8 +1031,9 @@ class DaLiuRenModelCalculator {
     String keShiName;
     String basis;
 
-    DiZhi? diPanWhereTianPanYouIs =
-        gong.entries.firstWhereOrNull((entry) => entry.value == DiZhi.YOU)?.key;
+    DiZhi? diPanWhereTianPanYouIs = gong.entries
+        .firstWhereOrNull((entry) => entry.value.skyPanDiZhi == DiZhi.YOU)
+        ?.key;
     if (diPanWhereTianPanYouIs == null) {
       throw Exception("昴星法错误：天盘中未找到酉 (可能是天地盘数据错误)");
     }

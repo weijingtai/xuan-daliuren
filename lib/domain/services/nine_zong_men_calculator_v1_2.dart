@@ -8,6 +8,7 @@ import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:daliuren/domain/enums/pan_type.dart';
 import 'package:daliuren/model/raw_pan_datamodel.dart';
 import 'package:flutter/material.dart';
+import 'package:metaphysics_core/utils/collections_utils.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../model/enum_gui_ren.dart';

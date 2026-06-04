@@ -2,9 +2,12 @@ import 'package:metaphysics_core/enums.dart';
 import 'package:metaphysics_core/models/divination_datetime.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/raw_pan_info_model.dart';
+import 'package:daliuren/model/da_liu_ren_gong.dart';
+import 'package:daliuren/model/each_chuan.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:tuple/tuple.dart';
+import 'package:xuan_common/utils.dart';
 
 import '../../core/constants/da_liu_ren_common_constants.dart';
 import '../../model/pan_config.dart';
@@ -65,15 +68,15 @@ class CalculateRawPanService {
         tianDiPanMapper,
         guiRenPosition);
 
-    // 8. 生成十二宫的 RawEachGong 映射
-    Map<DiZhi, EachGong> gongMapper = {};
+    // 8. 生成十二宫的 DaLiuRenGong 映射
+    Map<DiZhi, DaLiuRenGong> gongMapper = {};
     final List<JiaZi> dayXunList =
         JiaZi.getTenXunByXunHeader(dayJiaZi.getXunHeader());
     Map<DiZhi, JiaZi> dayXunMapper =
         Map.fromEntries(dayXunList.map((e) => MapEntry(e.diZhi, e)));
 
     for (DiZhi groundDiZhi in diPan) {
-      gongMapper[groundDiZhi] = EachGong(
+      gongMapper[groundDiZhi] = DaLiuRenGong(
         groundPanDiZhi: groundDiZhi,
         skyPanDiZhi: tianDiPanMapper[groundDiZhi]!,
         guiRen: godsMapper[groundDiZhi]!,
@@ -151,34 +154,34 @@ class CalculateRawPanService {
 
   Tuple3<EachChuan, EachChuan, EachChuan> convertToEachChuan(
     ThreeChuanOutput threeChuanOutput,
-    Map<DiZhi, EachGong> gongMapper,
+    Map<DiZhi, DaLiuRenGong> gongMapper,
   ) {
     DiZhi firstDiZhi = threeChuanOutput.first.diZhi;
-    EachGong firstGong = gongMapper[firstDiZhi]!;
+    DaLiuRenGong firstGong = gongMapper[firstDiZhi]!;
     EachChuan firstChuan = EachChuan(
       order: threeChuanOutput.first.order,
       guiRen: firstGong.guiRen,
       liuQin: threeChuanOutput.first.liuQin,
       diZhi: firstDiZhi,
-      jiaZi: firstGong.jiaZi,
+      tianGan: firstGong.tianGan,
     );
     DiZhi secondDiZhi = threeChuanOutput.second.diZhi;
-    EachGong secondGong = gongMapper[secondDiZhi]!;
+    DaLiuRenGong secondGong = gongMapper[secondDiZhi]!;
     EachChuan secondChuan = EachChuan(
       order: threeChuanOutput.second.order,
       guiRen: secondGong.guiRen,
       liuQin: threeChuanOutput.second.liuQin,
       diZhi: secondDiZhi,
-      jiaZi: secondGong.jiaZi,
+      tianGan: secondGong.tianGan,
     );
     DiZhi thirdDiZhi = threeChuanOutput.third.diZhi;
-    EachGong thirdGong = gongMapper[thirdDiZhi]!;
+    DaLiuRenGong thirdGong = gongMapper[thirdDiZhi]!;
     EachChuan thirdChuan = EachChuan(
       order: threeChuanOutput.third.order,
       guiRen: thirdGong.guiRen,
       liuQin: threeChuanOutput.third.liuQin,
       diZhi: thirdDiZhi,
-      jiaZi: thirdGong.jiaZi,
+      tianGan: thirdGong.tianGan,
     );
     return Tuple3(firstChuan, secondChuan, thirdChuan);
   }
@@ -267,7 +270,7 @@ class CalculateRawPanService {
   /// 返回四课列表
   List<RawEachClass> _calculateFourClasses(
     JiaZi dayJiaZi,
-    Map<DiZhi, RawEachGong> panMapper,
+    Map<DiZhi, DaLiuRenGong> panMapper,
   ) {
     List<RawEachClass> fourClasses = [];
 
@@ -279,7 +282,7 @@ class CalculateRawPanService {
     DiZhi riGanJiGong = CalculateUponGanService.tianGanJiGongMapper[riGan]!;
     // DiZhi firstClassSky = tianDiPanMapper[riGanJiGong]!;
 
-    RawEachGong firstClassGong = panMapper[riGanJiGong]!;
+    DaLiuRenGong firstClassGong = panMapper[riGanJiGong]!;
     fourClasses.add(RawFirstClass(
       tianGan: riGan,
       sky: firstClassGong.skyPanDiZhi,
@@ -291,7 +294,7 @@ class CalculateRawPanService {
     // DiZhi secondClassGround = _getNextDiZhi(riGanJiGong);
     // DiZhi secondClassSky = tianDiPanMapper[secondClassGround]!;
 
-    RawEachGong secondClassGong = panMapper[firstClassGong.skyPanDiZhi]!;
+    DaLiuRenGong secondClassGong = panMapper[firstClassGong.skyPanDiZhi]!;
     fourClasses.add(RawEachClass(
       order: 2,
       sky: firstClassGong.skyPanDiZhi,
@@ -302,7 +305,7 @@ class CalculateRawPanService {
     // 第三课：找到日支在地盘上的寄宫对应的天盘地支
     // 注意：日支本身就是地支，不需要寄宫转换
     DiZhi thirdClassGround = riZhi;
-    RawEachGong thirdClassGong = panMapper[thirdClassGround]!;
+    DaLiuRenGong thirdClassGong = panMapper[thirdClassGround]!;
 
     fourClasses.add(RawEachClass(
       order: 3,
@@ -314,7 +317,7 @@ class CalculateRawPanService {
     // 第四课：以第三课为起始，按照地支的顺序（顺时针）找到下一个地支
 
     DiZhi fourthClassGround = thirdClassGong.skyPanDiZhi;
-    RawEachGong fourthClassGong = panMapper[fourthClassGround]!;
+    DaLiuRenGong fourthClassGong = panMapper[fourthClassGround]!;
 
     fourClasses.add(RawEachClass(
       order: 4,
