@@ -15,7 +15,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart'; // For finding the app's documents directory
 import 'package:path/path.dart' as p; // For path manipulation
-import 'package:xuan_common/database/connection.dart' as impl;
+import 'connection.dart' as impl;
 // Import all table definitions
 import '../../../models/each_class_data_model.dart';
 import '../../../models/four_class_data_model.dart';

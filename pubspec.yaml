@@ -50,8 +50,6 @@ dependencies:
   json_annotation: ^4.10.0
   board_datetime_picker: 2.8.5
   flutter_sliding_toast: ^1.5.3
-  xuan_common:
-    path: ../xuan-common
   xuan_logger:
     path: ../xuan-logger
   drift: ^2.30.1
