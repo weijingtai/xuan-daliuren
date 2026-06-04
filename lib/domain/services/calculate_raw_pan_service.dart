@@ -6,8 +6,8 @@ import 'package:daliuren/model/da_liu_ren_gong.dart';
 import 'package:daliuren/model/each_chuan.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
+import 'package:metaphysics_core/utils/collections_utils.dart';
 import 'package:tuple/tuple.dart';
-import 'package:xuan_common/utils.dart';
 
 import '../../core/constants/da_liu_ren_common_constants.dart';
 import '../../model/pan_config.dart';
