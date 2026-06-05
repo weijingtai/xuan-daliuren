@@ -425,15 +425,15 @@
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/module.dart",
+          "source": "package:xuan_common/module.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/const_resources_mapper.dart",
+          "source": "package:xuan_common/const_resources_mapper.dart",
           "specifiers": []
         },
         {
@@ -619,7 +619,7 @@
       ],
       "imports": [
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
@@ -832,7 +832,7 @@
           "specifiers": []
         },
         {
-          "source": "package:common/module.dart",
+          "source": "package:xuan_common/module.dart",
           "specifiers": []
         },
         {
@@ -946,7 +946,7 @@
       ],
       "imports": [
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         }
       ],
@@ -982,7 +982,7 @@
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
@@ -1492,27 +1492,27 @@
           "specifiers": []
         },
         {
-          "source": "package:common/const_resources_mapper.dart",
+          "source": "package:xuan_common/const_resources_mapper.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/module.dart",
+          "source": "package:xuan_common/module.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/widgets/const_ui_resources_mapper.dart",
+          "source": "package:xuan_common/widgets/const_ui_resources_mapper.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/widgets/four_zhu_eight_char.dart",
+          "source": "package:xuan_common/widgets/four_zhu_eight_char.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/widgets/twenty_four_jie_qi_tag.dart",
+          "source": "package:xuan_common/widgets/twenty_four_jie_qi_tag.dart",
           "specifiers": []
         },
         {
@@ -1700,11 +1700,11 @@
       ],
       "imports": [
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/module.dart",
+          "source": "package:xuan_common/module.dart",
           "specifiers": []
         },
         {
@@ -1958,7 +1958,7 @@
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
@@ -2380,15 +2380,15 @@
           "specifiers": []
         },
         {
-          "source": "package:common/const_resources_mapper.dart",
+          "source": "package:xuan_common/const_resources_mapper.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/module.dart",
+          "source": "package:xuan_common/module.dart",
           "specifiers": []
         },
         {
@@ -2655,15 +2655,15 @@
       ],
       "imports": [
         {
-          "source": "package:common/const_resources_mapper.dart",
+          "source": "package:xuan_common/const_resources_mapper.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/widgets/const_ui_resources_mapper.dart",
+          "source": "package:xuan_common/widgets/const_ui_resources_mapper.dart",
           "specifiers": []
         },
         {
@@ -2748,11 +2748,11 @@
       ],
       "imports": [
         {
-          "source": "package:common/const_resources_mapper.dart",
+          "source": "package:xuan_common/const_resources_mapper.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
@@ -2883,15 +2883,15 @@
       ],
       "imports": [
         {
-          "source": "package:common/const_resources_mapper.dart",
+          "source": "package:xuan_common/const_resources_mapper.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/enums.dart",
+          "source": "package:xuan_common/enums.dart",
           "specifiers": []
         },
         {
-          "source": "package:common/widgets/const_ui_resources_mapper.dart",
+          "source": "package:xuan_common/widgets/const_ui_resources_mapper.dart",
           "specifiers": []
         },
         {
