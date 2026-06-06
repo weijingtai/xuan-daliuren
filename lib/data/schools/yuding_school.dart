@@ -1,14 +1,16 @@
 // lib/data/schools/yuding_school.dart
 
-import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:daliuren/domain/interfaces/da_liu_ren_school.dart';
 import 'package:daliuren/domain/interfaces/school_entry.dart';
 
 /// 御定大六壬流派实现
 /// 这是第一个实现的流派，作为示例
 class YudingSchool implements DaLiuRenSchool {
-  List<Map<String, dynamic>>? _rawData;
+  final DaLiuRenSchoolDataRepository schoolData;
+  YudingSchool({required this.schoolData});
+
+  List<SchoolEntryContract>? _entries;
   bool _isLoaded = false;
   
   @override
@@ -35,18 +37,11 @@ class YudingSchool implements DaLiuRenSchool {
   @override
   Future<void> loadData() async {
     if (_isLoaded) return;
-    
     try {
-      final jsonString = await rootBundle.loadString(
-        'packages/daliuren/assets/da_liu_ren/御定大六壬.json'
-      );
-      final decoded = jsonDecode(jsonString);
-      _rawData = List<Map<String, dynamic>>.from(
-        (decoded as List).map((item) => Map<String, dynamic>.from(item))
-      );
+      _entries = await schoolData.loadEntries('yuding');
       _isLoaded = true;
     } catch (e) {
-      _rawData = [];
+      _entries = const [];
       _isLoaded = true;
     }
   }
@@ -54,41 +49,34 @@ class YudingSchool implements DaLiuRenSchool {
   @override
   Future<List<SchoolEntry>> matchEntries(String dayJiaZi, String juName) async {
     if (!_isLoaded) await loadData();
-    
-    final matches = _rawData?.where((item) {
-      return item['dayJiaZi'] == dayJiaZi && item['juName'] == juName;
-    }).toList() ?? [];
-    
-    return matches.map((item) => YudingEntry.fromMap(item)).toList();
+    return (_entries ?? const [])
+        .where((e) => e.dayJiaZi == dayJiaZi && e.juName == juName)
+        .map(YudingEntry.fromContract)
+        .toList();
   }
   
   @override
   Future<List<SchoolEntry>> getEntriesByDay(String dayJiaZi) async {
     if (!_isLoaded) await loadData();
-    
-    final matches = _rawData?.where((item) {
-      return item['dayJiaZi'] == dayJiaZi;
-    }).toList() ?? [];
-    
-    return matches.map((item) => YudingEntry.fromMap(item)).toList();
+    return (_entries ?? const [])
+        .where((e) => e.dayJiaZi == dayJiaZi)
+        .map(YudingEntry.fromContract)
+        .toList();
   }
   
   @override
   Future<int> get entryCount async {
     if (!_isLoaded) await loadData();
-    return _rawData?.length ?? 0;
+    return _entries?.length ?? 0;
   }
   
   @override
   Future<List<String>> get supportedDays async {
     if (!_isLoaded) await loadData();
-    
     final days = <String>{};
-    _rawData?.forEach((item) {
-      if (item['dayJiaZi'] != null) {
-        days.add(item['dayJiaZi'] as String);
-      }
-    });
+    for (final e in (_entries ?? const [])) {
+      if (e.dayJiaZi.isNotEmpty) days.add(e.dayJiaZi);
+    }
     return days.toList();
   }
 }
@@ -131,20 +119,4 @@ class YudingEntry implements SchoolEntry {
     required this.details,
     required this.bookReferences,
   });
-  
-  /// 从JSON Map创建实例
-  factory YudingEntry.fromMap(Map<String, dynamic> map) {
-    return YudingEntry(
-      title: '${map['dayJiaZi'] ?? ''}日第${map['juNumber'] ?? ''}局干上${map['juName'] ?? ''}',
-      dayJiaZi: map['dayJiaZi'] ?? '',
-      juName: map['juName'] ?? '',
-      juNumber: map['juNumber'] ?? 0,
-      keTiNames: List<String>.from(map['body'] ?? []),
-      meaning: map['meaning'] ?? '',
-      explanation: map['explain'] ?? '',
-      prediction: map['predication'] ?? '',
-      details: Map<String, String>.from(map['details'] ?? {}),
-      bookReferences: Map<String, String>.from(map['books'] ?? {}),
-    );
-  }
 }
