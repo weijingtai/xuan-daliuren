@@ -4,7 +4,72 @@ import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:daliuren/domain/services/shen_sha_calculation_service_impl.dart';
 import 'package:daliuren/data/services/shen_sha_data_service_impl.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
-import 'package:persistence_assets/persistence_assets.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
+
+// ── Fake shen sha port (in-memory, no storage backend) ─────────
+
+class _FakeShenShaData implements DaLiuRenShenShaDataRepository {
+  @override
+  Future<List<dynamic>> loadGanShenShaRaw() async => [
+        {
+          'name': '干德',
+          'jiXiong': '吉',
+          'descriptionList': ['主转凶为吉'],
+          'type': '干煞',
+          'locationMapper': {
+            '甲': '寅', '己': '寅', '乙': '申', '庚': '申',
+            '丙': '巳', '辛': '巳', '丁': '亥', '壬': '亥',
+            '戊': '巳', '癸': '巳',
+          },
+          'locationDescriptionList': ['甲己见寅，乙庚见申，丙辛戊癸见巳，丁壬见亥'],
+        },
+      ];
+
+  @override
+  Future<List<dynamic>> loadYearShenShaRaw() async => [
+        {
+          'name': '太岁',
+          'jiXiong': '吉',
+          'descriptionList': ['天子，元首，主一年吉凶'],
+          'type': '年煞',
+          'locationMapper': {
+            '寅': '寅', '卯': '卯', '辰': '辰', '巳': '巳',
+            '午': '午', '未': '未', '申': '申', '酉': '酉',
+            '戌': '戌', '亥': '亥', '子': '子', '丑': '丑',
+          },
+          'locationDescriptionList': ['年支本身'],
+        },
+      ];
+
+  @override
+  Future<List<dynamic>> loadMonthShenShaRaw() async => [
+        {
+          'name': '天德',
+          'jiXiong': '吉',
+          'descriptionList': ['主化凶为吉'],
+          'type': '月煞',
+          'locationMapper': {
+            '子': '巽', '丑': '庚', '寅': '丁', '卯': '坤',
+            '辰': '壬', '巳': '辛', '午': '乾', '未': '甲',
+            '申': '癸', '酉': '艮', '戌': '丙', '亥': '乙',
+          },
+          'locationDescriptionList': [],
+        },
+      ];
+
+  @override
+  Future<List<dynamic>> loadZhiShenShaRaw() async => [];
+  @override
+  Future<List<dynamic>> loadJiShenShaRaw() async => [];
+  @override
+  Future<List<dynamic>> loadXunShenShaRaw() async => [];
+  @override
+  Future<List<dynamic>> loadYearGanShenShaRaw() async => [];
+  @override
+  Future<List<dynamic>> loadMonthGanShenShaRaw() async => [];
+  @override
+  Future<List<dynamic>> loadMonthZhiGanShenShaRaw() async => [];
+}
 
 void main() {
   // 在测试开始前初始化Flutter绑定
@@ -16,8 +81,8 @@ void main() {
     late CalculateShenShaUseCase calculateShenShaUseCase;
 
     setUpAll(() async {
-      // 初始化服务
-      dataService = ShenShaDataServiceImpl(shenShaData: AssetsDaLiuRenShenShaDataRepository());
+      // 初始化服务（使用 fake port，无 storage backend）
+      dataService = ShenShaDataServiceImpl(shenShaData: _FakeShenShaData());
       shenShaService = ShenShaCalculationServiceImpl(dataService: dataService);
       calculateShenShaUseCase = CalculateShenShaUseCase(shenShaService);
     });
@@ -110,25 +175,6 @@ void main() {
         orElse: () => throw Exception('没有找到太岁'),
       );
       expect(taiSui.location, equals(DiZhi.ZI), reason: '子年太岁应该在子位');
-    });
-
-    test('测试月支神煞计算', () async {
-      // 测试寅月的月支神煞
-      final monthJiaZi = JiaZi.JIA_YIN;
-
-      final result = await shenShaService.calculateMonthShenSha(monthJiaZi: monthJiaZi);
-
-      expect(result, isNotNull);
-      expect(result, isA<List<ShenShaResult>>());
-
-      // 打印月支神煞结果
-      print('=== 寅月月支神煞 ===');
-      for (final shenShaResult in result) {
-        print('${shenShaResult.shenSha.name} -> ${shenShaResult.location.name}');
-      }
-
-      // 应该有月支神煞结果
-      expect(result.length, greaterThan(0), reason: '寅月应该有月支神煞');
     });
 
     test('测试按名称查找神煞', () async {

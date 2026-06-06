@@ -7,26 +7,36 @@ import 'pages/my_home_page.dart';
 import 'pages/new/new_home_page.dart';
 import 'presentation/views/da_liu_ren_view.dart';
 import 'di/dependency_injection.dart';
+import 'di/daliuren_storage_dependencies.dart';
 
 class NavigatorGenerator {
   static final RouteObserver<PageRoute> routeObserver =
       RouteObserver<PageRoute>();
   static Logger logger = Logger();
   static final routes = {
-    "/daliuren": (context, {arguments}) => MultiProvider(
-          providers: DependencyInjection.getProviders(),
-          child: const DaLiuRenView(),
+    "/daliuren": (context, {arguments}) {
+      final deps = context.read<DaliurenStorageDependencies>();
+      return MultiProvider(
+        providers: DependencyInjection.getProviders(deps),
+        child: const DaLiuRenView(),
+      );
+    },
+    "/daliuren/old": (context, {arguments}) {
+      final deps = context.read<DaliurenStorageDependencies>();
+      return MultiProvider(
+        providers: DependencyInjection.getProviders(deps),
+        child: const MyHomePage(
+          title: "大六壬(旧版)",
         ),
-    "/daliuren/old": (context, {arguments}) => MultiProvider(
-          providers: DependencyInjection.getProviders(),
-          child: const MyHomePage(
-            title: "大六壬(旧版)",
-          ),
-        ),
-    "/daliuren/new": (context, {arguments}) => MultiProvider(
-          providers: DependencyInjection.getProviders(),
-          child: const NewHomePage(),
-        ),
+      );
+    },
+    "/daliuren/new": (context, {arguments}) {
+      final deps = context.read<DaliurenStorageDependencies>();
+      return MultiProvider(
+        providers: DependencyInjection.getProviders(deps),
+        child: const NewHomePage(),
+      );
+    },
     "/daliuren/dev": (context, {arguments}) => const DevMyWidget()
   };
 

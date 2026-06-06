@@ -14,19 +14,16 @@ import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
 import 'package:daliuren/domain/usecases/load_divination_data_usecase.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
-import 'package:persistence_assets/persistence_assets.dart';
+import 'package:daliuren/di/daliuren_storage_dependencies.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 class DependencyInjection {
-  static List<SingleChildWidget> getProviders() {
-    // Host/assembly seam: construct concrete assets backends here only.
-    final DaLiuRenOfficialDataRepository officialData =
-        AssetsDaLiuRenOfficialDataRepository();
-    final DaLiuRenKetiRepository ketiRepo = AssetsDaLiuRenKetiRepository();
-    final DaLiuRenShenShaDataRepository shenShaData =
-        AssetsDaLiuRenShenShaDataRepository();
+  static List<SingleChildWidget> getProviders(DaliurenStorageDependencies deps) {
+    final DaLiuRenOfficialDataRepository officialData = deps.officialData;
+    final DaLiuRenKetiRepository ketiRepo = deps.keti;
+    final DaLiuRenShenShaDataRepository shenShaData = deps.shenShaData;
 
     return [
       // Storage ports (exposed for pages that need direct access)
