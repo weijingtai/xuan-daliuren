@@ -29,6 +29,9 @@ class DependencyInjection {
         AssetsDaLiuRenShenShaDataRepository();
 
     return [
+      // Storage ports (exposed for pages that need direct access)
+      Provider<DaLiuRenOfficialDataRepository>.value(value: officialData),
+
       // Calculators
       Provider<LunarCalculator>(create: (_) => LunarCalculator()),
       Provider<TianDiPanCalculator>(create: (_) => TianDiPanCalculator()),

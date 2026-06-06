@@ -1,16 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:theme/const_resources_mapper.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:metaphysics_core/models/shen_sha.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 
 import '../../data/models/yu_ding_da_liu_ren_data_model.dart';
 import '../../design/daliuren_colors.dart';
@@ -750,9 +748,8 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Future<YuDingDaLiuRenDataModel> _loadYuDing(DaLiuRenKePan pan) async {
-    final jsonString =
-        await rootBundle.loadString('assets/da_liu_ren/御定大六壬.json');
-    final Iterable res = json.decode(jsonString);
+    final officialData = context.read<DaLiuRenOfficialDataRepository>();
+    final List<dynamic> res = await officialData.loadYuDingData();
     final List<YuDingDaLiuRenDataModel> all =
         List<YuDingDaLiuRenDataModel>.from(
             res.map((m) => YuDingDaLiuRenDataModel.fromJson(m)));
