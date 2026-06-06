@@ -2,6 +2,7 @@
 
 import 'package:daliuren/data/schools/yuding_school.dart';
 import 'package:daliuren/domain/interfaces/school_registry.dart';
+import 'package:persistence_assets/persistence_assets.dart';
 
 /// 流派初始化
 /// 在应用启动时调用，注册所有可用的流派
@@ -9,7 +10,9 @@ class SchoolInitialization {
   /// 初始化所有流派
   static Future<void> initialize() async {
     // 注册御定大六壬
-    final yudingSchool = YudingSchool();
+    final yudingSchool = YudingSchool(
+      schoolData: AssetsDaLiuRenSchoolDataRepository(),
+    );
     await yudingSchool.loadData();
     SchoolRegistry.register(yudingSchool);
     

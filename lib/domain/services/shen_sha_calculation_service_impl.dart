@@ -8,8 +8,8 @@ class ShenShaCalculationServiceImpl implements ShenShaCalculationService {
   final ShenShaDataService _dataService;
 
   ShenShaCalculationServiceImpl({
-    ShenShaDataService? dataService,
-  }) : _dataService = dataService ?? ShenShaDataServiceImpl();
+    required ShenShaDataService dataService,
+  }) : _dataService = dataService;
 
   @override
   Future<Map<DiZhi, List<ShenShaResult>>> calculateAllShenSha({

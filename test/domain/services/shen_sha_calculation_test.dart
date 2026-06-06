@@ -4,6 +4,7 @@ import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:daliuren/domain/services/shen_sha_calculation_service_impl.dart';
 import 'package:daliuren/data/services/shen_sha_data_service_impl.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
+import 'package:persistence_assets/persistence_assets.dart';
 
 void main() {
   // 在测试开始前初始化Flutter绑定
@@ -16,7 +17,7 @@ void main() {
 
     setUpAll(() async {
       // 初始化服务
-      dataService = ShenShaDataServiceImpl();
+      dataService = ShenShaDataServiceImpl(shenShaData: AssetsDaLiuRenShenShaDataRepository());
       shenShaService = ShenShaCalculationServiceImpl(dataService: dataService);
       calculateShenShaUseCase = CalculateShenShaUseCase(shenShaService);
     });
