@@ -119,4 +119,19 @@ class YudingEntry implements SchoolEntry {
     required this.details,
     required this.bookReferences,
   });
+
+  factory YudingEntry.fromContract(SchoolEntryContract c) {
+    return YudingEntry(
+      title: c.title,
+      dayJiaZi: c.dayJiaZi,
+      juName: c.juName,
+      juNumber: c.juNumber,
+      keTiNames: c.keTiNames,
+      meaning: c.meaning,
+      explanation: c.explanation,
+      prediction: c.prediction,
+      details: c.details,
+      bookReferences: c.bookReferences,
+    );
+  }
 }
