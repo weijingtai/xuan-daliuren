@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';
-import 'package:flutter/services.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 
 import '../entities/daliuren_lesson.dart';
 
@@ -11,7 +9,8 @@ import '../entities/daliuren_lesson.dart';
 /// 负责加载和查询 keti_data.json 中的64个课体及其子课体数据。
 /// 提供按名称、ID查找课体的能力，以及将计算器输出的 patternName 匹配到对应课体的能力。
 class KetiDataService {
-  static const String _assetPath = 'packages/daliuren/assets/da_liu_ren/keti_data.json';
+  final DaLiuRenKetiRepository keti;
+  KetiDataService({required this.keti});
 
   /// 古代避讳与异名映射字典
   /// 用于兼容不同的排盘数据源（如《御定大六壬》中的古称）
@@ -41,8 +40,7 @@ class KetiDataService {
   Future<void> loadData() async {
     if (_lessons != null) return;
     try {
-      final jsonString = await rootBundle.loadString(_assetPath);
-      final decoded = jsonDecode(jsonString) as List<dynamic>;
+      final decoded = await keti.loadKetiData();
       _lessons = decoded
           .map((e) => DaliurenLesson.fromJson(e as Map<String, dynamic>))
           .toList();
