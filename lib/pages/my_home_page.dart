@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:theme/const_resources_mapper.dart';
@@ -11,8 +9,8 @@ import 'package:theme/const_ui_resources_mapper.dart';
 import 'package:xuan_four_zhu_card/widgets/four_zhu_eight_char.dart';
 import 'package:xuan_four_zhu_card/widgets/twenty_four_jie_qi_tag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -514,7 +512,7 @@ child: pan == null
                       children: [
                         FutureBuilder(
                             future:
-                                loadBy(pan.dayJiaZi, pan.fourClass.first.sky),
+                                loadBy(pan.dayJiaZi, pan.fourClass.first.sky, context.read<DaLiuRenOfficialDataRepository>()),
                             builder: (ctx, snap) {
                               if (snap.hasError) {
                                 logger.e(snap.error.toString());
@@ -714,7 +712,7 @@ child: pan == null
                               children: [
                                 FutureBuilder(
                                     future: loadBy(
-                                        pan.dayJiaZi, pan.fourClass.first.sky),
+                                        pan.dayJiaZi, pan.fourClass.first.sky, context.read<DaLiuRenOfficialDataRepository>()),
                                     builder: (ctx, snap) {
                                       if (snap.hasError) {
                                         logger.d(snap.error.toString());
@@ -1459,11 +1457,10 @@ child: pan == null
   // }
 
   Future<YuDingDaLiuRenDataModel> loadBy(
-      JiaZi dayJiaZi, DiZhi dayUpperDiZhi) async {
+      JiaZi dayJiaZi, DiZhi dayUpperDiZhi,
+      DaLiuRenOfficialDataRepository officialData) async {
     try {
-      String jsonString =
-          await rootBundle.loadString('assets/da_liu_ren/御定大六壬.json');
-      Iterable res = json.decode(jsonString);
+      final List<dynamic> res = await officialData.loadYuDingData();
       List<YuDingDaLiuRenDataModel> all = List<YuDingDaLiuRenDataModel>.from(
           res.map((model) => YuDingDaLiuRenDataModel.fromJson(model)));
       var result = all.firstWhere(
