@@ -14,28 +14,27 @@ import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
 import 'package:daliuren/domain/usecases/load_divination_data_usecase.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
+import 'package:persistence_assets/persistence_assets.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 class DependencyInjection {
   static List<SingleChildWidget> getProviders() {
+    // Host/assembly seam: construct concrete assets backends here only.
+    final DaLiuRenOfficialDataRepository officialData =
+        AssetsDaLiuRenOfficialDataRepository();
+    final DaLiuRenKetiRepository ketiRepo = AssetsDaLiuRenKetiRepository();
+    final DaLiuRenShenShaDataRepository shenShaData =
+        AssetsDaLiuRenShenShaDataRepository();
+
     return [
       // Calculators
-      Provider<LunarCalculator>(
-        create: (_) => LunarCalculator(),
-      ),
-      Provider<TianDiPanCalculator>(
-        create: (_) => TianDiPanCalculator(),
-      ),
-      Provider<GuiRenCalculator>(
-        create: (_) => GuiRenCalculator(),
-      ),
-      Provider<FourClassCalculator>(
-        create: (_) => FourClassCalculator(),
-      ),
-      Provider<ThreeChuanCalculator>(
-        create: (_) => ThreeChuanCalculator(),
-      ),
+      Provider<LunarCalculator>(create: (_) => LunarCalculator()),
+      Provider<TianDiPanCalculator>(create: (_) => TianDiPanCalculator()),
+      Provider<GuiRenCalculator>(create: (_) => GuiRenCalculator()),
+      Provider<FourClassCalculator>(create: (_) => FourClassCalculator()),
+      Provider<ThreeChuanCalculator>(create: (_) => ThreeChuanCalculator()),
 
       // Calculation Service
       Provider<DaLiuRenCalculationService>(
@@ -48,16 +47,17 @@ class DependencyInjection {
         ),
       ),
 
-      // KeTi Data Service
+      // KeTi Data Service (now port-injected)
       Provider<KetiDataService>(
-        create: (_) => KetiDataService(),
+        create: (_) => KetiDataService(keti: ketiRepo),
       ),
 
-      // Repository
+      // Repository (now port-injected for official data)
       Provider<DaLiuRenRepository>(
         create: (context) => DaLiuRenRepositoryImpl(
           calculationService: context.read<DaLiuRenCalculationService>(),
           ketiDataService: context.read<KetiDataService>(),
+          officialData: officialData,
         ),
       ),
 
@@ -68,9 +68,9 @@ class DependencyInjection {
         ),
       ),
 
-      // Shen Sha Services
+      // Shen Sha Services (now port-injected)
       Provider<ShenShaDataServiceImpl>(
-        create: (_) => ShenShaDataServiceImpl(),
+        create: (_) => ShenShaDataServiceImpl(shenShaData: shenShaData),
       ),
       Provider<ShenShaCalculationServiceImpl>(
         create: (context) => ShenShaCalculationServiceImpl(
