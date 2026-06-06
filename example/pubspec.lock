@@ -674,6 +674,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
+  repository_interface_daliuren:
+    dependency: transitive
+    description:
+      path: "../../repository-interface-daliuren"
+      relative: true
+    source: path
+    version: "0.0.0"
   repository_interface_four_zhu_card:
     dependency: transitive
     description:

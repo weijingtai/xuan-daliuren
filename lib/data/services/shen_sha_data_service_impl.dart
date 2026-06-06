@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:daliuren/domain/services/shen_sha_calculation_service.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 
 /// 神煞数据加载服务实现类
 class ShenShaDataServiceImpl implements ShenShaDataService {
-  static const String _assetPrefix = 'packages/daliuren/assets/shen_sha';
+  final DaLiuRenShenShaDataRepository shenShaData;
+  ShenShaDataServiceImpl({required this.shenShaData});
 
   List<TianGanShenShaEntity>? _tianGanShenShaCache;
   List<YearShenShaEntity>? _yearShenShaCache;
@@ -24,9 +24,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_gan.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadGanShenShaRaw();
 
       // 6_shensha_gan.json 中混合了 干煞、日煞、支煞 类型，只加载 干煞
       _tianGanShenShaCache = jsonList
@@ -53,9 +51,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_year.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadYearShenShaRaw();
 
       _yearShenShaCache =
           jsonList.map((json) => YearShenShaEntity.fromJson(json)).toList();
@@ -73,9 +69,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_month.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadMonthShenShaRaw();
 
       _monthShenShaCache =
           jsonList.map((json) => MonthShenShaEntity.fromJson(json)).toList();
@@ -93,9 +87,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_zhi.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadZhiShenShaRaw();
 
       _diZhiShenShaCache =
           jsonList.map((json) => DiZhiShenShaEntity.fromJson(json)).toList();
@@ -113,9 +105,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_ji.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadJiShenShaRaw();
 
       _jiShenShaCache =
           jsonList.map((json) => JiShenShaEntity.fromJson(json)).toList();
@@ -133,9 +123,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_xun.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadXunShenShaRaw();
 
       _xunShenShaCache =
           jsonList.map((json) => XunShenShaEntity.fromJson(json)).toList();
@@ -158,9 +146,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   Future<List<TianGanShenShaEntity>> loadYearGanShenSha() async {
     if (_yearGanShenShaCache != null) return _yearGanShenShaCache!;
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_year_gan.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadYearGanShenShaRaw();
       _yearGanShenShaCache =
           jsonList.map((j) => TianGanShenShaEntity.fromJson(j)).toList();
       return _yearGanShenShaCache!;
@@ -174,9 +160,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   Future<List<TianGanShenShaEntity>> loadMonthGanShenSha() async {
     if (_monthGanShenShaCache != null) return _monthGanShenShaCache!;
     try {
-      final jsonString =
-          await rootBundle.loadString('$_assetPrefix/6_shensha_month_gan.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadMonthGanShenShaRaw();
       _monthGanShenShaCache =
           jsonList.map((j) => TianGanShenShaEntity.fromJson(j)).toList();
       return _monthGanShenShaCache!;
@@ -189,9 +173,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   /// 加载月支干合神煞（6_shensha_month_zhi_gan.json，type='月煞'）
   Future<List<MonthShenShaEntity>> loadMonthZhiGanShenSha() async {
     try {
-      final jsonString = await rootBundle
-          .loadString('$_assetPrefix/6_shensha_month_zhi_gan.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<dynamic> jsonList = await shenShaData.loadMonthZhiGanShenShaRaw();
       return jsonList
           .map((j) => MonthShenShaEntity.fromJson(j))
           .toList();
