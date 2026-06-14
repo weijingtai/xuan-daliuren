@@ -13,6 +13,7 @@ import 'package:daliuren/domain/services/shen_sha_calculation_service_impl.dart'
 import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
 import 'package:daliuren/domain/usecases/load_divination_data_usecase.dart';
+import 'package:daliuren/domain/usecases/load_yuding_data_usecase.dart';
 import 'package:daliuren/domain/usecases/get_keti_data_usecase.dart';
 import 'package:daliuren/domain/usecases/match_yuding_keti_usecase.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
@@ -95,6 +96,7 @@ class DependencyInjection {
             calculateShenShaUseCase: context.read<CalculateShenShaUseCase>(),
             getKetiDataUseCase: GetKetiDataUseCase(context.read<KetiDataService>()),
             matchYuDingKetiUseCase: MatchYuDingKetiUseCase(context.read<YuDingKetiMatchService>()),
+            loadYuDingDataUseCase: LoadYuDingDataUseCase(repository),
           );
         },
       ),

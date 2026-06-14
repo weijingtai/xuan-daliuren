@@ -10,7 +10,6 @@ import 'package:xuan_four_zhu_card/widgets/four_zhu_eight_char.dart';
 import 'package:xuan_four_zhu_card/widgets/twenty_four_jie_qi_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -512,7 +511,7 @@ child: pan == null
                       children: [
                         FutureBuilder(
                             future:
-                                loadBy(pan.dayJiaZi, pan.fourClass.first.sky, context.read<DaLiuRenOfficialDataRepository>()),
+                                loadBy(pan.dayJiaZi, pan.fourClass.first.sky),
                             builder: (ctx, snap) {
                               if (snap.hasError) {
                                 logger.e(snap.error.toString());
@@ -712,7 +711,7 @@ child: pan == null
                               children: [
                                 FutureBuilder(
                                     future: loadBy(
-                                        pan.dayJiaZi, pan.fourClass.first.sky, context.read<DaLiuRenOfficialDataRepository>()),
+                                        pan.dayJiaZi, pan.fourClass.first.sky),
                                     builder: (ctx, snap) {
                                       if (snap.hasError) {
                                         logger.d(snap.error.toString());
@@ -1457,10 +1456,9 @@ child: pan == null
   // }
 
   Future<YuDingDaLiuRenDataModel> loadBy(
-      JiaZi dayJiaZi, DiZhi dayUpperDiZhi,
-      DaLiuRenOfficialDataRepository officialData) async {
+      JiaZi dayJiaZi, DiZhi dayUpperDiZhi) async {
     try {
-      final List<dynamic> res = await officialData.loadYuDingData();
+      final List<dynamic> res = await context.read<DaLiuRenViewModel>().loadYuDingData();
       List<YuDingDaLiuRenDataModel> all = List<YuDingDaLiuRenDataModel>.from(
           res.map((model) => YuDingDaLiuRenDataModel.fromJson(model)));
       var result = all.firstWhere(

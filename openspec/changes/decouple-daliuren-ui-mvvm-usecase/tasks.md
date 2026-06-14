@@ -48,6 +48,16 @@
 
 ---
 
+## D3: Legacy Page Migration (DONE)
+
+- [x] D3a: Add LoadYuDingDataUseCase to DaLiuRenViewModel (field, getter, cached loadYuDingData method)
+- [x] D3b: Migrate my_home_page.dart — replace DaLiuRenOfficialDataRepository with ViewModel.loadYuDingData()
+- [x] D3b: Migrate new_home_page.dart — replace DaLiuRenOfficialDataRepository with ViewModel.loadYuDingData()
+- [x] D3.6: Update tasks.md
+- [x] D3.7: Commit
+
+---
+
 ## D3: Domain Service Cleanup (TODO)
 
 - [ ] D3.1: Remove `package:flutter/material.dart` import from nine_zong_men_calculator_v1_2.dart

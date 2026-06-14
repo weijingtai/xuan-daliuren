@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:provider/provider.dart';
-import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 
 import '../../data/models/yu_ding_da_liu_ren_data_model.dart';
 import '../../design/daliuren_colors.dart';
@@ -748,8 +747,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Future<YuDingDaLiuRenDataModel> _loadYuDing(DaLiuRenKePan pan) async {
-    final officialData = context.read<DaLiuRenOfficialDataRepository>();
-    final List<dynamic> res = await officialData.loadYuDingData();
+    final List<dynamic> res = await context.read<DaLiuRenViewModel>().loadYuDingData();
     final List<YuDingDaLiuRenDataModel> all =
         List<YuDingDaLiuRenDataModel>.from(
             res.map((m) => YuDingDaLiuRenDataModel.fromJson(m)));

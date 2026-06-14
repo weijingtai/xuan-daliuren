@@ -9,6 +9,7 @@ import 'package:daliuren/domain/usecases/base_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
 import 'package:daliuren/domain/usecases/load_divination_data_usecase.dart';
+import 'package:daliuren/domain/usecases/load_yuding_data_usecase.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/presentation/viewmodels/base_viewmodel.dart';
 import 'package:daliuren/presentation/models/da_liu_ren_input_state.dart';
@@ -19,6 +20,7 @@ class DaLiuRenViewModel extends BaseViewModel {
   final CalculateShenShaUseCase? _calculateShenShaUseCase;
   final GetKetiDataUseCase? _getKetiDataUseCase;
   final MatchYuDingKetiUseCase? _matchYuDingKetiUseCase;
+  final LoadYuDingDataUseCase? _loadYuDingDataUseCase;
 
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
@@ -26,11 +28,13 @@ class DaLiuRenViewModel extends BaseViewModel {
     CalculateShenShaUseCase? calculateShenShaUseCase,
     GetKetiDataUseCase? getKetiDataUseCase,
     MatchYuDingKetiUseCase? matchYuDingKetiUseCase,
+    LoadYuDingDataUseCase? loadYuDingDataUseCase,
   })  : _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
         _calculateShenShaUseCase = calculateShenShaUseCase,
         _getKetiDataUseCase = getKetiDataUseCase,
-        _matchYuDingKetiUseCase = matchYuDingKetiUseCase;
+        _matchYuDingKetiUseCase = matchYuDingKetiUseCase,
+        _loadYuDingDataUseCase = loadYuDingDataUseCase;
 
   // ==================== 输入状态（Input State） ====================
   DaLiuRenInputState _inputState = DaLiuRenInputState.empty;
@@ -42,6 +46,7 @@ class DaLiuRenViewModel extends BaseViewModel {
   DateTime _selectedDateTime = DateTime.now();
   String? _question;
   DaLiuRenKePan? _currentDivination;
+  List<dynamic>? _yudingData;
 
   // UI State properties
   JiaZi? _yearJiaZi;
@@ -75,6 +80,7 @@ class DaLiuRenViewModel extends BaseViewModel {
   List<DaliurenLesson> get matchedLessons => _matchedLessons;
   List<String> get matchedKeTiNames => _matchedKeTiNames;
   List<KetiMatchResult> get matchedKetiResults => _matchedKetiResults;
+  List<dynamic>? get yudingData => _yudingData;
 
   // Initialize data
   Future<void> initializeData() async {
@@ -92,6 +98,16 @@ class DaLiuRenViewModel extends BaseViewModel {
       print('🔴 [ViewModel] Error loading data: $e');
       setError(e is DivinationFailure ? e.message : e.toString());
     }
+  }
+
+  /// 加载御定大六壬数据（缓存结果）
+  Future<List<dynamic>> loadYuDingData() async {
+    if (_yudingData != null) return _yudingData!;
+    if (_loadYuDingDataUseCase == null) {
+      throw DivinationFailure('LoadYuDingDataUseCase not configured');
+    }
+    _yudingData = await _loadYuDingDataUseCase!.call(NoParams());
+    return _yudingData!;
   }
 
   // Update selected date/time
