@@ -31,7 +31,6 @@ import '../presentation/widgets/keti_detail_widget.dart';
 import '../presentation/widgets/shen_sha_display_widget.dart';
 import '../presentation/widgets/three_chuan_card.dart';
 import '../presentation/viewmodels/da_liu_ren_viewmodel.dart';
-import '../domain/services/keti_data_service.dart';
 import '../data/models/yu_ding_da_liu_ren_data_model.dart';
 
 class MyHomePage extends StatefulWidget {
