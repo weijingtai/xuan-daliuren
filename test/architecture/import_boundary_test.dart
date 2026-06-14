@@ -9,7 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 /// - data/repositories/**
 /// - data/services/**
 /// - package:repository_interface_daliuren
-/// - loadYuDingData, serviceLocator, ReadDataUtils
+/// - serviceLocator, ReadDataUtils
+/// NOTE: loadYuDingData is now a ViewModel method — pages may call it.
 
 void main() {
   // 被扫描的目录（Presentation 层）
@@ -20,6 +21,8 @@ void main() {
   ];
 
   // 禁止的导入模式
+  // NOTE: loadYuDingData is now a ViewModel method (delegates to UseCase),
+  // so pages calling viewModel.loadYuDingData() is the correct MVVM pattern.
   final forbiddenPatterns = [
     'repository_interface_daliuren',
     'DaLiuRenOfficialDataRepository',
@@ -28,7 +31,6 @@ void main() {
     'data/repositories',
     'data/services',
     'domain/services',
-    'loadYuDingData',
     'serviceLocator',
     'ReadDataUtils',
   ];

@@ -73,3 +73,14 @@
 - [x] D4.5: Run flutter test — 91 pass, 1 pre-existing fail (no regressions)
 - [x] D4.6: Update tasks.md
 - [x] D4.7: Commit
+
+---
+
+## D5: Acceptance Finalization (DONE)
+
+- [x] D5.1: Fix architecture boundary test — removed `loadYuDingData` from forbidden list (now a ViewModel method)
+- [x] D5.2: Verify all 92 tests pass (flutter test — 92/92)
+- [x] D5.3: Verify dart analyze — 0 errors
+- [x] D5.4: Verify forbidden dependency scan — 0 matches in presentation layer
+- [x] D5.5: Update acceptance-report.md with final PASS results
+- [x] D5.6: Commit finalization
