@@ -8,5 +8,8 @@ linter:
     constant_identifier_names: false
 
 analyzer:
+  exclude:
+    - "example/**"
+    - "test/**"
   errors:
     constant_identifier_names: ignore
