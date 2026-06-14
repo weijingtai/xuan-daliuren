@@ -5,7 +5,7 @@ import 'package:daliuren/presentation/widgets/keti_detail_widget.dart';
 class PanDisplayWidget extends StatelessWidget {
   final LiuRenPanModel? liuRenPan;
 
-  const PanDisplayWidget({Key? key, required this.liuRenPan}) : super(key: key);
+  const PanDisplayWidget({super.key, required this.liuRenPan});
 
   @override
   Widget build(BuildContext context) {

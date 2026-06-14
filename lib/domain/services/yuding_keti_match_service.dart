@@ -1,6 +1,7 @@
 import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/domain/repositories/da_liu_ren_repository.dart';
 import 'package:daliuren/model/da_liu_ren_panel.dart';
+import 'package:xuan_logger/xuan_logger.dart';
 
 class YuDingKetiMatchService {
   final DaLiuRenRepository repository;
@@ -21,7 +22,7 @@ class YuDingKetiMatchService {
       // 获取该寄宫上的天盘地支名称，作为 juName 进行匹配
       final String juName = kePan.getGongMapper()[jiGong]!.skyPanDiZhi.name;
       
-      print('🔍 [YuDingService] Searching match for: Day=$dayJiaZiStr, Ju=$juName (JiGong=${jiGong.name})');
+      logger.d('🔍 [YuDingService] Searching match for: Day=$dayJiaZiStr, Ju=$juName (JiGong=${jiGong.name})');
 
       // 在御定数据集中查找对应的条目
       final match = yuDingData.firstWhere(
@@ -31,14 +32,14 @@ class YuDingKetiMatchService {
 
       if (match != null && match['body'] != null) {
         final results = List<String>.from(match['body']);
-        print('✅ [YuDingService] Found KeTi: $results');
+        logger.d('✅ [YuDingService] Found KeTi: $results');
         return results;
       }
       
-      print('❌ [YuDingService] No match found in YuDing dataset for $dayJiaZiStr / $juName');
+      logger.d('❌ [YuDingService] No match found in YuDing dataset for $dayJiaZiStr / $juName');
       return [];
     } catch (e) {
-      print('🚨 [YuDingService] Error matching KeTi: $e');
+      logger.e('🚨 [YuDingService] Error matching KeTi: $e');
       return [];
     }
   }

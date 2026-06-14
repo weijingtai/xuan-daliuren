@@ -61,7 +61,7 @@ enum GuiRen{
   bool get isXiong => jiXiong.isXiong();
 
   static List<GuiRen> get clockwiseList=> [GUI_REN,TENG_SHE,ZHU_QUE,LIU_HE,GOU_CHEN,QING_LONG,TIAN_KONG,BAI_HU,TAI_CHANG,XUAN_WU,TAI_YIN,TIAN_HOU];
-  static List<GuiRen> get antiClockwiseList => [GUI_REN, ...[TENG_SHE,ZHU_QUE,LIU_HE,GOU_CHEN,QING_LONG,TIAN_KONG,BAI_HU,TAI_CHANG,XUAN_WU,TAI_YIN,TIAN_HOU].reversed.toList()];
+  static List<GuiRen> get antiClockwiseList => [GUI_REN, ...[TENG_SHE,ZHU_QUE,LIU_HE,GOU_CHEN,QING_LONG,TIAN_KONG,BAI_HU,TAI_CHANG,XUAN_WU,TAI_YIN,TIAN_HOU].reversed];
   static GuiRen getBySingleName(String singleName){
     switch(singleName){
        case "贵":

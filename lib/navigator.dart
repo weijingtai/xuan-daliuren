@@ -57,7 +57,7 @@ class NavigatorGenerator {
     }
   }
 
-  static Route _errorPage(msg) {
+  static Route _errorPage(String msg) {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
           appBar: AppBar(title: const Text('大六壬_未知页面')),

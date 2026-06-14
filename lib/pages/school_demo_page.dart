@@ -9,7 +9,7 @@ import 'package:daliuren/presentation/widgets/school_entry_display_widget.dart';
 /// 流派演示页面
 /// 展示如何使用多流派功能
 class SchoolDemoPage extends StatefulWidget {
-  const SchoolDemoPage({Key? key}) : super(key: key);
+  const SchoolDemoPage({super.key});
   
   @override
   State<SchoolDemoPage> createState() => _SchoolDemoPageState();
@@ -44,7 +44,7 @@ class _SchoolDemoPageState extends State<SchoolDemoPage> {
         });
       }
     } catch (e) {
-      print('加载条目失败: $e');
+      debugPrint('加载条目失败: $e');
     } finally {
       setState(() {
         _isLoading = false;

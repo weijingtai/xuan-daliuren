@@ -15,14 +15,11 @@ class ThreeChuanZeiKe extends ThreeChuan {
   ThreeChuanZeiKe({
     required this.type,
     required this.zeiKeType,
-    required EachChuan first,
-    required EachChuan second,
-    required EachChuan third,
+    required super.first,
+    required super.second,
+    required super.third,
   }) : super(
-            nineZongMen: NineZongMen.ZEI_KE,
-            first: first,
-            second: second,
-            third: third);
+            nineZongMen: NineZongMen.ZEI_KE);
 
   factory ThreeChuanZeiKe.fromJson(Map<String, dynamic> json) =>
       _$ThreeChuanZeiKeFromJson(json);

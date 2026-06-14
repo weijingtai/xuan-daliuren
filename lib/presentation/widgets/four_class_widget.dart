@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FourClassWidget extends StatelessWidget {
   final List<Map<String, dynamic>> fourClasses;
 
-  const FourClassWidget({Key? key, required this.fourClasses}) : super(key: key);
+  const FourClassWidget({super.key, required this.fourClasses});
 
   @override
   Widget build(BuildContext context) {

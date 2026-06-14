@@ -99,8 +99,6 @@ class CalculateGuiRenPositionService {
         return dayNight.isDay ? version2DayGod[stem]! : version2NightGod[stem]!;
       case GuiRenType.Jia_Yang_Wu_Geng_Niu:
         return dayNight.isDay ? version3DayGod[stem]! : version3NightGod[stem]!;
-      default:
-        throw ArgumentError("版本号必须是1、2或3");
     }
   }
 }

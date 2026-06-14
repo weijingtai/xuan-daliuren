@@ -74,7 +74,7 @@ class _DevMyWidgetState extends State<DevMyWidget> {
             const SizedBox(height: 8),
             Expanded(
               child: _section == _DevSection.fourKe
-                  ? Center(child: build_four_ke(generateFourClass()))
+                  ? Center(child: buildFourKe(generateFourClass()))
                   : _buildMultiSchoolSection(context),
             ),
           ],
@@ -159,37 +159,35 @@ class _DevMyWidgetState extends State<DevMyWidget> {
       height: 1.0,
       shadows: [
         Shadow(
-            color: Colors.grey.withOpacity(.5),
+            color: Colors.grey.withValues(alpha: .5),
             blurRadius: 2,
             offset: const Offset(0, 0))
       ]);
 
-  Widget build_four_ke(FourClass fourClass) {
+  Widget buildFourKe(FourClass fourClass) {
     double diZhiFontSize = gongSize.width * .24;
-    double otherFontSize = gongSize.width * .24;
     TextStyle tianGanStyle = ConstUIResourcesMapper.tianGanTextStyle
         .copyWith(fontSize: diZhiFontSize, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
     TextStyle diZhiStyle = ConstUIResourcesMapper.twelveDiZhiTextStyle
         .copyWith(fontSize: diZhiFontSize, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
     TextStyle guiRenName =
         guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .14, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
     SizedBox intervalSize = const SizedBox(width: 6);
-    double height = gongSize.height;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -289,11 +287,11 @@ class _DevMyWidgetState extends State<DevMyWidget> {
   }
 
   Color getZhiColor(DiZhi zhi) {
-    return ConstResourcesMapper.zodiacZhiColors[zhi]!.withOpacity(.8);
+    return ConstResourcesMapper.zodiacZhiColors[zhi]!.withValues(alpha: .8);
   }
 
   Color getGanColor(TianGan gan) {
-    return ConstResourcesMapper.zodiacGanColors[gan]!.withOpacity(.6);
+    return ConstResourcesMapper.zodiacGanColors[gan]!.withValues(alpha: .6);
   }
 }
 

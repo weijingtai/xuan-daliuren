@@ -135,6 +135,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   }
 
   /// 加载日煞（日干专属神煞，来自 6_shensha_gan.json 中 type='日煞' 的条目）
+  @override
   Future<List<TianGanShenShaEntity>> loadDayGanShenSha() async {
     if (_dayGanShenShaCache != null) return _dayGanShenShaCache!;
     // 触发 loadTianGanShenSha 会同时缓存 日煞
@@ -143,6 +144,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   }
 
   /// 加载年干神煞（6_shensha_year_gan.json）
+  @override
   Future<List<TianGanShenShaEntity>> loadYearGanShenSha() async {
     if (_yearGanShenShaCache != null) return _yearGanShenShaCache!;
     try {
@@ -157,6 +159,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   }
 
   /// 加载月干神煞（6_shensha_month_gan.json）
+  @override
   Future<List<TianGanShenShaEntity>> loadMonthGanShenSha() async {
     if (_monthGanShenShaCache != null) return _monthGanShenShaCache!;
     try {

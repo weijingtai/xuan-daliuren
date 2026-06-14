@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ThreeChuanWidget extends StatelessWidget {
   final List<Map<String, dynamic>> threeChuans;
 
-  const ThreeChuanWidget({Key? key, required this.threeChuans}) : super(key: key);
+  const ThreeChuanWidget({super.key, required this.threeChuans});
 
   @override
   Widget build(BuildContext context) {

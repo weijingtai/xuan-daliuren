@@ -8,14 +8,11 @@ part 'three_chuan_bi_yong.g.dart';
 @JsonSerializable()
 class ThreeChuanBiYong extends ThreeChuan {
   ThreeChuanBiYong({
-    required EachChuan first,
-    required EachChuan second,
-    required EachChuan third,
+    required super.first,
+    required super.second,
+    required super.third,
   }) : super(
-            nineZongMen: NineZongMen.BI_YONG,
-            first: first,
-            second: second,
-            third: third);
+            nineZongMen: NineZongMen.BI_YONG);
 
   factory ThreeChuanBiYong.fromJson(Map<String, dynamic> json) =>
       _$ThreeChuanBiYongFromJson(json);

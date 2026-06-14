@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:daliuren/data/repositories/da_liu_ren_repository_impl.dart';
 import 'package:daliuren/domain/services/keti_data_service.dart';
 import 'package:daliuren/di/daliuren_storage_dependencies.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';

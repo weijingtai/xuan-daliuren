@@ -11,10 +11,10 @@ class SchoolSelectorWidget extends StatefulWidget {
   final ValueChanged<String>? onSchoolChanged;
   
   const SchoolSelectorWidget({
-    Key? key,
+    super.key,
     this.selectedSchoolId,
     this.onSchoolChanged,
-  }) : super(key: key);
+  });
   
   @override
   State<SchoolSelectorWidget> createState() => _SchoolSelectorWidgetState();

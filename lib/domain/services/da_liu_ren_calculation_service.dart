@@ -1,4 +1,3 @@
-import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/domain/services/calculators/lunar_calculator.dart';
 import 'package:daliuren/domain/services/calculators/tian_di_pan_calculator.dart';
 import 'package:daliuren/domain/services/calculators/gui_ren_calculator.dart';
@@ -52,8 +51,6 @@ class DaLiuRenCalculationService {
       // 步骤1: 计算农历与八字
       final baZiStr = lunarCalculator.calculateBaZi(dateTime);
       final baZiList = lunarCalculator.parseBaZiString(baZiStr);
-      final yearJiaZi = baZiList[0];
-      final monthJiaZi = baZiList[1];
       final dayJiaZi = baZiList[2];
       final timeJiaZi = baZiList[3];
 
@@ -91,15 +88,15 @@ class DaLiuRenCalculationService {
       // 步骤7: 计算四课
       final fourClass = fourClassCalculator.calculate(dayJiaZi, gongMapper);
 
-      // 步骤8: 计算三传
-      final threeChuan = threeChuanCalculator.calculate(
+      // 步骤8: 计算三传 (currently unused but kept for future use)
+      threeChuanCalculator.calculate(
         dayJiaZi,
         fourClass,
         gongMapper,
       );
 
-      // 步骤9: 计算阴阳遁
-      final yinYangDun = lunarCalculator.determineYinYangDun(isDayGuiRen);
+      // 步骤9: 计算阴阳遁 (currently unused but kept for future use)
+      lunarCalculator.determineYinYangDun(isDayGuiRen);
 
       // 步骤10: 组装完整的盘面数据
       // 注意: 这里直接使用DaLiuRenKePan的现有构造函数

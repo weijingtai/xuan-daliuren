@@ -5,7 +5,6 @@ import 'package:daliuren/domain/entities/raw_pan_info_model.dart';
 import 'package:daliuren/model/da_liu_ren_gong.dart';
 import 'package:daliuren/model/each_chuan.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
-import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:metaphysics_core/utils/collections_utils.dart';
 import 'package:tuple/tuple.dart';
 
@@ -29,8 +28,6 @@ class CalculateRawPanService {
       CalculateMonthGeneralService();
   final CalculateUponGanService _zhiOnGanService = CalculateUponGanService();
   final CalculateDayNightGuiRen _dayNightGuiRen = CalculateDayNightGuiRen();
-  final CalculateGuiRenPositionService _guiRenPositionService =
-      CalculateGuiRenPositionService();
   final KetiDataService? _ketiDataService;
 
   CalculateRawPanService({KetiDataService? ketiDataService})

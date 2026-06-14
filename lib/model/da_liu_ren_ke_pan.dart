@@ -29,7 +29,7 @@ class DaLiuRenKePan extends DaLiuRenPanel {
   late final JiaZi timeJiaZi;
   late final DiZhi guiRenDiZhi; // 贵人位
   late final bool isDayGuiRen; // 是否是日贵人
-  static final TWELVE_GODS_LIST = [
+  static final twelveGodsList = [
     "贵人",
     "腾蛇",
     "朱雀",
@@ -63,7 +63,7 @@ class DaLiuRenKePan extends DaLiuRenPanel {
   late Map<DiZhi, DaLiuRenGong> gongMapper = {};
 
   // List<String> dayChen = ["卯","辰","巳","午","未","申"];
-  static final List<DiZhi> DAY_CHEN = [
+  static final List<DiZhi> dayChen = [
     DiZhi.MAO,
     DiZhi.CHEN,
     DiZhi.SI,
@@ -471,7 +471,6 @@ class DaLiuRenKePan extends DaLiuRenPanel {
     if (tenGanJiGongMapper[dayJiaZi.tianGan]! != dayJiaZi.diZhi) {
       return null; // 当前并非“八专”
     }
-    EachChuan firstChuan;
     DaLiuRenGong firstGong;
     // 之后，才为真的八专
     // 1. 日干为阳，以日干上神在天盘顺时针数3神为初传；
@@ -902,7 +901,7 @@ class DaLiuRenKePan extends DaLiuRenPanel {
     return null;
   }
 
-  @deprecated
+  @Deprecated("Use checkByZeiKe instead - superseded by improved zei/ke logic")
   static ThreeChuan? checkByZeiKe2(JiaZi dayJiaZi, FourClass fourClass,
       Map<DiZhi, DaLiuRenGong> gongMapper) {
     List<int> keIndexList = []; // 上克下 为顺克，保存一到四课的index,如何存在“克”则将index此List
@@ -1039,30 +1038,6 @@ class DaLiuRenKePan extends DaLiuRenPanel {
             third: thirdChuan);
       default:
         return null; // 不支持的九宗门类型
-    }
-  }
-
-// 处理多个贼课或克课
-  @deprecated
-  static EachClass? _handleMultipleZeiKe(JiaZi dayJiaZi, FourClass fourClass,
-      Map<DiZhi, DaLiuRenGong> gongMapper, List<int> indexList, bool isKe) {
-    List<EachClass> sameYinYangWithDayGan = [];
-
-    for (int index in indexList) {
-      EachClass each = fourClass.getAsIndex(index);
-      if (each.isSkySameYinYangWithDayGan) {
-        sameYinYangWithDayGan.add(each);
-      }
-    }
-
-    if (sameYinYangWithDayGan.isEmpty) {
-      throw UnimplementedError("${isKe ? "克" : "贼"}课 比用法 没有与日干同阴阳的");
-    } else if (sameYinYangWithDayGan.length == 1) {
-      return sameYinYangWithDayGan.first;
-    } else {
-      Tuple2<SheHaiType, EachClass>? result =
-          sheHai(dayJiaZi, fourClass, sameYinYangWithDayGan, gongMapper, isKe);
-      return result?.item2;
     }
   }
 
@@ -1560,7 +1535,6 @@ class DaLiuRenKePan extends DaLiuRenPanel {
         // 涉害中不取四季
         list = [DiZhi.CHEN, DiZhi.XU, DiZhi.CHOU, DiZhi.WEI];
         return null;
-        break;
       default:
         throw UnimplementedError("涉害次数选取孟仲季多于3次");
     }
@@ -1682,7 +1656,6 @@ class DaLiuRenKePan extends DaLiuRenPanel {
         // 涉害中不取四季
         list = [DiZhi.CHEN, DiZhi.XU, DiZhi.CHOU, DiZhi.WEI];
         return null;
-        break;
       default:
         throw UnimplementedError("涉害次数选取孟仲季多于3次");
     }
@@ -1782,10 +1755,10 @@ class DaLiuRenKePan extends DaLiuRenPanel {
 
   /// @return item1 为日夜贵人区分，日贵人为true,夜贵人为false
   ///          item2 为贵人地支位置
-  @deprecated
-  static Tuple2<bool, DiZhi> calculate_gui_ren(
+  @Deprecated('Use calculateGuiRenLocationWithFirst instead')
+  static Tuple2<bool, DiZhi> calculateGuiRen(
       JiaZi dayGanZhi, JiaZi timeGanZhi) {
-    bool isDay = DAY_CHEN.contains(timeGanZhi.diZhi);
+    bool isDay = dayChen.contains(timeGanZhi.diZhi);
     var locationDiZhi = isDay
         ? dayNightGuiRenMapper[dayGanZhi.tianGan]!.item1
         : dayNightGuiRenMapper[dayGanZhi.tianGan]!.item2;
@@ -1797,7 +1770,7 @@ class DaLiuRenKePan extends DaLiuRenPanel {
     /// 根据 “甲戊庚牛羊”进行计算
     /// @return item1 为是否为昼贵人，true为昼，false为夜晚
 
-    bool isDay = DAY_CHEN.contains(timeGanZhi.diZhi);
+    bool isDay = dayChen.contains(timeGanZhi.diZhi);
     var locationDiZhi = isDay
         ? dayNightGuiRenMapper[dayGanZhi.tianGan]!.item1
         : dayNightGuiRenMapper[dayGanZhi.tianGan]!.item2;

@@ -6,22 +6,19 @@ class YuDingDisplayWidget extends StatelessWidget {
   final YuDingEntry yuDingEntry;
 
   const YuDingDisplayWidget({
-    Key? key,
+    super.key,
     required this.yuDingEntry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          child: Text(
-            yuDingEntry.title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-          ),
+        Text(
+          yuDingEntry.title,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
         ),
-        Container(
-          child: RichText(
+        RichText(
               text: TextSpan(
                   text: yuDingEntry.raw.join(" "),
                   style: const TextStyle(
@@ -29,7 +26,6 @@ class YuDingDisplayWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Colors.black87)
                   )),
-        ),
         RichText(
           text: TextSpan(
               style: const TextStyle(fontSize: 16, color: Colors.black87),
@@ -65,7 +61,7 @@ class YuDingDisplayWidget extends StatelessWidget {
                       text: "${entry.key}：",
                       children: [TextSpan(text: entry.value)]),
                 ))
-            .toList(),
+            ,
         const SizedBox(
           height: 12,
         ),
@@ -77,7 +73,7 @@ class YuDingDisplayWidget extends StatelessWidget {
                       text: "${entry.key}：",
                       children: [TextSpan(text: entry.value)]),
                 ))
-            .toList()
+            
       ],
     );
   }

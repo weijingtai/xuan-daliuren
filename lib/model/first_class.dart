@@ -12,13 +12,12 @@ class FirstClass extends EachClass {
   FirstClass({
     required DiZhi sky,
     required DiZhi ground,
-    required GuiRen guiRen,
+    required super.guiRen,
     required this.tianGan,
   }) : super(
             order: 0,
             sky: sky,
             ground: tenGanJiGongMapper[tianGan]!,
-            guiRen: guiRen,
             isFirstClass: true) {
     // 当前为“贼” -- “下克上”
     bool isZei = FiveXingRelationship.checkRelationship(

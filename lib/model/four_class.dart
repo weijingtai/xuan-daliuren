@@ -1,11 +1,8 @@
-import 'dart:convert';
 
 import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/da_liu_ren_gong.dart';
 import 'package:daliuren/model/enum_gui_ren.dart';
-import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tuple/tuple.dart';
 
 import 'each_class.dart';
 import 'first_class.dart';
@@ -44,7 +41,6 @@ class FourClass {
       required Map<DiZhi, DaLiuRenGong> eachGongMapper}) {
     // print(eachGongMapper.values.map((d)=>d.groundPanDiZhi.value));
     var dayGan = dayGanZhi.tianGan;
-    var dayZhi = dayGanZhi.diZhi;
     // 获取天干寄宫
     var jiZhi = tenGanJiGongMapper[dayGan]!;
     var firstGong = eachGongMapper[jiZhi]!;
@@ -55,12 +51,11 @@ class FourClass {
         tianGan: dayGan);
 
     var secondGround = firstGong.skyPanDiZhi;
-    var secondSky = eachGongMapper[secondGround]!;
     var secondGong = eachGongMapper[secondGround]!;
     second = createEachClass(
         dayGan, 1, secondGong.skyPanDiZhi, secondGround, secondGong.guiRen);
 
-    var thirdGround = dayZhi;
+    var thirdGround = dayGanZhi.diZhi;
     var thridGong = eachGongMapper[thirdGround]!;
     third = createEachClass(
         dayGan, 2, thridGong.skyPanDiZhi, thirdGround, thridGong.guiRen);
@@ -105,7 +100,6 @@ class FourClass {
       required Map<DiZhi, DaLiuRenGong> eachGongMapper}) {
     // print all sky and ground
     var dayGan = dayGanZhi.tianGan;
-    var dayZhi = dayGanZhi.diZhi;
     // 获取天干寄宫
     var jiZhi = tenGanJiGongMapper[dayGan]!;
     // var firstGround = dayGan;
@@ -119,7 +113,7 @@ class FourClass {
         sky: firstSky, ground: jiZhi, guiRen: firstGods, tianGan: firstGround);
 
     // var secondGround =firstSky;
-    // var secondSky = eachGongMapper[secondGround]!.skyPanDiZhi;
+    // var _secondSky = eachGongMapper[secondGround]!.skyPanDiZhi;
     var secondGods = eachGongMapper.values
         .firstWhere((g) => g.skyPanDiZhi == secondSky)
         .guiRen;

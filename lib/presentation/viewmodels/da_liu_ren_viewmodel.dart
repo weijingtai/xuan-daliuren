@@ -86,22 +86,22 @@ class DaLiuRenViewModel extends BaseViewModel {
   Future<void> initializeData() async {
     if (_isDataLoaded) return;
 
-    print('🔵 [ViewModel] initializeData() called');
+    logger.d('🔵 [ViewModel] initializeData() called');
     setLoading();
     try {
-      print('🔵 [ViewModel] Calling LoadDivinationDataUseCase...');
+      logger.d('🔵 [ViewModel] Calling LoadDivinationDataUseCase...');
       await _loadDivinationDataUseCase.call(NoParams());
       // Auto-load yuding data during initialization
       if (_loadYuDingDataUseCase != null) {
-        print('🔵 [ViewModel] Loading yuding data...');
-        _yudingData = await _loadYuDingDataUseCase!.call(NoParams());
-        print('🔵 [ViewModel] Yuding data loaded: ${_yudingData?.length ?? 0} items');
+        logger.d('🔵 [ViewModel] Loading yuding data...');
+        _yudingData = await _loadYuDingDataUseCase.call(NoParams());
+        logger.d('🔵 [ViewModel] Yuding data loaded: ${_yudingData?.length ?? 0} items');
       }
       _isDataLoaded = true;
-      print('🔵 [ViewModel] Data loaded successfully');
+      logger.d('🔵 [ViewModel] Data loaded successfully');
       setSuccess();
     } catch (e) {
-      print('🔴 [ViewModel] Error loading data: $e');
+      logger.e('🔴 [ViewModel] Error loading data: $e');
       setError(e is DivinationFailure ? e.message : e.toString());
     }
   }
@@ -112,7 +112,7 @@ class DaLiuRenViewModel extends BaseViewModel {
     if (_loadYuDingDataUseCase == null) {
       throw DivinationFailure('LoadYuDingDataUseCase not configured');
     }
-    _yudingData = await _loadYuDingDataUseCase!.call(NoParams());
+    _yudingData = await _loadYuDingDataUseCase.call(NoParams());
     return _yudingData!;
   }
 
@@ -135,21 +135,21 @@ class DaLiuRenViewModel extends BaseViewModel {
       await initializeData();
     }
 
-    print('🔵 [ViewModel] _calculateDivination() called for $_selectedDateTime');
+    logger.d('🔵 [ViewModel] _calculateDivination() called for $_selectedDateTime');
     setLoading();
     try {
       final params = DateTimeParams(_selectedDateTime, question: _question);
-      print('🔵 [ViewModel] Calling CalculateDivinationUseCase...');
+      logger.d('🔵 [ViewModel] Calling CalculateDivinationUseCase...');
       final divination = await _calculateDivinationUseCase.call(params);
       _currentDivination = divination;
-      print('🔵 [ViewModel] Calculation successful: ${divination.dayJiaZi.name}日');
+      logger.d('🔵 [ViewModel] Calculation successful: ${divination.dayJiaZi.name}日');
       _updateDivinationProperties();
       // Run async enrichment THEN do a single final notifyListeners
       await _matchKeTi();
       await _calculateShenSha();
       setSuccess(); // This calls notifyListeners() with all data already populated
     } catch (e) {
-      print('🔴 [ViewModel] Calculation error: $e');
+      logger.e('🔴 [ViewModel] Calculation error: $e');
       setError(e is DivinationFailure ? e.message : e.toString());
     }
   }
@@ -345,7 +345,7 @@ class DaLiuRenViewModel extends BaseViewModel {
     if (_getKetiDataUseCase == null ||
         _currentDivination == null ||
         _matchYuDingKetiUseCase == null) {
-      print('🟡 [ViewModel] _matchKeTi: UseCase or divination is null');
+      logger.d('🟡 [ViewModel] _matchKeTi: UseCase or divination is null');
       _matchedLessons = [];
       _matchedKeTiNames = [];
       _matchedKetiResults = [];
@@ -353,7 +353,7 @@ class DaLiuRenViewModel extends BaseViewModel {
     }
 
     if (!_getKetiDataUseCase.isLoaded) {
-      print('🟡 [ViewModel] _matchKeTi: GetKetiDataUseCase not loaded yet');
+      logger.d('🟡 [ViewModel] _matchKeTi: GetKetiDataUseCase not loaded yet');
       _matchedLessons = [];
       _matchedKeTiNames = [];
       _matchedKetiResults = [];
@@ -364,7 +364,7 @@ class DaLiuRenViewModel extends BaseViewModel {
       final patternNames = await _matchYuDingKetiUseCase.call(
         MatchYuDingKetiParams(_currentDivination!),
       );
-      print('🔵 [ViewModel] _matchKeTi: Pattern names from UseCase: $patternNames');
+      logger.d('🔵 [ViewModel] _matchKeTi: Pattern names from UseCase: $patternNames');
       _matchedKeTiNames = patternNames;
       final results = _getKetiDataUseCase.findByNames(patternNames);
       _matchedKetiResults = results;
@@ -376,11 +376,11 @@ class DaLiuRenViewModel extends BaseViewModel {
           _matchedLessons.add(r.lesson);
         }
       }
-      print('🟢 [ViewModel] _matchKeTi: Final matched lessons: ${_matchedLessons.map((l) => l.name).toList()}');
-      print('🟢 [ViewModel] _matchKeTi: Sub-lessons matched: ${results.where((r) => r.matchedSubLesson != null).map((r) => r.matchedSubLesson!.name).toList()}');
+      logger.d('🟢 [ViewModel] _matchKeTi: Final matched lessons: ${_matchedLessons.map((l) => l.name).toList()}');
+      logger.d('🟢 [ViewModel] _matchKeTi: Sub-lessons matched: ${results.where((r) => r.matchedSubLesson != null).map((r) => r.matchedSubLesson!.name).toList()}');
       // Do NOT call notifyListeners here – let the caller (_calculateDivination) do it via setSuccess()
     } catch (e) {
-      print('🔴 [ViewModel] Error in _matchKeTi: $e');
+      logger.e('🔴 [ViewModel] Error in _matchKeTi: $e');
       _matchedLessons = [];
       _matchedKeTiNames = [];
       _matchedKetiResults = [];

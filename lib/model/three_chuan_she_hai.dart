@@ -11,14 +11,11 @@ class ThreeChuanSheHai extends ThreeChuan {
   SheHaiType type;
   ThreeChuanSheHai({
     required this.type,
-    required EachChuan first,
-    required EachChuan second,
-    required EachChuan third,
+    required super.first,
+    required super.second,
+    required super.third,
   }) : super(
-            nineZongMen: NineZongMen.SHE_HAI,
-            first: first,
-            second: second,
-            third: third);
+            nineZongMen: NineZongMen.SHE_HAI);
 
   factory ThreeChuanSheHai.fromJson(Map<String, dynamic> json) =>
       _$ThreeChuanSheHaiFromJson(json);

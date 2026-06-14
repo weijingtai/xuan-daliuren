@@ -3,6 +3,7 @@
 import 'package:daliuren/data/schools/yuding_school.dart';
 import 'package:daliuren/domain/interfaces/school_registry.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
+import 'package:xuan_logger/xuan_logger.dart';
 
 /// 流派初始化
 /// 在应用启动时调用，注册所有可用的流派
@@ -21,7 +22,7 @@ class SchoolInitialization {
     // await bifaSchool.loadData();
     // SchoolRegistry.register(bifaSchool);
     
-    print('已注册 ${SchoolRegistry.count} 个大六壬流派');
+    logger.i('已注册 ${SchoolRegistry.count} 个大六壬流派');
   }
   
   /// 获取流派统计信息

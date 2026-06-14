@@ -7,7 +7,6 @@ import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:daliuren/domain/enums/pan_type.dart';
 import 'package:daliuren/model/raw_pan_datamodel.dart';
-import 'package:flutter/material.dart';
 import 'package:metaphysics_core/utils/collections_utils.dart';
 import 'package:tuple/tuple.dart';
 
@@ -100,7 +99,12 @@ class GongOutput {
 // }
 
 /// 内部处理时，对四课信息进行增强，方便计算
-class _ProcessedFourClassItem extends FourClassItem {
+class _ProcessedFourClassItem {
+  final FourClassItem _original;
+  int get order => _original.order;
+  DiZhi get sky => _original.sky;
+  DiZhi get ground => _original.ground;
+
   // 动态计算的属性
   ZeiKeType zeiKeType = ZeiKeType.NONE; // 贼克类型 (下贼上ZEI, 上克下KE, 无NONE)
   bool isSkyKeDayGan = false; // 天盘神是否克日干(寄宫) (用于遥克)
@@ -109,8 +113,7 @@ class _ProcessedFourClassItem extends FourClassItem {
   bool isSkySameYinYangWithDayGan = false; // 天盘神与日干(天干本身)阴阳是否相同
 
   _ProcessedFourClassItem({required FourClassItem original})
-      : super(
-            order: original.order, sky: original.sky, ground: original.ground);
+      : _original = original;
 }
 
 /// 大六壬九宗门三传计算器 (方案B)
@@ -401,7 +404,7 @@ class DaLiuRenModelCalculator {
   }
 
   @Deprecated("use resolveThreeChuan. 新版本中别责 与 昴星 使用更高效的日干查找确定是否进行 别责 与 昴星计算")
-  ThreeChuanOutput resolveThreeChuan_old() {
+  ThreeChuanOutput resolveThreeChuanOld() {
     ThreeChuanOutput? result;
 
     // 方案B 优先级: 伏吟 -> 反吟 -> 贼克 -> [比用 -> 涉害] -> 遥克 -> [比用 -> 涉害] -> 昴星 -> 别责 -> 八专
@@ -588,9 +591,11 @@ class DaLiuRenModelCalculator {
         // 仅在贼克转比用时使用这些特定名称
         if (candidates.length == 2) {
           keShiName = "知一课 (比用)";
-        } else if (candidates.length == 3)
+        } else if (candidates.length == 3) {
           keShiName = "度厄课 (比用)";
-        else if (candidates.length == 4) keShiName = "无禄课 (比用)"; // 或绝嗣课
+        } else if (candidates.length == 4) {
+          keShiName = "无禄课 (比用)"; // 或绝嗣课
+        }
       } else {
         keShiName = "遥克比用"; // 遥克比用通常不直接叫知一等
       }
@@ -968,9 +973,11 @@ class DaLiuRenModelCalculator {
         (_isMeng(theChosenKe.ground) && sheHaiDetailBasis.contains("孟"))) {
       keShiName = "见机课 (涉害)";
     } else if (sheHaiDetailBasis.contains("察微") ||
-        (_isZhong(theChosenKe.ground) && sheHaiDetailBasis.contains("仲")))
+        (_isZhong(theChosenKe.ground) && sheHaiDetailBasis.contains("仲"))) {
       keShiName = "察微课 (涉害)";
-    else if (sheHaiDetailBasis.contains("缀瑕")) keShiName = "缀瑕课 (涉害)";
+    } else if (sheHaiDetailBasis.contains("缀瑕")) {
+      keShiName = "缀瑕课 (涉害)";
+    }
     // else if (_isJi(theChosenKe.ground)) keShiName = "涉害课 (季)"; // 可选，如果需要区分季
 
     return ThreeChuanOutput(
@@ -1380,11 +1387,11 @@ class DaLiuRenModelCalculator {
         originalThreeChuan: rawPanData.three);
   }
 
-  _isSelfXing(DiZhi diZhi) {
+  bool _isSelfXing(DiZhi diZhi) {
     return [DiZhi.CHEN, DiZhi.WU, DiZhi.YOU, DiZhi.HAI].contains(diZhi);
   }
 
-  _getDiZhiXing(DiZhi diZhi) {
+  DiZhi _getDiZhiXing(DiZhi diZhi) {
     return DiZhiXing.getOtherDiZhi(diZhi);
   }
 
@@ -1510,8 +1517,7 @@ class DaLiuRenModelCalculator {
       [DiZhi.YIN, DiZhi.SHEN, DiZhi.SI, DiZhi.HAI].contains(zhi);
   bool _isZhong(DiZhi zhi) =>
       [DiZhi.ZI, DiZhi.WU, DiZhi.MAO, DiZhi.YOU].contains(zhi);
-  bool _isJi(DiZhi zhi) =>
-      [DiZhi.CHEN, DiZhi.XU, DiZhi.CHOU, DiZhi.WEI].contains(zhi);
+
 
   TianGan _getDayGanWuHe(TianGan dayGan) {
     return TianGanFiveCombine.getOtherGan(dayGan);
@@ -1536,20 +1542,6 @@ class DaLiuRenModelCalculator {
     return DiZhiSanHe.getHorseBySingleDiZhi(dayZhi);
   }
 
-  /// 优化后的昴星判断方法
-  bool _isMaoXingOptimized() {
-    // final dayJiaZi = rawPanData.day;
-    final expectedPositions = NineZongMen.maoXingMapping[dayJiaZi];
-
-    if (expectedPositions == null) {
-      return false; // 不在昴星课列表中
-    }
-
-    // 检查干上神是否在预期位置
-    final ganShangShen = _processedFourClass[0].sky;
-    return expectedPositions.contains(ganShangShen);
-  }
-
   /// 优化后的别责判断方法
   bool _isBieZeOptimized() {
     // final dayJiaZi = rawPanData.day;
@@ -1570,15 +1562,6 @@ class DaLiuRenModelCalculator {
         expectedPositions.contains(ganShangShen);
   }
 
-  /// 优化后的昴星解析方法
-  ThreeChuanOutput? _resolveMaoXingOptimized() {
-    if (!_isMaoXingOptimized()) {
-      return null;
-    }
-
-    // 使用原有的昴星计算逻辑，但跳过复杂的判断
-    return _resolveMaoXing();
-  }
 
   /// 优化后的别责解析方法
   ThreeChuanOutput? _resolveBieZeOptimized() {

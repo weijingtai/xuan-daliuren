@@ -3,7 +3,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:theme/const_resources_mapper.dart';
 import 'package:metaphysics_core/enums.dart';
-import 'package:metaphysics_core/models/shen_sha.dart';
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:theme/const_ui_resources_mapper.dart';
 import 'package:xuan_four_zhu_card/widgets/four_zhu_eight_char.dart';
@@ -43,7 +42,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static const double NORMAL_PAN_SIZE = 400.0;
-  static const double SMALL_PAN_SIZE = 280.0;
   static const String ICONS_ASSETS_PATH = "icons";
 
   GlobalKey renYearGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
@@ -94,9 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final daLiuRenGong = viewModel.currentDivination;
     final juNumberFromVm = viewModel.juNumber;
 
-    Size panSize = const Size(NORMAL_PAN_SIZE, NORMAL_PAN_SIZE);
-    Size gongSize = const Size(NORMAL_PAN_SIZE * .25, NORMAL_PAN_SIZE * .25);
-
     // dev 三传 九宗门
     return Scaffold(
  appBar: AppBar(
@@ -119,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              pan_base_info(viewModel),
+              panBaseInfo(viewModel),
               const SizedBox(
                 height: 16,
               ),
@@ -319,7 +314,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget pan_base_info(DaLiuRenViewModel viewModel) {
+  Widget panBaseInfo(DaLiuRenViewModel viewModel) {
     final dateTime = viewModel.selectedDateTime;
     final pan = viewModel.currentDivination;
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
@@ -369,7 +364,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final pan = viewModel.currentDivination;
     final shenShaResults = viewModel.shenShaResults;
     final matchedLessons = viewModel.matchedLessons;
-    final matchedKeTiNames = viewModel.matchedKeTiNames;
     final matchedKetiResults = viewModel.matchedKetiResults;
     final lessonSubLessons = <String, List<String>>{};
     for (final r in matchedKetiResults) {
@@ -415,7 +409,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       32 * currentScaleFactor),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
+                                      color: Colors.black.withValues(alpha: 0.1),
                                       blurRadius: 6 * currentScaleFactor,
                                       spreadRadius: 6 * currentScaleFactor,
                                     )
@@ -436,7 +430,7 @@ child: pan == null
                                          return ValueListenableBuilder<bool>(
                                            valueListenable: showFourClassAsCard,
                                            builder: (ctx2, showFourAsCard, __) {
-                                             return build_panel(
+                                             return buildPanel(
                                                  pan, currentGongSize,
                                                  currentScaleFactor,
                                                  hideThreeChuan: showThreeAsCard,
@@ -494,12 +488,12 @@ child: pan == null
                   padding:
                       const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   decoration: BoxDecoration(
-                      // color: Colors.blue.withOpacity(.1),
+                      // color: Colors.blue.withValues(alpha: .1),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(32),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 6,
                           spreadRadius: 6,
                         )
@@ -516,7 +510,7 @@ child: pan == null
                                 logger.e(snap.error.toString());
                               }
                               if (snap.hasData) {
-                                return yu_ding(snap.data!);
+                                return yuDing(snap.data!);
                               } else {
                                 return const SizedBox(
                                     height: 64,
@@ -531,13 +525,13 @@ child: pan == null
                             alignment: Alignment.center,
                             children: [
                               Container(
-                                // color: Colors.blue.withOpacity(.1),
+                                // color: Colors.blue.withValues(alpha: .1),
                                 height: 128,
                                 width: 64,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage(
-                                            "${ICONS_ASSETS_PATH}/tag_virt.png"))),
+                                            "$ICONS_ASSETS_PATH/tag_virt.png"))),
                                 // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
                               ),
                               const Column(
@@ -615,7 +609,7 @@ child: pan == null
                                         32 * currentScaleFactor),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
+                                        color: Colors.black.withValues(alpha: 0.1),
                                         blurRadius: 6 * currentScaleFactor,
                                         spreadRadius: 6 * currentScaleFactor,
                                       )
@@ -638,7 +632,7 @@ child: pan == null
                                                  showFourClassAsCard,
                                              builder:
                                                  (ctx2, showFourAsCard, __) {
-                                               return build_panel(
+                                               return buildPanel(
                                                    pan, currentGongSize,
                                                    currentScaleFactor,
                                                    hideThreeChuan:
@@ -694,12 +688,12 @@ child: pan == null
                           padding: const EdgeInsets.symmetric(
                               vertical: 24, horizontal: 16),
                           decoration: BoxDecoration(
-                              // color: Colors.blue.withOpacity(.1),
+                              // color: Colors.blue.withValues(alpha: .1),
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(32),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 6,
                                   spreadRadius: 6,
                                 )
@@ -716,7 +710,7 @@ child: pan == null
                                         logger.d(snap.error.toString());
                                       }
                                       if (snap.hasData) {
-                                        return yu_ding(snap.data!);
+                                        return yuDing(snap.data!);
                                       } else {
                                         return const SizedBox(
                                             height: 64,
@@ -731,13 +725,13 @@ child: pan == null
                                     alignment: Alignment.center,
                                     children: [
                                       Container(
-                                        // color: Colors.blue.withOpacity(.1),
+                                        // color: Colors.blue.withValues(alpha: .1),
                                         height: 128,
                                         width: 64,
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image: AssetImage(
-                                                    "${ICONS_ASSETS_PATH}/tag_virt.png"))),
+                                                    "$ICONS_ASSETS_PATH/tag_virt.png"))),
                                         // child:Image.asset("${ICONS_ASSETS_PATH}/tag_virt.png",),
                                       ),
                                       const Column(
@@ -932,13 +926,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -975,13 +969,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -1018,13 +1012,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -1061,13 +1055,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -1104,13 +1098,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -1149,13 +1143,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -1191,13 +1185,13 @@ child: pan == null
                 decoration: CustomDropdownDecoration(
                     closedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
                     expandedShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
+                          color: Colors.grey.withValues(alpha: 0.4),
                           spreadRadius: 1,
                           blurRadius: 2)
                     ],
@@ -1314,8 +1308,7 @@ child: pan == null
     return Card(
         child: Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Container(
-              child: Column(children: [
+            child: Column(children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1338,7 +1331,7 @@ child: pan == null
                     Flexible(
                         flex: 7,
                         child: Text(
-                          "${yearGanZhi}年 ${monthCn}月 $dayCn ${timeZhi}时",
+                          "$yearGanZhi年 $monthCn月 $dayCn $timeZhi时",
                           style: TextStyle(
                               fontSize: 14, color: Colors.blueGrey.shade800),
                         )),
@@ -1373,31 +1366,27 @@ child: pan == null
                   ],
                 )
               ]),
-            )));
+            ));
   }
 
   static String _pad(int v) => v.toString().padLeft(2, '0');
 
-  Widget yu_ding(YuDingDaLiuRenDataModel yuDing) {
+  Widget yuDing(YuDingDaLiuRenDataModel yuDing) {
     return Column(
       children: [
-        Container(
-          child: Text(
-            "${yuDing.dayJiaZi.name}日 第${ConstResourcesMapper.chineseNumberMapper[yuDing.juNumber]!} 干上${yuDing.juName.name}",
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-          ),
+        Text(
+          "${yuDing.dayJiaZi.name}日 第${ConstResourcesMapper.chineseNumberMapper[yuDing.juNumber]!} 干上${yuDing.juName.name}",
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
         ),
-        Container(
-          child: RichText(
-              text: TextSpan(
-                  text: yuDing.body.join(" "),
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87)
-                  // children: yuDing.body.join(" ").map((e)=>TextSpan(text:e)).toList()
-                  )),
-        ),
+        RichText(
+            text: TextSpan(
+                text: yuDing.body.join(" "),
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87)
+                // children: yuDing.body.join(" ").map((e)=>TextSpan(text:e)).toList()
+                )),
         RichText(
           text: TextSpan(
               style: const TextStyle(fontSize: 16, color: Colors.black87),
@@ -1433,7 +1422,7 @@ child: pan == null
                       text: "${entry.key}：",
                       children: [TextSpan(text: entry.value)]),
                 ))
-            .toList(),
+            ,
         const SizedBox(
           height: 12,
         ),
@@ -1445,7 +1434,7 @@ child: pan == null
                       text: "${entry.key}：",
                       children: [TextSpan(text: entry.value)]),
                 ))
-            .toList()
+            
       ],
     );
   }
@@ -1470,12 +1459,12 @@ child: pan == null
     }
   }
 
-  Widget build_panel_model(
+  Widget buildPanelModel(
       DaLiuRenPanModel panModel, Size gongSize, double scaleFactor) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        panel_gong(panModel, gongSize, scaleFactor),
+        panelGong(panModel, gongSize, scaleFactor),
         SizedBox(
           width: gongSize.width * 2,
           height: gongSize.height * 2,
@@ -1486,16 +1475,16 @@ child: pan == null
               SizedBox(
                 height: gongSize.height,
                 width: gongSize.width,
-                // color: Colors.orange.withOpacity(.2),
-                child: build_four_ke(
+                // color: Colors.orange.withValues(alpha: .2),
+                child: buildFourKe(
                     panModel.getFourClass(), gongSize, scaleFactor),
               ),
               Container(
                 height: gongSize.height,
                 width: gongSize.width,
                 alignment: Alignment.center,
-                // color: Colors.orange.withOpacity(.4),
-                child: build_san_chuan(
+                // color: Colors.orange.withValues(alpha: .4),
+                child: buildSanChuan(
                     panModel.getThreeChuan(), gongSize, scaleFactor),
               )
             ],
@@ -1505,20 +1494,20 @@ child: pan == null
     );
   }
 
-  Widget build_panel(
+  Widget buildPanel(
       DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor,
       {bool hideThreeChuan = false, bool hideFourClass = false}) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        panel_gong(daLiuPan, gongSize, scaleFactor),
-        panel_center(daLiuPan, gongSize, scaleFactor,
+        panelGong(daLiuPan, gongSize, scaleFactor),
+        panelCenter(daLiuPan, gongSize, scaleFactor,
             hideThreeChuan: hideThreeChuan, hideFourClass: hideFourClass),
       ],
     );
   }
 
-  Widget panel_center(
+  Widget panelCenter(
       DaLiuRenKePan daLiuPan, Size gongSize, double scaleFactor,
       {bool hideThreeChuan = false, bool hideFourClass = false}) {
     double width = gongSize.width * 2;
@@ -1577,7 +1566,7 @@ child: pan == null
                                 image: DecorationImage(
                                     fit: BoxFit.fill,
                                     image: AssetImage(
-                                        "${ICONS_ASSETS_PATH}/chinese-red-ink-seal.png"),
+                                        "$ICONS_ASSETS_PATH/chinese-red-ink-seal.png"),
                                     colorFilter: ColorFilter.mode(
                                         Color.fromRGBO(176, 31, 36, .8),
                                         BlendMode.srcIn))),
@@ -1613,7 +1602,7 @@ child: pan == null
                                     fontWeight: FontWeight.bold,
                                     shadows: [
                                       Shadow(
-                                        color: Colors.grey.withOpacity(.5),
+                                        color: Colors.grey.withValues(alpha: .5),
                                         offset: const Offset(0, 0),
                                         blurRadius: 2,
                                       )
@@ -1693,7 +1682,7 @@ child: pan == null
                                 backgroundColor: ConstResourcesMapper
                                     .Seasons24ColorMapper[daLiuPan
                                         .monthGeneral.jieSegment.item1.name]!
-                                    .withOpacity(.2),
+                                    .withValues(alpha: .2),
                                 isHor: true,
                               )),
                           SizedBox(height: 2 * scaleFactor),
@@ -1705,7 +1694,7 @@ child: pan == null
                                   backgroundColor: ConstResourcesMapper
                                       .Seasons24ColorMapper[daLiuPan
                                           .monthGeneral.jieSegment.item2.name]!
-                                      .withOpacity(.2),
+                                      .withValues(alpha: .2),
                                   isHor: true)),
                         ],
                       ))
@@ -1713,7 +1702,7 @@ child: pan == null
               ),
               Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.1),
+                    color: Colors.black.withValues(alpha: .1),
                     borderRadius: BorderRadius.circular(8 * scaleFactor),
                   ),
                   child: buildClassType(daLiuPan))
@@ -1724,11 +1713,11 @@ child: pan == null
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               if (!hideThreeChuan)
-                build_san_chuan(daLiuPan.getThreeChuan(), gongSize, scaleFactor)
+                buildSanChuan(daLiuPan.getThreeChuan(), gongSize, scaleFactor)
               else
                 SizedBox(height: gongSize.height * 2 * 0.25),
               if (!hideFourClass)
-                build_four_ke(daLiuPan.getFourClass(), gongSize, scaleFactor)
+                buildFourKe(daLiuPan.getFourClass(), gongSize, scaleFactor)
               else
                 SizedBox(height: gongSize.height * 2 * 0.25),
             ],
@@ -1756,7 +1745,7 @@ child: pan == null
                     fontColor: Colors.blueGrey,
                     backgroundColor: ConstResourcesMapper.Seasons24ColorMapper[
                             daLiuPan.monthGeneral.jieSegment.item1.name]!
-                        .withOpacity(.2),
+                        .withValues(alpha: .2),
                     isHor: true,
                   )),
               SizedBox(
@@ -1767,7 +1756,7 @@ child: pan == null
                       backgroundColor: ConstResourcesMapper
                           .Seasons24ColorMapper[
                               daLiuPan.monthGeneral.jieSegment.item2.name]!
-                          .withOpacity(.2),
+                          .withValues(alpha: .2),
                       isHor: true)),
             ],
           ),
@@ -1776,7 +1765,7 @@ child: pan == null
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage(
-                        "${ICONS_ASSETS_PATH}/chinese-red-ink-seal.png"),
+                        "$ICONS_ASSETS_PATH/chinese-red-ink-seal.png"),
                     colorFilter: ColorFilter.mode(
                         Color.fromRGBO(176, 31, 36, .8), BlendMode.srcIn))),
             child: Column(
@@ -1811,7 +1800,7 @@ child: pan == null
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.grey.withOpacity(.5),
+                        color: Colors.grey.withValues(alpha: .5),
                         offset: const Offset(0, 0),
                         blurRadius: 2,
                       )
@@ -1830,112 +1819,12 @@ child: pan == null
         ],
       ),
     );
-    return Container(
-      alignment: Alignment.center,
-      // height: 120,
-      // width: 120,
-      // color: Colors.black.withOpacity(.1),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        width: 14,
-                        child: TwentyFourJieQiTag(
-                          jieQi: daLiuPan.monthGeneral.jieSegment.item1,
-                          fontColor: Colors.blueGrey,
-                        )),
-                    SizedBox(
-                        width: 14,
-                        child: TwentyFourJieQiTag(
-                          jieQi: daLiuPan.monthGeneral.jieSegment.item2,
-                          fontColor: Colors.blueGrey,
-                        )),
-                  ],
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage(
-                              "${ICONS_ASSETS_PATH}/chinese-red-ink-seal.png"),
-                          colorFilter: ColorFilter.mode(
-                              Color.fromRGBO(176, 31, 36, .8),
-                              BlendMode.srcIn))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(daLiuPan.monthGeneral.name.split("").first,
-                          style: guiRenNameTextStyle.copyWith(fontSize: 28)),
-                      Text(daLiuPan.monthGeneral.name.split("").last,
-                          style: guiRenNameTextStyle.copyWith(fontSize: 28)),
-                      // Text(daLiuPan.monthGeneral.name.split("").first,style: guiRenNameTextStyle.copyWith(fontSize: 28,color: Color.fromRGBO(242,190,69, 1)),),
-                      // Text(daLiuPan.monthGeneral.name.split("").last,style: guiRenNameTextStyle.copyWith(fontSize: 28,color: Color.fromRGBO(242,190,69, 1)),),
-                      // GoldText(text: daLiuPan.monthGeneral.name.split("").first,style: guiRenNameTextStyle.copyWith(fontSize: 28,color: Colors.white,fontWeight: FontWeight.w200)),
-                      // GoldText(text: daLiuPan.monthGeneral.name.split("").last,style: guiRenNameTextStyle.copyWith(fontSize: 28,color: Colors.white,fontWeight: FontWeight.w200)),
-                    ],
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "︹",
-                      style: guiRenNameTextStyle.copyWith(
-                          height: 1.0, fontSize: 12),
-                    ),
-                    Text(
-                      daLiuPan.monthGeneral.generalZhi.name,
-                      style: diZhiTextStyle.copyWith(
-                          height: 1.0,
-                          fontSize: 14,
-                          color: getZhiColor(daLiuPan.monthGeneral.generalZhi),
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              color: Colors.grey.withOpacity(.5),
-                              offset: const Offset(0, 0),
-                              blurRadius: 2,
-                            )
-                          ]),
-                    ),
-                    Text(
-                      "将",
-                      style: guiRenNameTextStyle.copyWith(
-                          height: 1.0, fontSize: 12),
-                    ),
-                    Text(
-                      "︺",
-                      style: guiRenNameTextStyle.copyWith(
-                          height: 1.0, fontSize: 12),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget buildFourZhuEightChar(DaLiuRenKePan daLiuPan) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FourZhuEightChar(
             year: daLiuPan.yearJiaZi,
@@ -1947,8 +1836,7 @@ child: pan == null
             zodiacZhiColors: ConstResourcesMapper.zodiacZhiColors,
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget buildClassType(DaLiuRenKePan daLiuPan) {
@@ -2000,27 +1888,27 @@ child: pan == null
     }
   }
 
-  Widget build_four_ke(FourClass fourClass, Size gongSize, double scaleFactor) {
+  Widget buildFourKe(FourClass fourClass, Size gongSize, double scaleFactor) {
     double diZhiFontSize = gongSize.width * .24;
     // double otherFontSize = gongSize.width * .24; // Removed duplicate variable
     TextStyle tianGanStyle = ConstUIResourcesMapper.tianGanTextStyle
         .copyWith(fontSize: diZhiFontSize, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
     TextStyle diZhiStyle = ConstUIResourcesMapper.twelveDiZhiTextStyle
         .copyWith(fontSize: diZhiFontSize, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
     TextStyle guiRenName =
         guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .14, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
@@ -2128,12 +2016,12 @@ child: pan == null
     );
   }
 
-  Widget build_san_chuan(ThreeChuan chuan, Size gongSize, double scaleFactor) {
+  Widget buildSanChuan(ThreeChuan chuan, Size gongSize, double scaleFactor) {
     double diZhiFontSize = gongSize.width * .24;
     TextStyle otherStyle =
         guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .16, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
@@ -2142,18 +2030,18 @@ child: pan == null
     TextStyle tianGanStyle = ConstUIResourcesMapper.tianGanTextStyle
         .copyWith(fontSize: gongSize.width * .2, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
     TextStyle diZhiStyle = ConstUIResourcesMapper.twelveDiZhiTextStyle
         .copyWith(fontSize: diZhiFontSize, shadows: [
       Shadow(
-          color: Colors.grey.withOpacity(.5),
+          color: Colors.grey.withValues(alpha: .5),
           blurRadius: 2,
           offset: const Offset(0, 0))
     ]);
-    // TextStyle sixQing = guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .16,shadows:[Shadow(color: Colors.grey.withOpacity(.5), blurRadius: 2, offset: Offset(0, 0))]);
+    // TextStyle sixQing = guiRenNameTextStyle.copyWith(fontSize: gongSize.width * .16,shadows:[Shadow(color: Colors.grey.withValues(alpha: .5), blurRadius: 2, offset: Offset(0, 0))]);
     SizedBox offset = SizedBox(width: 4 * scaleFactor);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2230,7 +2118,7 @@ child: pan == null
   TextStyle normalTextStyle =
       GoogleFonts.zhiMangXing(color: Colors.black87, fontSize: 12, height: 1.0);
 
-  Widget each_zhu(
+  Widget eachZhu(
       String name, JiaZi xunHead, JiaZi jiaZi, Tuple2<DiZhi, DiZhi> kongWang) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2283,7 +2171,7 @@ child: pan == null
     );
   }
 
-  Widget panel_gong(DaLiuRenPanel daLiuPan, Size gongSize, double scaleFactor) {
+  Widget panelGong(DaLiuRenPanel daLiuPan, Size gongSize, double scaleFactor) {
     // double width = 200;
     // double height = 200;
     Map<DiZhi, Widget> gongWidgetMapper = {};
@@ -2421,7 +2309,7 @@ child: pan == null
         borderRadius: BorderRadius.circular(4 * scaleFactor),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1 * scaleFactor,
             blurRadius: 1 * scaleFactor,
           ),
@@ -2677,7 +2565,7 @@ child: pan == null
         child: Text(
           diZhi.value,
           style: ConstUIResourcesMapper.twelveDiZhiTextStyle.copyWith(
-              color: Colors.grey.withOpacity(scaleFactor < 1.0 ? .1 : .2),
+              color: Colors.grey.withValues(alpha: scaleFactor < 1.0 ? .1 : .2),
               fontSize: gongSize.width * .3),
         ));
   }
@@ -2690,7 +2578,7 @@ child: pan == null
       height: 1.0,
       shadows: [
         Shadow(
-            color: Colors.grey.withOpacity(.5),
+            color: Colors.grey.withValues(alpha: .5),
             blurRadius: 2,
             offset: const Offset(0, 0))
       ]);
@@ -2711,7 +2599,7 @@ child: pan == null
       fontWeight: FontWeight.w500,
       shadows: [
         Shadow(
-            color: Colors.grey.withOpacity(.5),
+            color: Colors.grey.withValues(alpha: .5),
             blurRadius: 2,
             offset: const Offset(0, 0))
       ]);
@@ -2722,7 +2610,7 @@ child: pan == null
       height: 1,
       shadows: [
         Shadow(
-            color: Colors.grey.withOpacity(.5),
+            color: Colors.grey.withValues(alpha: .5),
             blurRadius: 2,
             offset: const Offset(0, 0))
       ]);
@@ -2756,7 +2644,7 @@ child: pan == null
                                   Color.fromRGBO(176, 31, 36, .7),
                                   BlendMode.srcIn),
                               child: Image.asset(
-                                "${ICONS_ASSETS_PATH}/wide-black-ink-radian-line2.png",
+                                "$ICONS_ASSETS_PATH/wide-black-ink-radian-line2.png",
                               )))
                       : const SizedBox(),
                   Text(
@@ -2789,7 +2677,7 @@ child: pan == null
                 height: middleHeight,
                 width: gongSize.width * .2,
                 alignment: Alignment.bottomCenter,
-                // color: Colors.red.withOpacity(.5),
+                // color: Colors.red.withValues(alpha: .5),
                 // padding: EdgeInsets.only(top: 12),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -2812,8 +2700,7 @@ child: pan == null
               )
             ],
           ),
-          Container(
-              child: Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -2839,7 +2726,7 @@ child: pan == null
                       ),
                     )
             ],
-          )),
+          ),
         ],
       ),
     );
@@ -2850,18 +2737,18 @@ child: pan == null
         colorFilter:
             ColorFilter.mode(color ?? Colors.blueGrey, BlendMode.srcIn),
         child: Image.asset(
-          "${ICONS_ASSETS_PATH}/thin-black-ink-circle.png",
+          "$ICONS_ASSETS_PATH/thin-black-ink-circle.png",
           width: size,
           height: size,
         ));
   }
 
   Color getGanColor(TianGan gan) {
-    return ConstResourcesMapper.zodiacGanColors[gan]!.withOpacity(.6);
+    return ConstResourcesMapper.zodiacGanColors[gan]!.withValues(alpha: .6);
   }
 
   Color getZhiColor(DiZhi zhi) {
-    return ConstResourcesMapper.zodiacZhiColors[zhi]!.withOpacity(.8);
+    return ConstResourcesMapper.zodiacZhiColors[zhi]!.withValues(alpha: .8);
   }
 
   // 显示神将节气

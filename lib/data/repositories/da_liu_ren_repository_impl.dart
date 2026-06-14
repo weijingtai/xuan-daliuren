@@ -141,29 +141,7 @@ class DaLiuRenRepositoryImpl implements DaLiuRenRepository {
         .firstWhere((pan) => pan.dayJiaZi == dayJiaZi && pan.shiChen == shiZhi);
   }
 
-  Future<int> _checkPanJu(
-      JiaZi dayJiaZi, JiaZi timeJiaZi, YinYang yinYangDun) async {
-    final mapper = _getJuMapper();
-    return mapper[dayJiaZi.name]![timeJiaZi.diZhi.name]![
-        yinYangDun.isYang ? "yang" : "yin"]!;
-  }
 
-  Map<String, Map<String, Map<String, int>>> _getJuMapper() {
-    final decodedJson = _juMapperData as Map<String, dynamic>;
-    return decodedJson.map((key, value) {
-      return MapEntry(
-        key,
-        (value as Map<String, dynamic>).map((subKey, subValue) {
-          return MapEntry(
-            subKey,
-            (subValue as Map<String, dynamic>).map((subSubKey, subSubValue) {
-              return MapEntry(subSubKey, subSubValue as int);
-            }),
-          );
-        }),
-      );
-    });
-  }
 
   @override
   Future<List<dynamic>> getYuDingData() async {

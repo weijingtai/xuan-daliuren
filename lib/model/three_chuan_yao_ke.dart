@@ -13,16 +13,13 @@ class ThreeChuanYaoKe extends ThreeChuan {
   SheHaiType? sheHaiType;
   ThreeChuanYaoKe(
       {this.type,
-      required EachChuan first,
-      required EachChuan second,
-      required EachChuan third,
+      required super.first,
+      required super.second,
+      required super.third,
       this.isBiYong,
       this.sheHaiType})
       : super(
-            nineZongMen: NineZongMen.YAO_KE,
-            first: first,
-            second: second,
-            third: third);
+            nineZongMen: NineZongMen.YAO_KE);
   factory ThreeChuanYaoKe.fromJson(Map<String, dynamic> json) =>
       _$ThreeChuanYaoKeFromJson(json);
   @override

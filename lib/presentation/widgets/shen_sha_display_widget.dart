@@ -5,7 +5,7 @@ import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 class ShenShaDisplayWidget extends StatefulWidget {
   final Map<DiZhi, List<ShenShaResult>>? shenShaResults;
 
-  const ShenShaDisplayWidget({Key? key, this.shenShaResults}) : super(key: key);
+  const ShenShaDisplayWidget({super.key, this.shenShaResults});
 
   @override
   State<ShenShaDisplayWidget> createState() => _ShenShaDisplayWidgetState();

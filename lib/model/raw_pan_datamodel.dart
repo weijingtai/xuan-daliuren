@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -24,7 +23,6 @@ class FourClassItem extends Equatable {
   });
   factory FourClassItem.fromJson(Map<String, dynamic> json) =>
       _$FourClassItemFromJson(json);
-  @override
   Map<String, dynamic> toJson() => _$FourClassItemToJson(this);
 
   @override
@@ -56,7 +54,6 @@ class ThreeClassItem extends Equatable {
 
   factory ThreeClassItem.fromJson(Map<String, dynamic> json) =>
       _$ThreeClassItemFromJson(json);
-  @override
   Map<String, dynamic> toJson() => _$ThreeClassItemToJson(this);
 
   @override
@@ -103,7 +100,6 @@ class RawPan {
   });
 
   factory RawPan.fromJson(Map<String, dynamic> json) => _$RawPanFromJson(json);
-  @override
   Map<String, dynamic> toJson() => _$RawPanToJson(this);
 }
 
@@ -123,7 +119,6 @@ class RawPanCollection {
 
   factory RawPanCollection.fromJson(Map<String, dynamic> json) =>
       _$RawPanCollectionFromJson(json);
-  @override
   Map<String, dynamic> toJson() => _$RawPanCollectionToJson(this);
   @override
   String toString() {

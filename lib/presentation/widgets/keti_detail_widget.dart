@@ -6,10 +6,10 @@ class KetiDetailWidget extends StatelessWidget {
   final Map<String, List<String>>? highlightedSubLessons;
 
   const KetiDetailWidget({
-    Key? key,
+    super.key,
     required this.lessons,
     this.highlightedSubLessons,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

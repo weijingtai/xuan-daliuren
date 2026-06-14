@@ -1,7 +1,6 @@
 import 'package:metaphysics_core/enums.dart';
 import 'package:metaphysics_core/models/divination_datetime.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:daliuren/domain/enums/gui_ren_type.dart';
 
 export 'package:daliuren/domain/enums/gui_ren_type.dart';
 
@@ -73,8 +72,7 @@ class CalculateMonthGeneralService {
   /// 返回月建地支作为月将
   MonthGeneral _calculateByMonthJian(DivinationDatetimeModel datetimeModel) {
     // 获取当前节气信息
-    final jieQiInfo = datetimeModel.jieQiInfo;
-    final currentJieQi = jieQiInfo.jieQi;
+    final _ = datetimeModel.jieQiInfo;
     return MonthGeneral.getByDiZhi(datetimeModel.monthJiaZi.diZhi);
 
     // // 根据节气确定月建地支

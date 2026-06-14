@@ -90,7 +90,7 @@ class KePanInfoCard extends StatelessWidget {
   Widget _buildTitleRow(
       String day, String shi, String yinyang, String ju, String firstSky) {
  final title = ju.isNotEmpty
- ? "$day日·$shi时·$yinyang${ju}局·干上$firstSky"
+ ? "$day日·$shi时·$yinyang$ju局·干上$firstSky"
  : "$day日·$shi时·干上$firstSky";
 
     return Column(
@@ -215,7 +215,7 @@ class KePanInfoCard extends StatelessWidget {
               children: [
                 TextSpan(
                   text: tianGan,
-                  style: ConstUIResourcesMapper_tianGanStyle().copyWith(
+                  style: constUIResourcesMapperTianGanStyle().copyWith(
                     fontSize: 16 * scaleFactor,
                     color: ganColor.withValues(alpha: .7),
                     height: 1,
@@ -223,7 +223,7 @@ class KePanInfoCard extends StatelessWidget {
                 ),
                 TextSpan(
                   text: diZhi,
-                  style: ConstUIResourcesMapper_diZhiStyle().copyWith(
+                  style: constUIResourcesMapperDiZhiStyle().copyWith(
                     fontSize: 16 * scaleFactor,
                     color: zhiColor.withValues(alpha: .8),
                     height: 1,
@@ -483,7 +483,7 @@ class KePanInfoCard extends StatelessWidget {
   }
 }
 
-TextStyle ConstUIResourcesMapper_tianGanStyle() {
+TextStyle constUIResourcesMapperTianGanStyle() {
   return GoogleFonts.zhiMangXing(
     color: const Color.fromRGBO(28, 45, 37, 1),
     fontWeight: FontWeight.w200,
@@ -491,7 +491,7 @@ TextStyle ConstUIResourcesMapper_tianGanStyle() {
   );
 }
 
-TextStyle ConstUIResourcesMapper_diZhiStyle() {
+TextStyle constUIResourcesMapperDiZhiStyle() {
   return GoogleFonts.longCang(
     color: Colors.black,
     height: 1,
