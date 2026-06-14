@@ -1,10 +1,10 @@
 import 'package:metaphysics_core/enums.dart';
-import 'package:metaphysics_core/models/shen_sha.dart';
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
-import 'package:daliuren/domain/services/keti_data_service.dart';
-import 'package:daliuren/domain/services/yuding_keti_match_service.dart';
+import 'package:daliuren/domain/services/keti_data_service.dart' show KetiMatchResult;
+import 'package:daliuren/domain/usecases/get_keti_data_usecase.dart';
+import 'package:daliuren/domain/usecases/match_yuding_keti_usecase.dart';
 import 'package:daliuren/domain/usecases/base_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_divination_usecase.dart';
 import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
@@ -16,20 +16,20 @@ class DaLiuRenViewModel extends BaseViewModel {
   final CalculateDivinationUseCase _calculateDivinationUseCase;
   final LoadDivinationDataUseCase _loadDivinationDataUseCase;
   final CalculateShenShaUseCase? _calculateShenShaUseCase;
-  final KetiDataService? _ketiDataService;
-  final YuDingKetiMatchService? _yuDingKetiMatchService;
+  final GetKetiDataUseCase? _getKetiDataUseCase;
+  final MatchYuDingKetiUseCase? _matchYuDingKetiUseCase;
 
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
     required LoadDivinationDataUseCase loadDivinationDataUseCase,
     CalculateShenShaUseCase? calculateShenShaUseCase,
-    KetiDataService? ketiDataService,
-    YuDingKetiMatchService? yuDingKetiMatchService,
+    GetKetiDataUseCase? getKetiDataUseCase,
+    MatchYuDingKetiUseCase? matchYuDingKetiUseCase,
   })  : _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
         _calculateShenShaUseCase = calculateShenShaUseCase,
-        _ketiDataService = ketiDataService,
-        _yuDingKetiMatchService = yuDingKetiMatchService;
+        _getKetiDataUseCase = getKetiDataUseCase,
+        _matchYuDingKetiUseCase = matchYuDingKetiUseCase;
 
   // Data properties
   DateTime _selectedDateTime = DateTime.now();
@@ -198,18 +198,18 @@ class DaLiuRenViewModel extends BaseViewModel {
   }
 
   Future<void> _matchKeTi() async {
-    if (_ketiDataService == null ||
+    if (_getKetiDataUseCase == null ||
         _currentDivination == null ||
-        _yuDingKetiMatchService == null) {
-      print('🟡 [ViewModel] _matchKeTi: Service or divination is null');
+        _matchYuDingKetiUseCase == null) {
+      print('🟡 [ViewModel] _matchKeTi: UseCase or divination is null');
       _matchedLessons = [];
       _matchedKeTiNames = [];
       _matchedKetiResults = [];
       return;
     }
 
-    if (!_ketiDataService.isLoaded) {
-      print('🟡 [ViewModel] _matchKeTi: KetiDataService not loaded yet');
+    if (!_getKetiDataUseCase.isLoaded) {
+      print('🟡 [ViewModel] _matchKeTi: GetKetiDataUseCase not loaded yet');
       _matchedLessons = [];
       _matchedKeTiNames = [];
       _matchedKetiResults = [];
@@ -217,11 +217,12 @@ class DaLiuRenViewModel extends BaseViewModel {
     }
 
     try {
-      final patternNames =
-          await _yuDingKetiMatchService.getKeTiNames(_currentDivination!);
-      print('🔵 [ViewModel] _matchKeTi: Pattern names from Service: $patternNames');
+      final patternNames = await _matchYuDingKetiUseCase.call(
+        MatchYuDingKetiParams(_currentDivination!),
+      );
+      print('🔵 [ViewModel] _matchKeTi: Pattern names from UseCase: $patternNames');
       _matchedKeTiNames = patternNames;
-      final results = _ketiDataService.findByNames(patternNames);
+      final results = _getKetiDataUseCase.findByNames(patternNames);
       _matchedKetiResults = results;
       _matchedLessons = [];
       final seen = <String>{};
