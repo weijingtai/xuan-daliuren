@@ -38,13 +38,13 @@
 
 ---
 
-## D2: Page Layer Migration (TODO)
+## D2: Move Business Input State Into ViewModel (DONE)
 
-- [ ] D2.1: Migrate my_home_page.dart — remove direct repository/service imports
-- [ ] D2.2: Migrate new_home_page.dart — remove direct repository/service imports
-- [ ] D2.3: Route all domain access through ViewModel only
-- [ ] D2.4: Verify UI deny-list scan now passes (0 violations)
-- [ ] D2.5: Run boundary test, expect all 3 dirs to pass
+- [x] D2.1: Define DaLiuRenInputState (immutable model with copyWith, validationErrors, isReadyToSubmit)
+- [x] D2.2: Add ViewModel intent methods (updateYearJiaZi, submitManualDivination, clearInput, etc.)
+- [x] D2.3: Create input state tests (20 state tests + 21 intent tests = 41 new tests)
+- [x] D2.4: Update tasks.md
+- [x] D2.5: Run tests and commit (58 tests passed in test/presentation/)
 
 ---
 

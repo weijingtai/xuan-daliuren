@@ -11,6 +11,7 @@ import 'package:daliuren/domain/usecases/calculate_shen_sha_usecase.dart';
 import 'package:daliuren/domain/usecases/load_divination_data_usecase.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/presentation/viewmodels/base_viewmodel.dart';
+import 'package:daliuren/presentation/models/da_liu_ren_input_state.dart';
 
 class DaLiuRenViewModel extends BaseViewModel {
   final CalculateDivinationUseCase _calculateDivinationUseCase;
@@ -30,6 +31,12 @@ class DaLiuRenViewModel extends BaseViewModel {
         _calculateShenShaUseCase = calculateShenShaUseCase,
         _getKetiDataUseCase = getKetiDataUseCase,
         _matchYuDingKetiUseCase = matchYuDingKetiUseCase;
+
+  // ==================== 输入状态（Input State） ====================
+  DaLiuRenInputState _inputState = DaLiuRenInputState.empty;
+
+  /// 当前输入状态（只读）
+  DaLiuRenInputState get inputState => _inputState;
 
   // Data properties
   DateTime _selectedDateTime = DateTime.now();
@@ -162,6 +169,121 @@ class DaLiuRenViewModel extends BaseViewModel {
     _monthJiaZi = null;
     _dayJiaZi = null;
     _timeJiaZi = null;
+    notifyListeners();
+  }
+
+  // ==================== 输入 Intent 方法 ====================
+
+  /// 更新年干支输入
+  void updateYearJiaZi(String? value) {
+    _inputState = _inputState.copyWith(yearJiaZi: value);
+    notifyListeners();
+  }
+
+  /// 更新月干支输入
+  void updateMonthJiaZi(String? value) {
+    _inputState = _inputState.copyWith(monthJiaZi: value);
+    notifyListeners();
+  }
+
+  /// 更新日干支输入
+  void updateDayJiaZi(String? value) {
+    _inputState = _inputState.copyWith(dayJiaZi: value);
+    notifyListeners();
+  }
+
+  /// 更新时干支输入
+  void updateTimeJiaZi(String? value) {
+    if (value == null || value.isEmpty) {
+      _inputState = _inputState.copyWith(clearTimeJiaZi: true);
+    } else {
+      _inputState = _inputState.copyWith(timeJiaZi: value);
+    }
+    notifyListeners();
+  }
+
+  /// 更新月将输入
+  void updateMonthGeneral(String? value) {
+    _inputState = _inputState.copyWith(monthGeneral: value);
+    notifyListeners();
+  }
+
+  /// 更新阴阳遁
+  void updateYinYangDun(bool value) {
+    _inputState = _inputState.copyWith(isYinDun: value);
+    notifyListeners();
+  }
+
+  /// 更新局数
+  void updateJuNumber(int? value) {
+    if (value == null) {
+      _inputState = _inputState.copyWith(clearJuNumber: true);
+    } else {
+      _inputState = _inputState.copyWith(juNumber: value);
+    }
+    notifyListeners();
+  }
+
+  /// 更新占卜问题
+  void updateInputQuestion(String? question) {
+    if (question == null || question.isEmpty) {
+      _inputState = _inputState.copyWith(clearQuestion: true);
+    } else {
+      _inputState = _inputState.copyWith(question: question);
+    }
+    _question = question;
+    notifyListeners();
+  }
+
+  /// 提交手动排盘（从输入状态验证并计算）
+  Future<bool> submitManualDivination() async {
+    if (!_inputState.isReadyToSubmit) {
+      setError('输入不完整: ${_inputState.validationErrors.values.join(', ')}');
+      return false;
+    }
+
+    try {
+      final input = _inputState;
+      final parsedYear = JiaZi.getFromGanZhiValue(input.yearJiaZi!)!;
+      final parsedMonth = JiaZi.getFromGanZhiValue(input.monthJiaZi!)!;
+      final parsedDay = JiaZi.getFromGanZhiValue(input.dayJiaZi!)!;
+      final parsedTime = input.timeJiaZi != null
+          ? JiaZi.getFromGanZhiValue(input.timeJiaZi!)
+          : null;
+      final parsedMonthGeneral = MonthGeneral.values.firstWhere(
+        (mg) => mg.name == input.monthGeneral,
+        orElse: () => throw DivinationFailure('无效的月将: ${input.monthGeneral}'),
+      );
+
+      // isYinDun: true=阴遁 → YinYang.YIN, false=阳遁 → YinYang.YANG
+      final yinYangDun = input.isYinDun! ? YinYang.YIN : YinYang.YANG;
+
+      _question = input.question;
+      await updateManualJu(
+        yearJiaZi: parsedYear,
+        monthJiaZi: parsedMonth,
+        dayJiaZi: parsedDay,
+        yinYangDun: yinYangDun,
+        monthGeneral: parsedMonthGeneral,
+        timeJiaZi: parsedTime,
+        juNumber: input.juNumber,
+      );
+      return true;
+    } catch (e) {
+      setError(e is DivinationFailure ? e.message : e.toString());
+      return false;
+    }
+  }
+
+  /// 从日期时间提交排盘
+  Future<void> submitDateTimeDivination(DateTime dateTime) async {
+    updateDateTime(dateTime);
+  }
+
+  /// 清空输入状态
+  void clearInput() {
+    _inputState = DaLiuRenInputState.empty;
+    _question = null;
     notifyListeners();
   }
 
