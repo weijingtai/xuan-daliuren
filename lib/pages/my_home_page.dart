@@ -1457,7 +1457,8 @@ child: pan == null
   Future<YuDingDaLiuRenDataModel> loadBy(
       JiaZi dayJiaZi, DiZhi dayUpperDiZhi) async {
     try {
-      final List<dynamic> res = await context.read<DaLiuRenViewModel>().loadYuDingData();
+      final List<dynamic> res = context.read<DaLiuRenViewModel>().yudingData
+          ?? (throw StateError('Yuding data not loaded — initializeData() must complete first'));
       List<YuDingDaLiuRenDataModel> all = List<YuDingDaLiuRenDataModel>.from(
           res.map((model) => YuDingDaLiuRenDataModel.fromJson(model)));
       var result = all.firstWhere(

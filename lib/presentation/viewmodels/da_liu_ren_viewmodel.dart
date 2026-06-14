@@ -91,6 +91,12 @@ class DaLiuRenViewModel extends BaseViewModel {
     try {
       print('🔵 [ViewModel] Calling LoadDivinationDataUseCase...');
       await _loadDivinationDataUseCase.call(NoParams());
+      // Auto-load yuding data during initialization
+      if (_loadYuDingDataUseCase != null) {
+        print('🔵 [ViewModel] Loading yuding data...');
+        _yudingData = await _loadYuDingDataUseCase!.call(NoParams());
+        print('🔵 [ViewModel] Yuding data loaded: ${_yudingData?.length ?? 0} items');
+      }
       _isDataLoaded = true;
       print('🔵 [ViewModel] Data loaded successfully');
       setSuccess();

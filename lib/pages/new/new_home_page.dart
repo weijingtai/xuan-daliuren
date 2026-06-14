@@ -747,7 +747,8 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Future<YuDingDaLiuRenDataModel> _loadYuDing(DaLiuRenKePan pan) async {
-    final List<dynamic> res = await context.read<DaLiuRenViewModel>().loadYuDingData();
+    final List<dynamic> res = context.read<DaLiuRenViewModel>().yudingData
+        ?? (throw StateError('Yuding data not loaded — initializeData() must complete first'));
     final List<YuDingDaLiuRenDataModel> all =
         List<YuDingDaLiuRenDataModel>.from(
             res.map((m) => YuDingDaLiuRenDataModel.fromJson(m)));

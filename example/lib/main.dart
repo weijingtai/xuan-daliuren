@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:daliuren/navigator.dart';
 import 'package:daliuren/di/daliuren_storage_dependencies.dart';
 import 'package:daliuren/di/school_initialization.dart';
-import 'package:persistence_assets/persistence_assets.dart';
 import 'package:provider/provider.dart';
+
+import 'assets_repositories.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
