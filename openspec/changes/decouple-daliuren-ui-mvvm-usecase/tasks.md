@@ -29,12 +29,12 @@
 
 ---
 
-## D1: ViewModel UseCase Migration (TODO)
+## D1: ViewModel UseCase Migration (DONE)
 
-- [ ] D1.1: Replace direct repository calls in DaLiuRenViewModel with UseCase calls
-- [ ] D1.2: Wire UseCases into DI container
-- [ ] D1.3: Verify ViewModel deny-list scan still passes
-- [ ] D1.4: Run all tests, capture golden outputs
+- [x] D1.1: Replace direct repository calls in DaLiuRenViewModel with UseCase calls
+- [x] D1.2: Wire UseCases into DI container
+- [x] D1.3: Verify ViewModel deny-list scan still passes
+- [x] D1.4: Run all tests, capture golden outputs
 
 ---
 
