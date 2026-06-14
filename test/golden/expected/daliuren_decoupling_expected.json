@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "description": "Expected results for golden test fixtures. STUB — to be populated during D1-D3 migration rounds.",
+  "note": "Each entry's 'expected' field should be filled with the actual output snapshot captured from the pre-migration baseline run.",
+  "expected": {
+    "datetime-divination-001": {
+      "status": "stub",
+      "description": "To be populated: capture LiuRenPanModel JSON snapshot from existing test run",
+      "fields_to_verify": [
+        "dayJiaZi",
+        "monthGeneral",
+        "dayNight",
+        "fourClasses",
+        "threeChuans",
+        "guiRenLocation",
+        "ju",
+        "panType",
+        "nineZongMen",
+        "patternName",
+        "matchedLessons"
+      ]
+    },
+    "manual-divination-001": {
+      "status": "stub",
+      "description": "To be populated: capture LiuRenPanModel JSON snapshot from manual divination test",
+      "fields_to_verify": [
+        "dayJiaZi",
+        "threeChuans",
+        "fourClasses",
+        "patternName"
+      ]
+    },
+    "yuding-match-001": {
+      "status": "stub",
+      "description": "To be populated: capture list of matched SchoolEntry objects",
+      "fields_to_verify": [
+        "entries_count",
+        "first_entry.dayJiaZi",
+        "first_entry.juName",
+        "first_entry.title"
+      ]
+    },
+    "yuding-no-match-001": {
+      "status": "stub",
+      "description": "To be populated: should return empty list",
+      "fields_to_verify": [
+        "entries_count"
+      ]
+    },
+    "shen-sha-001": {
+      "status": "stub",
+      "description": "To be populated: capture Map<DiZhi, List<ShenShaResult>> snapshot",
+      "fields_to_verify": [
+        "子.contains('太岁')",
+        "寅.contains('干德')"
+      ]
+    },
+    "keti-matching-001": {
+      "status": "stub",
+      "description": "To be populated: capture list of DaliurenLesson objects",
+      "fields_to_verify": [
+        "total_lessons_count",
+        "matched_names"
+      ]
+    }
+  }
+}

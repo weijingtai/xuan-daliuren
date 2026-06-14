@@ -1,0 +1,90 @@
+{
+  "version": "1.0",
+  "description": "Golden test fixtures for DaLiuRen decoupling migration. Each case exercises a distinct use case path.",
+  "fixtures": [
+    {
+      "id": "datetime-divination-001",
+      "description": "Datetime-based divination: 戊申年 丁巳月 庚午日 丑时 — tests full CalculateDivinationUseCase flow with automatic datetime resolution",
+      "category": "divination",
+      "input": {
+        "type": "datetime",
+        "params": {
+          "dateTime": "2024-05-15T01:00:00",
+          "question": "今日出行吉凶如何？",
+          "config": {
+            "monthGeneralType": "中气",
+            "guiRenType": "甲戊庚牛羊(阳贵)",
+            "dayNightBoundaryType": "卯酉"
+          }
+        }
+      }
+    },
+    {
+      "id": "manual-divination-001",
+      "description": "Manual divination with explicit JiaZi parameters: 丁巳日 阳遁 巳将 子时 — tests CalculateDivinationUseCase with ManualJuParams",
+      "category": "divination",
+      "input": {
+        "type": "manual",
+        "params": {
+          "dayJiaZi": "丁巳",
+          "yinYangDun": "阳",
+          "monthGeneral": "巳",
+          "timeZhi": "子",
+          "yearJiaZi": "甲辰",
+          "monthJiaZi": "己巳"
+        }
+      }
+    },
+    {
+      "id": "yuding-match-001",
+      "description": "YuDing keti match — dayJiaZi=丁巳, patternName contains a known yuding keti entry. Tests MatchYuDingKetiUseCase with expected match result.",
+      "category": "yuding",
+      "input": {
+        "type": "yuding_match",
+        "params": {
+          "dayJiaZi": "丁巳",
+          "juName": "贼克",
+          "patternNames": ["贼克"]
+        }
+      }
+    },
+    {
+      "id": "yuding-no-match-001",
+      "description": "YuDing keti no-match — dayJiaZi and patternName combination that yields zero entries. Tests MatchYuDingKetiUseCase empty-result path.",
+      "category": "yuding",
+      "input": {
+        "type": "yuding_no_match",
+        "params": {
+          "dayJiaZi": "甲子",
+          "juName": "昴星",
+          "patternNames": ["昴星"]
+        }
+      }
+    },
+    {
+      "id": "shen-sha-001",
+      "description": "ShenSha calculation for 甲子年甲寅月甲子日甲子时 — tests CalculateShenShaUseCase. Expected: 太岁 at 子, 干德 at 寅.",
+      "category": "shen_sha",
+      "input": {
+        "type": "shen_sha",
+        "params": {
+          "yearJiaZi": "甲子",
+          "monthJiaZi": "甲寅",
+          "dayJiaZi": "甲子",
+          "hourJiaZi": "甲子"
+        }
+      }
+    },
+    {
+      "id": "keti-matching-001",
+      "description": "Keti data loading and pattern-name matching — tests GetKetiDataUseCase to verify keti lessons load correctly and findByNames works.",
+      "category": "keti",
+      "input": {
+        "type": "keti_matching",
+        "params": {
+          "patternNames": ["贼克", "比用", "涉害"]
+        }
+      }
+    }
+  ]
+}
