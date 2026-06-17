@@ -1,6 +1,5 @@
-import 'package:theme/const_resources_mapper.dart';
+import 'package:theme/theme.dart';
 import 'package:metaphysics_core/enums.dart';
-import 'package:theme/const_ui_resources_mapper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,10 +21,16 @@ class ThreeChuanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = XuanThemeData.maybeOf(context)?.component('daliuren_three_chuan_card');
+    final bg = style?.background ?? Colors.white;
+    final titleColor = style?.border?.color ?? Colors.blueGrey;
+    final radius = style?.radius ?? 12;
+    final textColor = style?.border?.color ?? const Color.fromRGBO(68, 68, 60, 1);
+
     return Card(
       elevation: 2,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: bg,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: Padding(
         padding: EdgeInsets.all(8 * scaleFactor),
         child: Column(
@@ -35,22 +40,22 @@ class ThreeChuanCard extends StatelessWidget {
               "三传",
               style: GoogleFonts.maShanZheng(
                 fontSize: 18 * scaleFactor,
-                color: Colors.blueGrey,
+                color: titleColor,
               ),
             ),
             SizedBox(height: 8 * scaleFactor),
-            _buildContent(),
+            _buildContent(textColor),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(Color textColor) {
     double diZhiFontSize = gongSize.width * .24;
     TextStyle otherStyle = GoogleFonts.maShanZheng(
       fontSize: gongSize.width * .16,
-      color: const Color.fromRGBO(68, 68, 60, 1),
+      color: textColor,
       height: 1.0,
       shadows: [
         Shadow(

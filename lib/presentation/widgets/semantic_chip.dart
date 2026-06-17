@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:theme/theme.dart';
 import '../../design/daliuren_colors.dart';
 import '../../design/daliuren_spacing.dart';
 import '../../design/daliuren_typography.dart';
@@ -42,22 +43,31 @@ class SemanticChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = XuanThemeData.maybeOf(context)?.component('daliuren_semantic_chip');
+    final variant = style?.variant(semantic == ChipSemantic.auspicious ? 'auspicious'
+        : semantic == ChipSemantic.inauspicious ? 'inauspicious'
+        : semantic == ChipSemantic.highlight ? 'highlight' : 'neutral');
+    final bg = variant?.background ?? _bgColor;
+    final textC = variant?.border?.color ?? _textColor;
+    final borderC = variant?.border?.color ?? _borderColor;
+    final radius = style?.radius ?? DaliurenSpacing.xs * scale;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(DaliurenSpacing.xs * scale),
+        borderRadius: BorderRadius.circular(radius),
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: DaliurenSpacing.md * scale,
             vertical: 3 * scale,
           ),
           decoration: BoxDecoration(
-            color: _bgColor,
-            borderRadius: BorderRadius.circular(DaliurenSpacing.xs * scale),
-            border: Border.all(color: _borderColor, width: 1),
+            color: bg,
+            borderRadius: BorderRadius.circular(radius),
+            border: Border.all(color: borderC, width: 1),
           ),
-          child: Text(label, style: DaliurenTypography.tag(scale).copyWith(color: _textColor)),
+          child: Text(label, style: DaliurenTypography.tag(scale).copyWith(color: textC)),
         ),
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:theme/const_resources_mapper.dart';
+import 'package:theme/theme.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +14,7 @@ class KePanInfoCard extends StatelessWidget {
   final double scaleFactor;
   final String iconsAssetPath;
 
-  const KePanInfoCard({
+  KePanInfoCard({
     super.key,
     required this.kePan,
     this.juNumber,
@@ -23,11 +23,22 @@ class KePanInfoCard extends StatelessWidget {
     this.iconsAssetPath = "icons",
   });
 
-  static const _inkColor = Color.fromRGBO(68, 68, 60, 1);
-  static const _bgColor = Color.fromRGBO(255, 251, 240, 1);
+  // Mutable fields initialized in build() before sub-methods run.
+  Color _ink = _defaultInk;
+  Color _bg = _defaultBg;
+  Color _sealRedBase = _defaultSealRedBase;
+
+  static const _defaultInk = Color.fromRGBO(68, 68, 60, 1);
+  static const _defaultBg = Color.fromRGBO(255, 251, 240, 1);
+  static const _defaultSealRedBase = Color.fromRGBO(176, 31, 36, 1);
 
   @override
   Widget build(BuildContext context) {
+    final style = XuanThemeData.maybeOf(context)?.component('daliuren_ke_pan_card');
+    _ink = style?.border?.color ?? _defaultInk;
+    _bg = style?.background ?? _defaultBg;
+    _sealRedBase = style?.border?.color ?? _defaultSealRedBase;
+
     final dayName = kePan.dayJiaZi.name;
     final shichen = kePan.timeJiaZi.diZhi.name;
     final yinyang = kePan.isDayGuiRen ? "阳" : "阴";
@@ -38,10 +49,10 @@ class KePanInfoCard extends StatelessWidget {
 
     return Card(
       elevation: 6,
-      color: _bgColor,
+      color: _bg,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16 * scaleFactor),
-        side: BorderSide(color: _inkColor.withValues(alpha: .12), width: 1),
+        side: BorderSide(color: _ink.withValues(alpha: .12), width: 1),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -77,8 +88,8 @@ class KePanInfoCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            _inkColor.withValues(alpha: .15),
-            _inkColor.withValues(alpha: .15),
+            _ink.withValues(alpha: .15),
+            _ink.withValues(alpha: .15),
             Colors.transparent,
           ],
           stops: const [0, .3, .7, 1],
@@ -99,7 +110,7 @@ class KePanInfoCard extends StatelessWidget {
           width: 28 * scaleFactor,
           height: 28 * scaleFactor,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(176, 31, 36, .85),
+            color: _sealRedBase.withValues(alpha: .85),
             borderRadius: BorderRadius.circular(4),
           ),
           alignment: Alignment.center,
@@ -118,7 +129,7 @@ class KePanInfoCard extends StatelessWidget {
           textAlign: TextAlign.center,
           style: GoogleFonts.maShanZheng(
             fontSize: 17 * scaleFactor,
-            color: _inkColor,
+            color: _ink,
             fontWeight: FontWeight.w600,
             height: 1.4,
           ),
@@ -188,13 +199,13 @@ class KePanInfoCard extends StatelessWidget {
           horizontal: 4 * scaleFactor, vertical: 6 * scaleFactor),
       decoration: BoxDecoration(
         color: highlight
-            ? const Color.fromRGBO(176, 31, 36, .06)
+            ? _sealRedBase.withValues(alpha: .06)
             : Colors.white.withValues(alpha: .4),
         borderRadius: BorderRadius.circular(8 * scaleFactor),
         border: Border.all(
           color: highlight
-              ? const Color.fromRGBO(176, 31, 36, .25)
-              : _inkColor.withValues(alpha: .08),
+              ? _sealRedBase.withValues(alpha: .25)
+              : _ink.withValues(alpha: .08),
           width: highlight ? 1.5 : 1,
         ),
       ),
@@ -250,7 +261,7 @@ class KePanInfoCard extends StatelessWidget {
               width: 3 * scaleFactor,
               height: 14 * scaleFactor,
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(176, 31, 36, .7),
+                color: _sealRedBase.withValues(alpha: .7),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -259,7 +270,7 @@ class KePanInfoCard extends StatelessWidget {
               "十二神将",
               style: GoogleFonts.maShanZheng(
                 fontSize: 14 * scaleFactor,
-                color: _inkColor,
+                color: _ink,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -319,13 +330,13 @@ class KePanInfoCard extends StatelessWidget {
           horizontal: 3 * scaleFactor, vertical: 5 * scaleFactor),
       decoration: BoxDecoration(
         color: isGuiRen
-            ? const Color.fromRGBO(176, 31, 36, .08)
+            ? _sealRedBase.withValues(alpha: .08)
             : Colors.white.withValues(alpha: .3),
         borderRadius: BorderRadius.circular(6 * scaleFactor),
         border: Border.all(
           color: isGuiRen
-              ? const Color.fromRGBO(176, 31, 36, .35)
-              : _inkColor.withValues(alpha: .08),
+              ? _sealRedBase.withValues(alpha: .35)
+              : _ink.withValues(alpha: .08),
           width: isGuiRen ? 1.5 : 1,
         ),
       ),
@@ -338,8 +349,8 @@ class KePanInfoCard extends StatelessWidget {
             style: GoogleFonts.maShanZheng(
               fontSize: 12 * scaleFactor,
               color: isGuiRen
-                  ? const Color.fromRGBO(176, 31, 36, .9)
-                  : _inkColor,
+                  ? _sealRedBase.withValues(alpha: .9)
+                  : _ink,
               fontWeight: isGuiRen ? FontWeight.w700 : FontWeight.w400,
               height: 1,
             ),
@@ -350,12 +361,12 @@ class KePanInfoCard extends StatelessWidget {
                 horizontal: 4 * scaleFactor, vertical: 1 * scaleFactor),
             decoration: BoxDecoration(
               color: isGuiRenPos
-                  ? const Color.fromRGBO(176, 31, 36, .12)
+                  ? _sealRedBase.withValues(alpha: .12)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(3),
               border: isGuiRenPos
                   ? Border.all(
-                      color: const Color.fromRGBO(176, 31, 36, .25),
+                      color: _sealRedBase.withValues(alpha: .25),
                       width: 1)
                   : null,
             ),
@@ -364,7 +375,7 @@ class KePanInfoCard extends StatelessWidget {
               style: GoogleFonts.maShanZheng(
                 fontSize: 9 * scaleFactor,
                 color: isGuiRenPos
-                    ? const Color.fromRGBO(176, 31, 36, .8)
+                    ? _sealRedBase.withValues(alpha: .8)
                     : Colors.grey.shade500,
                 height: 1,
               ),
@@ -388,7 +399,7 @@ class KePanInfoCard extends StatelessWidget {
               width: 3 * scaleFactor,
               height: 14 * scaleFactor,
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(176, 31, 36, .7),
+                color: _sealRedBase.withValues(alpha: .7),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -397,7 +408,7 @@ class KePanInfoCard extends StatelessWidget {
               "课格",
               style: GoogleFonts.maShanZheng(
                 fontSize: 14 * scaleFactor,
-                color: _inkColor,
+                color: _ink,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -415,10 +426,10 @@ class KePanInfoCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                     horizontal: 10 * scaleFactor, vertical: 4 * scaleFactor),
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(176, 31, 36, .06),
+                  color: _sealRedBase.withValues(alpha: .06),
                   borderRadius: BorderRadius.circular(6 * scaleFactor),
                   border: Border.all(
-                    color: const Color.fromRGBO(176, 31, 36, .2),
+                    color: _sealRedBase.withValues(alpha: .2),
                     width: 1,
                   ),
                 ),
@@ -426,7 +437,7 @@ class KePanInfoCard extends StatelessWidget {
                   name,
                   style: GoogleFonts.zhiMangXing(
                     fontSize: 14 * scaleFactor,
-                    color: _inkColor,
+                    color: _ink,
                     height: 1,
                   ),
                 ),
@@ -451,10 +462,10 @@ class KePanInfoCard extends StatelessWidget {
       padding:
           EdgeInsets.symmetric(horizontal: 8 * scaleFactor, vertical: 3 * scaleFactor),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(176, 31, 36, .05),
+        color: _sealRedBase.withValues(alpha: .05),
         borderRadius: BorderRadius.circular(4 * scaleFactor),
         border: Border.all(
-          color: const Color.fromRGBO(176, 31, 36, .15),
+          color: _sealRedBase.withValues(alpha: .15),
           width: .5,
         ),
       ),
@@ -462,7 +473,7 @@ class KePanInfoCard extends StatelessWidget {
         text,
         style: GoogleFonts.maShanZheng(
           fontSize: 12 * scaleFactor,
-          color: _inkColor.withValues(alpha: .8),
+          color: _ink.withValues(alpha: .8),
           height: 1,
         ),
       ),

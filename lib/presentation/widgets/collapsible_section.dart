@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:theme/theme.dart';
 import '../../design/daliuren_colors.dart';
 import '../../design/daliuren_spacing.dart';
 import '../../design/daliuren_typography.dart';
@@ -32,10 +33,15 @@ class _CollapsibleSectionState extends State<CollapsibleSection> {
 
   @override
   Widget build(BuildContext context) {
+    final style = XuanThemeData.maybeOf(context)?.component('daliuren_collapsible_section');
+    final accentColor = style?.border?.color ?? DaliurenColors.sealRed.withValues(alpha: .6);
+    final iconColor = style?.background ?? DaliurenColors.textHint;
+    final dividerColor = style?.border?.color ?? DaliurenColors.dividerGradient;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildDivider(),
+        _buildDivider(dividerColor),
         SizedBox(height: DaliurenSpacing.lg * widget.scale),
         InkWell(
           onTap: () => setState(() => _expanded = !_expanded),
@@ -51,7 +57,7 @@ class _CollapsibleSectionState extends State<CollapsibleSection> {
                   width: 3 * widget.scale,
                   height: 16 * widget.scale,
                   decoration: BoxDecoration(
-                    color: DaliurenColors.sealRed.withValues(alpha: .6),
+                    color: accentColor,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -68,7 +74,7 @@ class _CollapsibleSectionState extends State<CollapsibleSection> {
                   child: Icon(
                     Icons.keyboard_arrow_down,
                     size: 20 * widget.scale,
-                    color: DaliurenColors.textHint,
+                    color: iconColor,
                   ),
                 ),
               ],
@@ -90,15 +96,15 @@ class _CollapsibleSectionState extends State<CollapsibleSection> {
     );
   }
 
-  Widget _buildDivider() {
+  Widget _buildDivider(Color dividerColor) {
     return Container(
       height: 1,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            DaliurenColors.dividerGradient,
-            DaliurenColors.dividerGradient,
+            dividerColor,
+            dividerColor,
             Colors.transparent,
           ],
           stops: const [0, .3, .7, 1],

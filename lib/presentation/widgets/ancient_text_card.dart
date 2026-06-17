@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:theme/theme.dart';
 import '../../data/models/yu_ding_da_liu_ren_data_model.dart';
 import '../../design/daliuren_colors.dart';
 import '../../design/daliuren_spacing.dart';
@@ -16,12 +17,26 @@ class AncientTextCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = XuanThemeData.maybeOf(context)?.component('daliuren_ancient_text_card');
+    final bg = style?.background ?? DaliurenColors.paper;
+    final borderColor = style?.border?.color ?? DaliurenColors.ink.withValues(alpha: .12);
+    final sealBg = style?.border?.color ?? DaliurenColors.sealRed.withValues(alpha: .85);
+    final radius = style?.radius != null ? BorderRadius.all(Radius.circular(style!.radius!)) : BorderRadius.circular(DaliurenSpacing.xl * scale);
+    final shadow = style?.shadow;
+    final labelColor = style?.border?.color != null
+        ? style!.border!.color.withValues(alpha: .8)
+        : DaliurenColors.sealRed.withValues(alpha: .8);
+    final highlightColor = style?.border?.color != null
+        ? style!.border!.color.withValues(alpha: .9)
+        : DaliurenColors.sealRed.withValues(alpha: .9);
+
     return Card(
-      elevation: 2,
-      color: DaliurenColors.paper,
+      elevation: shadow != null ? null : 2,
+      color: bg,
+      shadowColor: shadow?.color,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DaliurenSpacing.xl * scale),
-        side: BorderSide(color: DaliurenColors.ink.withValues(alpha: .12)),
+        borderRadius: radius,
+        side: BorderSide(color: borderColor),
       ),
       child: Padding(
         padding: EdgeInsets.all(DaliurenSpacing.xl * scale),
@@ -29,16 +44,16 @@ class AncientTextCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTitleRow(),
+            _buildTitleRow(sealBg),
             _buildDivider(),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildBody(),
+            _buildBody(highlightColor),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildParagraph("课义", yuDing.meaning),
+            _buildParagraph("课义", yuDing.meaning, labelColor, highlightColor),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildParagraph("解曰", yuDing.explain),
+            _buildParagraph("解曰", yuDing.explain, labelColor, highlightColor),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildParagraph("断曰", yuDing.predication),
+            _buildParagraph("断曰", yuDing.predication, labelColor, highlightColor),
             if (yuDing.details.isNotEmpty) ...[
               SizedBox(height: DaliurenSpacing.lg * scale),
               _buildDivider(),
@@ -46,7 +61,7 @@ class AncientTextCard extends StatelessWidget {
               ...yuDing.details.entries.map((e) => Padding(
                     padding: EdgeInsets.only(
                         bottom: DaliurenSpacing.md * scale),
-                    child: _buildParagraph(e.key, e.value),
+                    child: _buildParagraph(e.key, e.value, labelColor, highlightColor),
                   )),
             ],
             if (yuDing.books.isNotEmpty) ...[
@@ -56,7 +71,7 @@ class AncientTextCard extends StatelessWidget {
               ...yuDing.books.entries.map((e) => Padding(
                     padding: EdgeInsets.only(
                         bottom: DaliurenSpacing.md * scale),
-                    child: _buildParagraph(e.key, e.value),
+                    child: _buildParagraph(e.key, e.value, labelColor, highlightColor),
                   )),
             ],
           ],
@@ -65,14 +80,14 @@ class AncientTextCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTitleRow() {
+  Widget _buildTitleRow(Color sealBg) {
     return Row(
       children: [
         Container(
           width: DaliurenSpacing.xxl * scale,
           height: DaliurenSpacing.xxl * scale,
           decoration: BoxDecoration(
-            color: DaliurenColors.sealRed.withValues(alpha: .85),
+            color: sealBg,
             borderRadius: BorderRadius.circular(DaliurenSpacing.xs),
           ),
           alignment: Alignment.center,
@@ -92,28 +107,30 @@ class AncientTextCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(Color highlightColor) {
     return _highlightedText(yuDing.body.join(" "),
-        style: DaliurenTypography.body(scale).copyWith(fontWeight: FontWeight.bold));
+        style: DaliurenTypography.body(scale).copyWith(fontWeight: FontWeight.bold),
+        highlightColor: highlightColor);
   }
 
-  Widget _buildParagraph(String label, String text) {
+  Widget _buildParagraph(String label, String text, Color labelColor, Color highlightColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "$label：",
           style: DaliurenTypography.h3(scale)
-              .copyWith(color: DaliurenColors.sealRed.withValues(alpha: .8)),
+              .copyWith(color: labelColor),
         ),
         SizedBox(height: DaliurenSpacing.xs * scale),
-        _highlightedText(text, style: DaliurenTypography.body(scale)),
+        _highlightedText(text, style: DaliurenTypography.body(scale), highlightColor: highlightColor),
       ],
     );
   }
 
-  Widget _highlightedText(String text, {required TextStyle style}) {
+  Widget _highlightedText(String text, {required TextStyle style, Color? highlightColor}) {
     final parts = _parseHighlight(text);
+    final hColor = highlightColor ?? DaliurenColors.sealRed.withValues(alpha: .9);
     return RichText(
       text: TextSpan(
         style: style,
@@ -122,7 +139,7 @@ class AncientTextCard extends StatelessWidget {
             return TextSpan(
               text: p.text,
               style: style.copyWith(
-                color: DaliurenColors.sealRed.withValues(alpha: .9),
+                color: hColor,
                 fontWeight: FontWeight.bold,
               ),
             );
