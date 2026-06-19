@@ -7,6 +7,7 @@ import '../../model/da_liu_ren_gong.dart';
 import '../../model/da_liu_ren_ke_pan.dart';
 import '../../model/enum_gui_ren.dart';
 
+// ignore: must_be_immutable
 class KePanInfoCard extends StatelessWidget {
   final DaLiuRenKePan kePan;
   final int? juNumber;
