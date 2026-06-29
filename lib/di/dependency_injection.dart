@@ -29,6 +29,9 @@ class DependencyInjection {
     final DaLiuRenShenShaDataRepository shenShaData = deps.shenShaData;
 
     return [
+      Provider<DaliurenRecordRepository>(
+        create: (_) => deps.recordRepository,
+      ),
       // Calculators
       Provider<LunarCalculator>(create: (_) => LunarCalculator()),
       Provider<TianDiPanCalculator>(create: (_) => TianDiPanCalculator()),

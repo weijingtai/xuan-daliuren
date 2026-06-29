@@ -3,11 +3,37 @@ import 'package:daliuren/navigator.dart';
 import 'package:daliuren/di/daliuren_storage_dependencies.dart';
 import 'package:daliuren/di/school_initialization.dart';
 import 'package:provider/provider.dart';
+import 'package:persistence_drift/persistence_drift.dart';
+import 'package:persistence_preferences/persistence_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:drift/native.dart';
+import 'package:persistence_drift/daliuren/daliuren_module_registry.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 
 import 'assets_repositories.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final newDb = PersistenceDriftDatabase(NativeDatabase.memory());
+  final prefs = await SharedPreferences.getInstance();
+  final sessionRepo = PreferencesAccountSessionRepository(prefs);
+  final accountDb = AccountDatabase(NativeDatabase.memory());
+  final identityLinkRepo = DriftAccountIdentityLinkRepository(accountDb);
+  
+  final bootstrapStore = DriftScopeBootstrapStore(newDb);
+  final ledger = DriftScopeLedger(db: newDb, bootstrapStore: bootstrapStore);
+  final resolver = ScopeResolver(
+    sessionRepository: sessionRepo,
+    identityLinkRepository: identityLinkRepo,
+    ledger: ledger,
+  );
+  final resolvedScope = await resolver.resolve();
+  final scopeUid = resolvedScope.scopeUid;
+
+  final ds = DriftRecordDataSource(newDb, scopeUid: scopeUid);
+  final store = LocalRecordRepository(ds, RecordAdapterRegistry([DaliurenModuleRegistry.codec()]));
+  final recordBackedRepository = DaliurenModuleRegistry.repository(store: store);
 
   // Construct concrete backend implementations (host/assembly seam)
   final deps = DaliurenStorageDependencies(
@@ -15,6 +41,7 @@ void main() async {
     keti: AssetsDaLiuRenKetiRepository(),
     shenShaData: AssetsDaLiuRenShenShaDataRepository(),
     schoolData: AssetsDaLiuRenSchoolDataRepository(),
+    recordRepository: recordBackedRepository,
   );
 
   // Initialize schools using the injected port

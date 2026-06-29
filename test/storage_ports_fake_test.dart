@@ -129,6 +129,23 @@ class _FakeSchool implements DaLiuRenSchoolDataRepository {
   }
 }
 
+class _FakeRecordRepository implements DaliurenRecordRepository {
+  @override
+  Future<String> saveRecord(DaliurenDivinationRecordContract record) async => record.uuid;
+
+  @override
+  Future<List<DaliurenDivinationRecordContract>> getAllRecords() async => const [];
+
+  @override
+  Future<DaliurenDivinationRecordContract?> getRecordByUuid(String uuid) async => null;
+
+  @override
+  Future<bool> softDeleteRecord(String uuid) async => true;
+
+  @override
+  Stream<List<DaliurenDivinationRecordContract>> watchAllRecords() => Stream.value(const []);
+}
+
 // ── Tests ─────────────────────────────────────────────────────────────
 
 void main() {
@@ -248,12 +265,14 @@ void main() {
     final fakeKeti = _FakeKeti();
     final fakeShenSha = _FakeShenSha();
     final fakeSchool = _FakeSchool();
+    final fakeRecord = _FakeRecordRepository();
 
     final deps = DaliurenStorageDependencies(
       officialData: fakeOfficial,
       keti: fakeKeti,
       shenShaData: fakeShenSha,
       schoolData: fakeSchool,
+      recordRepository: fakeRecord,
     );
 
     // Verify the bundle holds the correct types.
@@ -261,6 +280,7 @@ void main() {
     expect(deps.keti, isA<DaLiuRenKetiRepository>());
     expect(deps.shenShaData, isA<DaLiuRenShenShaDataRepository>());
     expect(deps.schoolData, isA<DaLiuRenSchoolDataRepository>());
+    expect(deps.recordRepository, isA<DaliurenRecordRepository>());
   });
 }
 

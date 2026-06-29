@@ -8,10 +8,12 @@ class DaliurenStorageDependencies {
     required this.keti,
     required this.shenShaData,
     required this.schoolData,
+    required this.recordRepository,
   });
 
   final DaLiuRenOfficialDataRepository officialData;
   final DaLiuRenKetiRepository keti;
   final DaLiuRenShenShaDataRepository shenShaData;
   final DaLiuRenSchoolDataRepository schoolData;
+  final DaliurenRecordRepository recordRepository;
 }
