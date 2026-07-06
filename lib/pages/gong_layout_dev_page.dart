@@ -402,15 +402,26 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
     final groundDiZhi = gong.groundPanDiZhi;
     final tianGan = gong.tianGan;
 
-    final skySymbol = SizedBox(
-      width: gongSize.width * .36 * sf,
-      height: gongSize.width * .36 * sf,
-      child: FittedBox(
-        child: Text(skyDiZhi.value,
-            style: DaliurenTypography.ganZiDiZhi(sf).copyWith(
-                color: ConstResourcesMapper.zodiacZhiColors[skyDiZhi]!
-                    .withValues(alpha: .7))),
-      ),
+    // 天盘地支：18px
+    final skyDiZhiStyle = DaliurenTypography.ganZiDiZhi(sf).copyWith(
+      fontSize: 18 * sf,
+      color: ConstResourcesMapper.zodiacZhiColors[skyDiZhi]!
+          .withValues(alpha: .7),
+    );
+
+    // 天干：14px
+    final tianGanStyle = tianGan != null
+        ? DaliurenTypography.ganZiTianGan(sf).copyWith(
+            fontSize: 14 * sf,
+            color: ConstResourcesMapper.zodiacGanColors[tianGan]!
+                .withValues(alpha: .6),
+          )
+        : DaliurenTypography.ganZiTianGan(sf).copyWith(fontSize: 14 * sf);
+
+    // 天将：18px
+    final guiRenStyle = DaliurenTypography.tag(sf).copyWith(
+      fontSize: 18 * sf,
+      color: DaliurenColors.textSecondary,
     );
 
     return Container(
@@ -431,13 +442,16 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
                 )
               : <VitalityValue>[];
 
-          final gap = _showHints ? 0.0 : 1.0;
-
           return Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // 第一行：天将名（18px，最顶部）
               SymbolAnnotation.sides(
-                symbol: skySymbol,
+                symbol: Text(gong.guiRen.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: guiRenStyle),
                 values: hints,
                 show: _showHints,
                 theme: const GongTokenTheme.fallback(),
@@ -445,43 +459,32 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
                 symbolShrinkScale: 0.85,
                 expandedExtent: 20,
               ),
-              SizedBox(height: gap * sf),
-              Text(gong.guiRen.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: DaliurenTypography.caption(sf * .7)
-                      .copyWith(color: DaliurenColors.textSecondary)),
-              SizedBox(height: gap * sf),
-              if (tianGan != null)
-                SizedBox(
-                  width: gongSize.width * .18 * sf,
-                  height: gongSize.width * .18 * sf,
-                  child: FittedBox(
-                    child: Text(tianGan.value,
-                        style: DaliurenTypography.ganZiTianGan(sf).copyWith(
-                            color: ConstResourcesMapper
-                                .zodiacGanColors[tianGan]!
-                                .withValues(alpha: .6))),
-                  ),
-                )
-              else
-                SizedBox(
-                  width: gongSize.width * .18 * sf,
-                  height: gongSize.width * .18 * sf,
-                  child: CustomPaint(
-                    painter: _CirclePainter(DaliurenColors.textHint),
-                  ),
-                ),
-              SizedBox(height: gap * sf),
-              SizedBox(
-                width: gongSize.width * .14 * sf,
-                height: gongSize.width * .14 * sf,
-                child: FittedBox(
-                  child: Text(groundDiZhi.value,
-                      style: DaliurenTypography.caption(sf * .7)
-                          .copyWith(color: DaliurenColors.textSecondary)),
-                ),
+              SizedBox(height: 2 * sf),
+              // 第二行：天盘地支(18px) + 天干(14px)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(skyDiZhi.value, style: skyDiZhiStyle),
+                  SizedBox(width: 4 * sf),
+                  if (tianGan != null)
+                    Text(tianGan.value, style: tianGanStyle)
+                  else
+                    CustomPaint(
+                      size: Size(10 * sf, 10 * sf),
+                      painter: _CirclePainter(DaliurenColors.textHint),
+                    ),
+                ],
               ),
+              SizedBox(height: 2 * sf),
+              // 第三行：宫位名（16px，灰色浅色透明）
+              Text(groundDiZhi.value,
+                  style: DaliurenTypography.caption(sf).copyWith(
+                    fontSize: 16 * sf,
+                    color: DaliurenColors.textHint,
+                  )),
             ],
           );
         },
