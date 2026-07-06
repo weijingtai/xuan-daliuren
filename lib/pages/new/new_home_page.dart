@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:xuan_common_ui/xuan_common_ui.dart';
 
 import '../../data/models/yu_ding_da_liu_ren_data_model.dart';
 import '../../design/daliuren_colors.dart';
@@ -68,23 +69,20 @@ class _NewHomePageState extends State<NewHomePage> {
 
     return Scaffold(
       backgroundColor: DaliurenColors.paper,
- appBar: AppBar(
- backgroundColor: DaliurenColors.paper,
- elevation: 0,
- leading: IconButton(
- icon: Icon(Icons.arrow_back, color: DaliurenColors.ink),
- onPressed: () => Navigator.of(context).maybePop(),
- ),
- title: pan != null && juNumberFromVm != null
- ? Text(
- "${pan.dayJiaZi.name}日·${pan.timeJiaZi.diZhi.name}时·"
- "${pan.isDayGuiRen ? "阳" : "阴"}"
- "${ConstResourcesMapper.chineseNumberMapper[juNumberFromVm]}局",
- style: DaliurenTypography.h1(0.9),
- )
- : Text("大六壬", style: DaliurenTypography.h1(0.9)),
- centerTitle: true,
- ),
+      appBar: XuanAppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: DaliurenColors.ink),
+          onPressed: () => Navigator.of(context).maybePop(),
+        ),
+        title: pan != null && juNumberFromVm != null
+            ? Text(
+                "${pan.dayJiaZi.name}日·${pan.timeJiaZi.diZhi.name}时·"
+                "${pan.isDayGuiRen ? "阳" : "阴"}"
+                "${ConstResourcesMapper.chineseNumberMapper[juNumberFromVm]}局",
+                style: DaliurenTypography.h1(0.9),
+              )
+            : Text("大六壬", style: DaliurenTypography.h1(0.9)),
+      ),
       body:
           pan == null ? _buildEmptyState(viewModel) : _buildContent(viewModel),
     );
@@ -359,15 +357,15 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _actionButton(String label, IconData icon, VoidCallback onPressed) {
-    return OutlinedButton.icon(
+    return XuanButton.secondary(
       onPressed: onPressed,
-      icon: Icon(icon, size: 16),
-      label: Text(label, style: DaliurenTypography.caption(1)),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: DaliurenColors.ink,
-        side: BorderSide(color: DaliurenColors.ink.withValues(alpha: .2)),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(DaliurenSpacing.lg)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16),
+          const SizedBox(width: 4),
+          Text(label, style: DaliurenTypography.caption(1)),
+        ],
       ),
     );
   }
@@ -625,18 +623,10 @@ class _NewHomePageState extends State<NewHomePage> {
       {"l": "末传", "o": chuan.third},
     ];
 
-    return Card(
-      elevation: 2,
-      color: DaliurenColors.paper,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DaliurenSpacing.xl),
-        side: BorderSide(color: DaliurenColors.ink.withValues(alpha: .12)),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(DaliurenSpacing.xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+    return XuanCard(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
             Row(
               children: [
                 Container(
@@ -719,7 +709,6 @@ class _NewHomePageState extends State<NewHomePage> {
             ),
           ],
         ),
-      ),
     );
   }
 
@@ -756,16 +745,8 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildManualInput() {
-    return Card(
-      elevation: 1,
-      color: DaliurenColors.paper,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DaliurenSpacing.xl),
-        side: BorderSide(color: DaliurenColors.ink.withValues(alpha: .08)),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(DaliurenSpacing.xl),
-        child: Wrap(
+    return XuanCard(
+      child: Wrap(
           spacing: DaliurenSpacing.md,
           runSpacing: DaliurenSpacing.md,
           alignment: WrapAlignment.center,
@@ -817,7 +798,6 @@ class _NewHomePageState extends State<NewHomePage> {
             }),
           ],
         ),
-      ),
     );
   }
 

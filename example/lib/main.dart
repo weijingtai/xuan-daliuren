@@ -6,19 +6,44 @@ import 'package:provider/provider.dart';
 import 'package:persistence_drift/persistence_drift.dart';
 import 'package:persistence_preferences/persistence_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:drift/native.dart';
 import 'package:persistence_drift/daliuren/daliuren_module_registry.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
+import 'package:theme/theme.dart';
+import 'package:xuan_common_ui/xuan_common_ui.dart';
+import 'package:drift_flutter/drift_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'assets_repositories.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final newDb = PersistenceDriftDatabase(NativeDatabase.memory());
+  final newDb = PersistenceDriftDatabase(
+    driftDatabase(
+      name: 'daliuren',
+      native: const DriftNativeOptions(
+        databaseDirectory: getApplicationSupportDirectory,
+      ),
+      web: DriftWebOptions(
+        sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+        driftWorker: Uri.parse('drift_worker.js'),
+      ),
+    ),
+  );
   final prefs = await SharedPreferences.getInstance();
   final sessionRepo = PreferencesAccountSessionRepository(prefs);
-  final accountDb = AccountDatabase(NativeDatabase.memory());
+  final accountDb = AccountDatabase(
+    driftDatabase(
+      name: 'account',
+      native: const DriftNativeOptions(
+        databaseDirectory: getApplicationSupportDirectory,
+      ),
+      web: DriftWebOptions(
+        sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+        driftWorker: Uri.parse('drift_worker.js'),
+      ),
+    ),
+  );
   final identityLinkRepo = DriftAccountIdentityLinkRepository(accountDb);
   
   final bootstrapStore = DriftScopeBootstrapStore(newDb);
@@ -58,14 +83,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<DaliurenStorageDependencies>.value(
       value: deps,
-      child: MaterialApp(
-        title: '大六壬 Example',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      child: XuanThemeScope(
+        themeData: DefaultXuanThemeData.themeSet.light,
+        child: MaterialApp(
+          title: '大六壬 Example',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const SelectionPage(),
+          onGenerateRoute: NavigatorGenerator.generateRoute,
         ),
-        home: const SelectionPage(),
-        onGenerateRoute: NavigatorGenerator.generateRoute,
       ),
     );
   }
@@ -77,33 +105,33 @@ class SelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('大六壬架构选择')),
+      appBar: const XuanAppBar(title: Text('大六壬架构选择')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
+            XuanButton.primary(
               onPressed: () {
                 Navigator.of(context).pushNamed('/daliuren/old');
               },
               child: const Text('老架构 (Direct View)'),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
+            XuanButton.primary(
               onPressed: () {
                 Navigator.of(context).pushNamed('/daliuren');
               },
               child: const Text('新架构 (DaLiuRenView)'),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
+            XuanButton.primary(
               onPressed: () {
                 Navigator.of(context).pushNamed('/daliuren/new');
               },
               child: const Text('旧架构新UI (Design System)'),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
+            XuanButton.primary(
               onPressed: () {
                 Navigator.of(context).pushNamed('/daliuren/dev');
               },

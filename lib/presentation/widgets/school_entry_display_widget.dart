@@ -1,6 +1,7 @@
 // lib/presentation/widgets/school_entry_display_widget.dart
 
 import 'package:flutter/material.dart';
+import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/domain/interfaces/school_entry.dart';
 
 /// 通用流派条目显示组件
@@ -19,16 +20,13 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 标题和流派标签
-            _buildHeader(context),
-            const Divider(height: 24),
+    return XuanCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 标题和流派标签
+          _buildHeader(context),
+          const XuanDivider.horizontal(),
             
             // 课体名称
             if (entry.keTiNames.isNotEmpty) ...[
@@ -72,7 +70,6 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
             ],
           ],
         ),
-      ),
     );
   }
   

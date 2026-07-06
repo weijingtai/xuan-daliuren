@@ -24,6 +24,8 @@ environment:
 dependencies:
   theme:
     path: ../theme
+  xuan_common_ui:
+    path: ../xuan-common-ui
   xuan_four_zhu_card:
     path: ../xuan-four-zhu-card
   metaphysics_core:
@@ -126,3 +128,15 @@ dependency_overrides:
     path: ../xuan-metaphysics-core
   xuan_gua_core:
     path: ../xuan-gua-core
+  xuan_common_ui:
+    path: ../xuan-common-ui
+  theme:
+    path: ../theme
+  repository_interface_four_zhu_card:
+    path: ../repository-interface-four-zhu-card
+  persistence_domain:
+    path: ../xuan-domain
+  xuan_time_location:
+    path: ../xuan-time-location
+  calendar:
+    path: ../calendar

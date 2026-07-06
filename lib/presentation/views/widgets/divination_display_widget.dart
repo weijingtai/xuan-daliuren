@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/domain/schools/school_catalog.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
 import 'package:daliuren/presentation/widgets/keti_detail_widget.dart';
@@ -74,80 +75,71 @@ class DivinationDisplayWidget extends StatelessWidget {
   }
 
   Widget _buildBasicInfoCard(BuildContext context, dynamic divination) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '基本信息',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            Text('时间: ${divination.panDateTime}'),
-            if (divination.question != null)
-              Text('问题: ${divination.question}'),
-            Text('八字: ${divination.eightChatStr}'),
-          ],
-        ),
+    return XuanCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '基本信息',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 12),
+          Text('时间: ${divination.panDateTime}'),
+          if (divination.question != null)
+            Text('问题: ${divination.question}'),
+          Text('八字: ${divination.eightChatStr}'),
+        ],
       ),
     );
   }
 
   Widget _buildJiaZiInfoCard(BuildContext context, DaLiuRenViewModel viewModel) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '干支信息',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            if (viewModel.yearJiaZi != null)
-              Text('年干支: ${viewModel.yearJiaZi!.name}'),
-            if (viewModel.monthJiaZi != null)
-              Text('月干支: ${viewModel.monthJiaZi!.name}'),
-            if (viewModel.dayJiaZi != null)
-              Text('日干支: ${viewModel.dayJiaZi!.name}'),
-            if (viewModel.timeJiaZi != null)
-              Text('时干支: ${viewModel.timeJiaZi!.name}'),
-          ],
-        ),
+    return XuanCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '干支信息',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 12),
+          if (viewModel.yearJiaZi != null)
+            Text('年干支: ${viewModel.yearJiaZi!.name}'),
+          if (viewModel.monthJiaZi != null)
+            Text('月干支: ${viewModel.monthJiaZi!.name}'),
+          if (viewModel.dayJiaZi != null)
+            Text('日干支: ${viewModel.dayJiaZi!.name}'),
+          if (viewModel.timeJiaZi != null)
+            Text('时干支: ${viewModel.timeJiaZi!.name}'),
+        ],
       ),
     );
   }
 
   Widget _buildDivinationPanel(BuildContext context, dynamic divination) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '占卜盘',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
+    return XuanCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '占卜盘',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 12),
 
-            // Four Class (四课)
-            _buildFourClassSection(context, divination),
+          // Four Class (四课)
+          _buildFourClassSection(context, divination),
 
-            const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-            // Three Transmission (三传)
-            _buildThreeChuanSection(context, divination),
+          // Three Transmission (三传)
+          _buildThreeChuanSection(context, divination),
 
-            const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-            // Twelve Palaces (十二宫)
-            _buildTwelvePalacesSection(context, divination),
-          ],
-        ),
+          // Twelve Palaces (十二宫)
+          _buildTwelvePalacesSection(context, divination),
+        ],
       ),
     );
   }
@@ -217,7 +209,7 @@ class DivinationDisplayWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(sky, style: const TextStyle(fontWeight: FontWeight.bold)),
-              const Divider(height: 8),
+              const XuanDivider.horizontal(),
               Text(ground),
             ],
           ),
@@ -344,7 +336,7 @@ class DivinationDisplayWidget extends StatelessWidget {
                       gong.skyPanDiZhi.name,
                       style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                     ),
-                    const Divider(height: 4),
+                    const XuanDivider.horizontal(),
                     Text(
                       gong.groundPanDiZhi.name,
                       style: const TextStyle(fontSize: 10),

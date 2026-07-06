@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xuan_common_ui/xuan_common_ui.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   final String message;
@@ -34,7 +35,7 @@ class CustomErrorWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           if (onRetry != null)
-            ElevatedButton(
+            XuanButton.primary(
               onPressed: onRetry,
               child: const Text('重试'),
             ),

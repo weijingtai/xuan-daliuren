@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
 import 'package:daliuren/presentation/views/widgets/datetime_selector_widget.dart';
 import 'package:daliuren/presentation/views/widgets/divination_display_widget.dart';
@@ -26,8 +27,7 @@ class _DaLiuRenViewState extends State<DaLiuRenView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+      appBar: XuanAppBar(
         title: Consumer<DaLiuRenViewModel>(
           builder: (context, viewModel, child) {
             if (viewModel.currentDivination != null &&
