@@ -14,14 +14,14 @@ class NavigatorGenerator {
       RouteObserver<PageRoute>();
   static Logger logger = Logger();
   static final routes = {
-    "/daliuren": (context, {arguments}) {
+    "/daliuren": (BuildContext context, {arguments}) {
       final deps = context.read<DaliurenStorageDependencies>();
       return MultiProvider(
         providers: DependencyInjection.getProviders(deps),
         child: const DaLiuRenView(),
       );
     },
-    "/daliuren/old": (context, {arguments}) {
+    "/daliuren/old": (BuildContext context, {arguments}) {
       final deps = context.read<DaliurenStorageDependencies>();
       return MultiProvider(
         providers: DependencyInjection.getProviders(deps),
@@ -30,14 +30,14 @@ class NavigatorGenerator {
         ),
       );
     },
-    "/daliuren/new": (context, {arguments}) {
+    "/daliuren/new": (BuildContext context, {arguments}) {
       final deps = context.read<DaliurenStorageDependencies>();
       return MultiProvider(
         providers: DependencyInjection.getProviders(deps),
         child: const NewHomePage(),
       );
     },
-    "/daliuren/dev": (context, {arguments}) => const DevMyWidget()
+    "/daliuren/dev": (BuildContext context, {arguments}) => const DevMyWidget()
   };
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
