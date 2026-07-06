@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/dev.dart';
+import 'pages/gong_layout_dev_page.dart';
 import 'pages/my_home_page.dart';
 import 'pages/new/new_home_page.dart';
 import 'presentation/views/da_liu_ren_view.dart';
@@ -37,7 +38,14 @@ class NavigatorGenerator {
         child: const NewHomePage(),
       );
     },
-    "/daliuren/dev": (BuildContext context, {arguments}) => const DevMyWidget()
+    "/daliuren/dev": (BuildContext context, {arguments}) => const DevMyWidget(),
+    "/daliuren/gong-layout": (BuildContext context, {arguments}) {
+      final deps = context.read<DaliurenStorageDependencies>();
+      return MultiProvider(
+        providers: DependencyInjection.getProviders(deps),
+        child: const GongLayoutDevPage(),
+      );
+    },
   };
 
   static Route<dynamic> generateRoute(RouteSettings settings) {

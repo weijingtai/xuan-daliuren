@@ -137,6 +137,13 @@ class SelectionPage extends StatelessWidget {
               },
               child: const Text('多流派调试 (DevPage)'),
             ),
+            const SizedBox(height: 24),
+            XuanButton.primary(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/daliuren/gong-layout');
+              },
+              child: const Text('宫位布局开发 (GongLayout)'),
+            ),
           ],
         ),
       ),

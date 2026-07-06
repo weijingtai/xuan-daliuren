@@ -6,6 +6,7 @@ import 'package:metaphysics_core/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
+import 'package:metaphysics_chart_ui/metaphysics_chart_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
 
@@ -20,6 +21,7 @@ import '../../model/each_chuan.dart';
 import '../../model/four_class.dart';
 import '../../domain/entities/shen_sha_entity.dart';
 import '../../presentation/viewmodels/da_liu_ren_viewmodel.dart';
+import '../../presentation/widgets/gong_hint_mapper.dart';
 import '../../presentation/widgets/ancient_text_card.dart';
 import '../../presentation/widgets/collapsible_section.dart';
 import '../../presentation/widgets/ke_pan_info_card.dart';
@@ -53,12 +55,20 @@ class _NewHomePageState extends State<NewHomePage> {
   YinYang? yinYangDun;
   int? juNumber;
 
+  final ValueNotifier<bool> _showHints = ValueNotifier(false);
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DaLiuRenViewModel>().initializeData();
     });
+  }
+
+  @override
+  void dispose() {
+    _showHints.dispose();
+    super.dispose();
   }
 
   @override
@@ -351,6 +361,16 @@ class _NewHomePageState extends State<NewHomePage> {
             juNumber = null;
             yinYangDun = null;
           }),
+          ValueListenableBuilder<bool>(
+            valueListenable: _showHints,
+            builder: (context, show, _) {
+              return _actionButton(
+                show ? "隐藏注解" : "显示注解",
+                show ? Icons.visibility_off : Icons.visibility,
+                () => _showHints.value = !_showHints.value,
+              );
+            },
+          ),
         ],
       ),
     );
@@ -430,8 +450,18 @@ class _NewHomePageState extends State<NewHomePage> {
       DiZhi diZhi, DaLiuRenGong gong, Size gongSize, double sf) {
     final skyDiZhi = gong.skyPanDiZhi;
     final groundDiZhi = gong.groundPanDiZhi;
-    final guiRen = gong.guiRen;
     final tianGan = gong.tianGan;
+
+    final skySymbol = SizedBox(
+      width: gongSize.width * .36 * sf,
+      height: gongSize.width * .36 * sf,
+      child: FittedBox(
+        child: Text(skyDiZhi.value,
+            style: DaliurenTypography.ganZiDiZhi(sf).copyWith(
+                color: ConstResourcesMapper.zodiacZhiColors[skyDiZhi]!
+                    .withValues(alpha: .7))),
+      ),
+    );
 
     return Container(
       margin: EdgeInsets.all(1 * sf),
@@ -439,55 +469,75 @@ class _NewHomePageState extends State<NewHomePage> {
         border: Border.all(color: DaliurenColors.ink.withValues(alpha: .06)),
         borderRadius: BorderRadius.circular(DaliurenSpacing.xs * sf),
       ),
+      clipBehavior: Clip.hardEdge,
       alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: gongSize.width * .36 * sf,
-            height: gongSize.width * .36 * sf,
-            child: FittedBox(
-              child: Text(skyDiZhi.value,
-                  style: DaliurenTypography.ganZiDiZhi(sf).copyWith(
-                      color: ConstResourcesMapper.zodiacZhiColors[skyDiZhi]!
-                          .withValues(alpha: .7))),
-            ),
-          ),
-          SizedBox(height: 1 * sf),
-          Text(guiRen.name,
-              style: DaliurenTypography.caption(sf * .8)
-                  .copyWith(color: DaliurenColors.textSecondary)),
-          SizedBox(height: 1 * sf),
-          if (tianGan != null)
-            SizedBox(
-              width: gongSize.width * .2 * sf,
-              height: gongSize.width * .2 * sf,
-              child: FittedBox(
-                child: Text(tianGan.value,
-                    style: DaliurenTypography.ganZiTianGan(sf).copyWith(
-                        color: ConstResourcesMapper.zodiacGanColors[tianGan]!
-                            .withValues(alpha: .6))),
+      child: ValueListenableBuilder<bool>(
+        valueListenable: _showHints,
+        builder: (context, showHints, _) {
+          final hints = showHints
+              ? GongHintMapper.map(
+                  diZhi: diZhi,
+                  gong: gong,
+                  shenShaResults: context
+                      .read<DaLiuRenViewModel>()
+                      .shenShaResults,
+                )
+              : <VitalityValue>[];
+
+          final gap = showHints ? 0.0 : 1.0;
+
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SymbolAnnotation.sides(
+                symbol: skySymbol,
+                values: hints,
+                show: showHints,
+                theme: const GongTokenTheme.fallback(),
+                axis: VitalityAxis.horizontal,
+                symbolShrinkScale: 0.85,
+                expandedExtent: 20,
               ),
-            )
-          else
-            SizedBox(
-              width: gongSize.width * .2 * sf,
-              height: gongSize.width * .2 * sf,
-              child: CustomPaint(
-                painter: _CirclePainter(DaliurenColors.textHint),
-              ),
-            ),
-          SizedBox(height: 1 * sf),
-          SizedBox(
-            width: gongSize.width * .16 * sf,
-            height: gongSize.width * .16 * sf,
-            child: FittedBox(
-              child: Text(groundDiZhi.value,
-                  style: DaliurenTypography.caption(sf * .8)
+              SizedBox(height: gap * sf),
+              Text(gong.guiRen.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: DaliurenTypography.caption(sf * .7)
                       .copyWith(color: DaliurenColors.textSecondary)),
-            ),
-          ),
-        ],
+              SizedBox(height: gap * sf),
+              if (tianGan != null)
+                SizedBox(
+                  width: gongSize.width * .18 * sf,
+                  height: gongSize.width * .18 * sf,
+                  child: FittedBox(
+                    child: Text(tianGan.value,
+                        style: DaliurenTypography.ganZiTianGan(sf).copyWith(
+                            color: ConstResourcesMapper
+                                .zodiacGanColors[tianGan]!
+                                .withValues(alpha: .6))),
+                  ),
+                )
+              else
+                SizedBox(
+                  width: gongSize.width * .18 * sf,
+                  height: gongSize.width * .18 * sf,
+                  child: CustomPaint(
+                    painter: _CirclePainter(DaliurenColors.textHint),
+                  ),
+                ),
+              SizedBox(height: gap * sf),
+              SizedBox(
+                width: gongSize.width * .14 * sf,
+                height: gongSize.width * .14 * sf,
+                child: FittedBox(
+                  child: Text(groundDiZhi.value,
+                      style: DaliurenTypography.caption(sf * .7)
+                          .copyWith(color: DaliurenColors.textSecondary)),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

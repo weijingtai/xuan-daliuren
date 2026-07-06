@@ -28,6 +28,8 @@ dependencies:
     path: ../xuan-common-ui
   xuan_four_zhu_card:
     path: ../xuan-four-zhu-card
+  metaphysics_chart_ui:
+    path: ../metaphysics-chart-ui
   metaphysics_core:
     git:
       url: http://192.168.0.165:3000/xuan/metaphysics-core.git
