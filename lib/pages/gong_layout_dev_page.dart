@@ -13,8 +13,7 @@ import '../model/da_liu_ren_ke_pan.dart';
 import '../model/four_class.dart';
 import '../domain/entities/shen_sha_entity.dart';
 import '../presentation/viewmodels/da_liu_ren_viewmodel.dart';
-import '../presentation/widgets/gong_hint_mapper.dart';
-import '../presentation/widgets/wang_shuai_badge.dart';
+import '../presentation/widgets/gong_cell_widget.dart';
 import '../presentation/models/wang_shuai_config.dart';
 
 /// 宫位布局开发页面
@@ -439,128 +438,13 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
     Map<DiZhi, List<ShenShaResult>>? shenShaResults, {
     JiaZi? monthJiaZi,
   }) {
-    final skyDiZhi = gong.skyPanDiZhi;
-    final groundDiZhi = gong.groundPanDiZhi;
-    final tianGan = gong.tianGan;
-
-    // 天盘地支：18px
-    final skyDiZhiStyle = DaliurenTypography.ganZiDiZhi(sf).copyWith(
-      fontSize: 18 * sf,
-      color: ConstResourcesMapper.zodiacZhiColors[skyDiZhi]!
-          .withValues(alpha: .7),
-    );
-
-    // 天干：14px
-    final tianGanStyle = tianGan != null
-        ? DaliurenTypography.ganZiTianGan(sf).copyWith(
-            fontSize: 14 * sf,
-            color: ConstResourcesMapper.zodiacGanColors[tianGan]!
-                .withValues(alpha: .6),
-          )
-        : DaliurenTypography.ganZiTianGan(sf).copyWith(fontSize: 14 * sf);
-
-    // 天将：18px
-    final guiRenStyle = DaliurenTypography.tag(sf).copyWith(
-      fontSize: 18 * sf,
-      color: DaliurenColors.textSecondary,
-    );
-
-    // 计算各符号独立的旺衰 hint
-    final showWs = _showHints && monthJiaZi != null;
-    final wsResult = showWs
-        ? GongHintMapper.map(
-            diZhi: diZhi,
-            gong: gong,
-            monthJiaZi: monthJiaZi,
-            wangShuaiConfig: _wangShuaiConfig,
-          )
-        : null;
-
-    return Container(
-      margin: EdgeInsets.all(1 * sf),
-      decoration: BoxDecoration(
-        border: Border.all(color: DaliurenColors.ink.withValues(alpha: .06)),
-        borderRadius: BorderRadius.circular(DaliurenSpacing.xs * sf),
-      ),
-      clipBehavior: Clip.hardEdge,
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // 第一行：天将名 + 天将自己的旺衰 badge
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(gong.guiRen.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: guiRenStyle),
-              WangShuaiBadge(
-                hint: wsResult?.tianJiangHint ?? const WangShuaiHint(),
-                visible: showWs,
-                fontSize: 8 * sf,
-                badgeHeight: 10 * sf,
-                badgeWidth: 12 * sf,
-                borderRadius: 2 * sf,
-              ),
-            ],
-          ),
-          SizedBox(height: 1 * sf),
-          // 第二行：天盘地支 + 天干（各自独立显示）
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 天盘支 + 自己的旺衰 badge
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(skyDiZhi.value, style: skyDiZhiStyle),
-                  WangShuaiBadge(
-                    hint: wsResult?.skyDiZhiHint ?? const WangShuaiHint(),
-                    visible: showWs,
-                    fontSize: 8 * sf,
-                    badgeHeight: 10 * sf,
-                    badgeWidth: 12 * sf,
-                    borderRadius: 2 * sf,
-                  ),
-                ],
-              ),
-              SizedBox(width: 4 * sf),
-              // 天干 + 自己的旺衰 badge
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (tianGan != null)
-                    Text(tianGan.value, style: tianGanStyle)
-                  else
-                    CustomPaint(
-                      size: Size(10 * sf, 10 * sf),
-                      painter: _CirclePainter(DaliurenColors.textHint),
-                    ),
-                  WangShuaiBadge(
-                    hint: wsResult?.tianGanHint ?? const WangShuaiHint(),
-                    visible: showWs && tianGan != null,
-                    fontSize: 8 * sf,
-                    badgeHeight: 10 * sf,
-                    badgeWidth: 12 * sf,
-                    borderRadius: 2 * sf,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 1 * sf),
-          // 第三行：宫位名（16px，灰色浅色透明）
-          Text(groundDiZhi.value,
-              style: DaliurenTypography.caption(sf).copyWith(
-                fontSize: 16 * sf,
-                color: DaliurenColors.textHint,
-              )),
-        ],
-      ),
+    return GongCellWidget(
+      diZhi: diZhi,
+      gong: gong,
+      showWangShuai: _showHints,
+      monthJiaZi: monthJiaZi,
+      wangShuaiConfig: _wangShuaiConfig,
+      scale: sf,
     );
   }
 
@@ -676,22 +560,4 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
       ],
     );
   }
-}
-
-class _CirclePainter extends CustomPainter {
-  final Color color;
-  _CirclePainter(this.color);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), size.width * .3, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter old) => false;
 }

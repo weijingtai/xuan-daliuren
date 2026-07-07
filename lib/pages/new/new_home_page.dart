@@ -21,8 +21,7 @@ import '../../model/each_chuan.dart';
 import '../../model/four_class.dart';
 import '../../domain/entities/shen_sha_entity.dart';
 import '../../presentation/viewmodels/da_liu_ren_viewmodel.dart';
-import '../../presentation/widgets/gong_hint_mapper.dart';
-import '../../presentation/widgets/wang_shuai_badge.dart';
+import '../../presentation/widgets/gong_cell_widget.dart';
 import '../../presentation/models/wang_shuai_config.dart';
 import '../../presentation/widgets/ancient_text_card.dart';
 import '../../presentation/widgets/collapsible_section.dart';
@@ -484,132 +483,18 @@ class _NewHomePageState extends State<NewHomePage> {
 
   Widget _buildGongCell(
       DiZhi diZhi, DaLiuRenGong gong, Size gongSize, double sf, {JiaZi? monthJiaZi}) {
-    final skyDiZhi = gong.skyPanDiZhi;
-    final groundDiZhi = gong.groundPanDiZhi;
-    final tianGan = gong.tianGan;
-
-    final skySymbol = SizedBox(
-      width: gongSize.width * .36 * sf,
-      height: gongSize.width * .36 * sf,
-      child: FittedBox(
-        child: Text(skyDiZhi.value,
-            style: DaliurenTypography.ganZiDiZhi(sf).copyWith(
-                color: ConstResourcesMapper.zodiacZhiColors[skyDiZhi]!
-                    .withValues(alpha: .7))),
-      ),
-    );
-
-    return Container(
-      margin: EdgeInsets.all(1 * sf),
-      decoration: BoxDecoration(
-        border: Border.all(color: DaliurenColors.ink.withValues(alpha: .06)),
-        borderRadius: BorderRadius.circular(DaliurenSpacing.xs * sf),
-      ),
-      clipBehavior: Clip.hardEdge,
-      alignment: Alignment.center,
-      child: ValueListenableBuilder<bool>(
-        valueListenable: _showHints,
-        builder: (context, showHints, _) {
-          final showWs = showHints && monthJiaZi != null;
-          final wsResult = showWs
-              ? GongHintMapper.map(
-                  diZhi: diZhi,
-                  gong: gong,
-                  monthJiaZi: monthJiaZi,
-                  wangShuaiConfig: _wangShuaiConfig,
-                )
-              : null;
-
-          final gap = showHints ? 0.0 : 1.0;
-
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 天盘支 + 自己的旺衰 badge
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  skySymbol,
-                  WangShuaiBadge(
-                    hint: wsResult?.skyDiZhiHint ?? const WangShuaiHint(),
-                    visible: showWs,
-                    fontSize: 8 * sf,
-                    badgeHeight: 10 * sf,
-                    badgeWidth: 12 * sf,
-                    borderRadius: 2 * sf,
-                  ),
-                ],
-              ),
-              SizedBox(height: gap * sf),
-              // 天将名 + 自己的旺衰 badge
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(gong.guiRen.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: DaliurenTypography.caption(sf * .7)
-                          .copyWith(color: DaliurenColors.textSecondary)),
-                  WangShuaiBadge(
-                    hint: wsResult?.tianJiangHint ?? const WangShuaiHint(),
-                    visible: showWs,
-                    fontSize: 8 * sf,
-                    badgeHeight: 10 * sf,
-                    badgeWidth: 12 * sf,
-                    borderRadius: 2 * sf,
-                  ),
-                ],
-              ),
-              SizedBox(height: gap * sf),
-              // 天干 + 自己的旺衰 badge
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (tianGan != null)
-                    SizedBox(
-                      width: gongSize.width * .18 * sf,
-                      height: gongSize.width * .18 * sf,
-                      child: FittedBox(
-                        child: Text(tianGan.value,
-                            style: DaliurenTypography.ganZiTianGan(sf).copyWith(
-                                color: ConstResourcesMapper
-                                    .zodiacGanColors[tianGan]!
-                                    .withValues(alpha: .6))),
-                      ),
-                    )
-                  else
-                    SizedBox(
-                      width: gongSize.width * .18 * sf,
-                      height: gongSize.width * .18 * sf,
-                      child: CustomPaint(
-                        painter: _CirclePainter(DaliurenColors.textHint),
-                      ),
-                    ),
-                  WangShuaiBadge(
-                    hint: wsResult?.tianGanHint ?? const WangShuaiHint(),
-                    visible: showWs && tianGan != null,
-                    fontSize: 8 * sf,
-                    badgeHeight: 10 * sf,
-                    badgeWidth: 12 * sf,
-                    borderRadius: 2 * sf,
-                  ),
-                ],
-              ),
-              SizedBox(height: gap * sf),
-              // 地盘地支
-              SizedBox(
-                width: gongSize.width * .14 * sf,
-                height: gongSize.width * .14 * sf,
-                child: FittedBox(
-                  child: Text(groundDiZhi.value,
-                      style: DaliurenTypography.caption(sf * .7)
-                          .copyWith(color: DaliurenColors.textSecondary)),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+    return ValueListenableBuilder<bool>(
+      valueListenable: _showHints,
+      builder: (context, showHints, _) {
+        return GongCellWidget(
+          diZhi: diZhi,
+          gong: gong,
+          showWangShuai: showHints,
+          monthJiaZi: monthJiaZi,
+          wangShuaiConfig: _wangShuaiConfig,
+          scale: sf,
+        );
+      },
     );
   }
 
@@ -980,22 +865,4 @@ class _NewHomePageState extends State<NewHomePage> {
       ),
     );
   }
-}
-
-class _CirclePainter extends CustomPainter {
-  final Color color;
-  _CirclePainter(this.color);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), size.width * .3, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter old) => false;
 }
