@@ -10,6 +10,7 @@ LiuRenPanModel _$LiuRenPanModelFromJson(Map<String, dynamic> json) =>
     LiuRenPanModel(
       dayJiaZi: $enumDecode(_$JiaZiEnumMap, json['dayJiaZi']),
       timeGanZhi: $enumDecode(_$JiaZiEnumMap, json['timeGanZhi']),
+      monthJiaZi: $enumDecode(_$JiaZiEnumMap, json['monthJiaZi']),
       fourClasses: (json['fourClasses'] as List<dynamic>)
           .map((e) => RawEachClass.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -39,6 +40,7 @@ Map<String, dynamic> _$LiuRenPanModelToJson(LiuRenPanModel instance) =>
     <String, dynamic>{
       'dayJiaZi': _$JiaZiEnumMap[instance.dayJiaZi]!,
       'timeGanZhi': _$JiaZiEnumMap[instance.timeGanZhi]!,
+      'monthJiaZi': _$JiaZiEnumMap[instance.monthJiaZi]!,
       'panType': _$PanTypeEnumMap[instance.panType]!,
       'monthGeneral': _$MonthGeneralEnumMap[instance.monthGeneral]!,
       'dayNight': _$EnumDayNightEnumMap[instance.dayNight]!,

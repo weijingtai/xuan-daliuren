@@ -1,61 +1,120 @@
-import 'dart:ui';
-
-import 'package:metaphysics_chart_ui/metaphysics_chart_ui.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/model/da_liu_ren_gong.dart';
-import 'package:daliuren/domain/entities/shen_sha_entity.dart';
+import 'package:daliuren/model/enum_gui_ren.dart';
+import 'package:daliuren/presentation/models/wang_shuai_config.dart';
 
-/// 将大六壬宫格数据映射为 SymbolAnnotation 所需的 VitalityValue 列表。
+/// 为每个宫位计算各符号的旺衰 hint。
 ///
-/// 每个宫位可展示的 hint 类型：
-/// - 天将（贵人、腾蛇、朱雀…）
-/// - 神煞（天德、月德、驿马…）
-/// - 五行属性（通过天干推导）
+/// 返回 [GongWangShuaiResult]，其中天盘支、天干、天将各自独立。
 class GongHintMapper {
-  /// 为指定宫位生成 hint 列表。
-  ///
-  /// [diZhi] 宫位地支
-  /// [gong] 该宫位的宫格数据
-  /// [shenShaResults] 全盘神煞计算结果（按地支索引）
-  static List<VitalityValue> map({
+  static const _strongColor = '0xFF2E7D32'; // 绿 - 强
+  static const _weakColor = '0xFFC62828';   // 红 - 弱
+  static const _neutralColor = '0xFF888780'; // 灰 - 中
+
+  /// 为指定宫位生成各符号独立的旺衰 hint。
+  static GongWangShuaiResult map({
     required DiZhi diZhi,
     required DaLiuRenGong gong,
-    Map<DiZhi, List<ShenShaResult>>? shenShaResults,
+    required JiaZi monthJiaZi,
+    WangShuaiConfig wangShuaiConfig = const WangShuaiConfig(),
   }) {
-    final values = <VitalityValue>[];
+    final monthZhi = monthJiaZi.diZhi;
 
-    // 天将 hint
-    values.add(VitalityValue(
-      text: gong.guiRen.name,
-      level: GongInkLevel.mark,
-    ));
+    return GongWangShuaiResult(
+      skyDiZhiHint: wangShuaiConfig.showSkyDiZhi
+          ? _calcDiZhiHint(gong.skyPanDiZhi, diZhi, monthZhi)
+          : null,
+      tianGanHint: wangShuaiConfig.showTianGan && gong.tianGan != null
+          ? _calcTianGanHint(gong.tianGan!, diZhi, monthZhi)
+          : null,
+      tianJiangHint: wangShuaiConfig.showTianJiang
+          ? _calcTianJiangHint(gong.guiRen, diZhi, monthZhi)
+          : null,
+    );
+  }
 
-    // 神煞 hints（取该宫位的神煞，最多展示 3 个）
-    if (shenShaResults != null) {
-      final results = shenShaResults[diZhi];
-      if (results != null) {
-        for (final r in results.take(3)) {
-          values.add(VitalityValue(
-            text: r.shenSha.name,
-            level: _jiXiongToLevel(r.shenSha.jiXiong),
-            semanticColor: _jiXiongToColor(r.shenSha.jiXiong),
-          ));
-        }
-      }
+  /// 天盘支 / 天将寄宫支 的旺衰
+  static WangShuaiHint _calcDiZhiHint(DiZhi from, DiZhi to, DiZhi monthZhi) {
+    final fiveXing = from.fiveXing;
+
+    // 月令旺衰
+    final monthStatus =
+        FiveEnergyStatus.getFiveXingWangShuaiAtDiZhi(monthZhi, fiveXing);
+
+    // 宫内十二长生
+    final gongStatus = _getDiZhiZhangSheng(from, to);
+
+    return WangShuaiHint(
+      monthLabel: monthStatus.name,
+      gongLabel: gongStatus.name,
+      monthColorHex: _statusToColorHex(monthStatus),
+      gongColorHex: _zhangShengToColorHex(gongStatus),
+    );
+  }
+
+  /// 天干 的旺衰
+  static WangShuaiHint _calcTianGanHint(
+      TianGan tianGan, DiZhi palaceDiZhi, DiZhi monthZhi) {
+    final fiveXing = tianGan.fiveXing;
+
+    // 月令旺衰
+    final monthStatus =
+        FiveEnergyStatus.getFiveXingWangShuaiAtDiZhi(monthZhi, fiveXing);
+
+    // 宫内十二长生
+    final gongStatus =
+        TwelveZhangSheng.getZhangShengByTianGanDiZhi(tianGan, palaceDiZhi);
+
+    return WangShuaiHint(
+      monthLabel: monthStatus.name,
+      gongLabel: gongStatus.name,
+      monthColorHex: _statusToColorHex(monthStatus),
+      gongColorHex: _zhangShengToColorHex(gongStatus),
+    );
+  }
+
+  /// 天将 的旺衰（天将寄宫地支在地盘支上的状态）
+  static WangShuaiHint _calcTianJiangHint(
+      GuiRen guiRen, DiZhi palaceDiZhi, DiZhi monthZhi) {
+    final fiveXing = guiRen.fiveXing;
+
+    // 月令旺衰
+    final monthStatus =
+        FiveEnergyStatus.getFiveXingWangShuaiAtDiZhi(monthZhi, fiveXing);
+
+    // 宫内十二长生（天将寄宫地支在地盘支上的状态）
+    final gongStatus = _getDiZhiZhangSheng(guiRen.zhi, palaceDiZhi);
+
+    return WangShuaiHint(
+      monthLabel: monthStatus.name,
+      gongLabel: gongStatus.name,
+      monthColorHex: _statusToColorHex(monthStatus),
+      gongColorHex: _zhangShengToColorHex(gongStatus),
+    );
+  }
+
+  static TwelveZhangSheng _getDiZhiZhangSheng(DiZhi from, DiZhi to) {
+    final fiveXing = from.fiveXing;
+    final mapper = TwelveZhangSheng.fiveXingZhangShengMapper[fiveXing]!;
+    final index = mapper.indexOf(to);
+    return TwelveZhangSheng.fromIndex(index);
+  }
+
+  static String _statusToColorHex(FiveEnergyStatus status) {
+    switch (status) {
+      case FiveEnergyStatus.WANG:
+      case FiveEnergyStatus.XIANG:
+        return _strongColor;
+      case FiveEnergyStatus.XIU:
+        return _neutralColor;
+      case FiveEnergyStatus.QIU:
+      case FiveEnergyStatus.SI:
+        return _weakColor;
     }
-
-    return values;
   }
 
-  static GongInkLevel _jiXiongToLevel(JiXiongEnum jiXiong) {
-    if (jiXiong.isJi()) return GongInkLevel.focalAccent;
-    if (jiXiong.isXiong()) return GongInkLevel.mark;
-    return GongInkLevel.base;
-  }
-
-  static Color? _jiXiongToColor(JiXiongEnum jiXiong) {
-    if (jiXiong.isJi()) return const Color(0xFF2E7D32);
-    if (jiXiong.isXiong()) return const Color(0xFFC62828);
-    return null;
+  static String _zhangShengToColorHex(TwelveZhangSheng zhangSheng) {
+    if (zhangSheng.isStrong) return _strongColor;
+    return _weakColor;
   }
 }

@@ -22,6 +22,8 @@ import '../../model/four_class.dart';
 import '../../domain/entities/shen_sha_entity.dart';
 import '../../presentation/viewmodels/da_liu_ren_viewmodel.dart';
 import '../../presentation/widgets/gong_hint_mapper.dart';
+import '../../presentation/widgets/wang_shuai_badge.dart';
+import '../../presentation/models/wang_shuai_config.dart';
 import '../../presentation/widgets/ancient_text_card.dart';
 import '../../presentation/widgets/collapsible_section.dart';
 import '../../presentation/widgets/ke_pan_info_card.dart';
@@ -56,6 +58,7 @@ class _NewHomePageState extends State<NewHomePage> {
   int? juNumber;
 
   final ValueNotifier<bool> _showHints = ValueNotifier(false);
+  WangShuaiConfig _wangShuaiConfig = const WangShuaiConfig();
 
   @override
   void initState() {
@@ -371,6 +374,39 @@ class _NewHomePageState extends State<NewHomePage> {
               );
             },
           ),
+          _actionButton(
+            "天盘支",
+            _wangShuaiConfig.showSkyDiZhi
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            () => setState(() {
+              _wangShuaiConfig = _wangShuaiConfig.copyWith(
+                showSkyDiZhi: !_wangShuaiConfig.showSkyDiZhi,
+              );
+            }),
+          ),
+          _actionButton(
+            "天干",
+            _wangShuaiConfig.showTianGan
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            () => setState(() {
+              _wangShuaiConfig = _wangShuaiConfig.copyWith(
+                showTianGan: !_wangShuaiConfig.showTianGan,
+              );
+            }),
+          ),
+          _actionButton(
+            "天将",
+            _wangShuaiConfig.showTianJiang
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            () => setState(() {
+              _wangShuaiConfig = _wangShuaiConfig.copyWith(
+                showTianJiang: !_wangShuaiConfig.showTianJiang,
+              );
+            }),
+          ),
         ],
       ),
     );
@@ -434,7 +470,7 @@ class _NewHomePageState extends State<NewHomePage> {
                   width: gongSize.width,
                   height: gongSize.height,
                   child: diZhi != null
-                      ? _buildGongCell(diZhi, gongMapper[diZhi]!, gongSize, sf)
+                      ? _buildGongCell(diZhi, gongMapper[diZhi]!, gongSize, sf, monthJiaZi: pan.monthJiaZi)
                       : const SizedBox(),
                 );
               }).toList(),
@@ -447,7 +483,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildGongCell(
-      DiZhi diZhi, DaLiuRenGong gong, Size gongSize, double sf) {
+      DiZhi diZhi, DaLiuRenGong gong, Size gongSize, double sf, {JiaZi? monthJiaZi}) {
     final skyDiZhi = gong.skyPanDiZhi;
     final groundDiZhi = gong.groundPanDiZhi;
     final tianGan = gong.tianGan;
@@ -474,58 +510,93 @@ class _NewHomePageState extends State<NewHomePage> {
       child: ValueListenableBuilder<bool>(
         valueListenable: _showHints,
         builder: (context, showHints, _) {
-          final hints = showHints
+          final showWs = showHints && monthJiaZi != null;
+          final wsResult = showWs
               ? GongHintMapper.map(
                   diZhi: diZhi,
                   gong: gong,
-                  shenShaResults: context
-                      .read<DaLiuRenViewModel>()
-                      .shenShaResults,
+                  monthJiaZi: monthJiaZi,
+                  wangShuaiConfig: _wangShuaiConfig,
                 )
-              : <VitalityValue>[];
+              : null;
 
           final gap = showHints ? 0.0 : 1.0;
 
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SymbolAnnotation.sides(
-                symbol: skySymbol,
-                values: hints,
-                show: showHints,
-                theme: const GongTokenTheme.fallback(),
-                axis: VitalityAxis.horizontal,
-                symbolShrinkScale: 0.85,
-                expandedExtent: 20,
+              // 天盘支 + 自己的旺衰 badge
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  skySymbol,
+                  WangShuaiBadge(
+                    hint: wsResult?.skyDiZhiHint ?? const WangShuaiHint(),
+                    visible: showWs,
+                    fontSize: 8 * sf,
+                    badgeHeight: 10 * sf,
+                    badgeWidth: 12 * sf,
+                    borderRadius: 2 * sf,
+                  ),
+                ],
               ),
               SizedBox(height: gap * sf),
-              Text(gong.guiRen.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: DaliurenTypography.caption(sf * .7)
-                      .copyWith(color: DaliurenColors.textSecondary)),
-              SizedBox(height: gap * sf),
-              if (tianGan != null)
-                SizedBox(
-                  width: gongSize.width * .18 * sf,
-                  height: gongSize.width * .18 * sf,
-                  child: FittedBox(
-                    child: Text(tianGan.value,
-                        style: DaliurenTypography.ganZiTianGan(sf).copyWith(
-                            color: ConstResourcesMapper
-                                .zodiacGanColors[tianGan]!
-                                .withValues(alpha: .6))),
+              // 天将名 + 自己的旺衰 badge
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(gong.guiRen.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: DaliurenTypography.caption(sf * .7)
+                          .copyWith(color: DaliurenColors.textSecondary)),
+                  WangShuaiBadge(
+                    hint: wsResult?.tianJiangHint ?? const WangShuaiHint(),
+                    visible: showWs,
+                    fontSize: 8 * sf,
+                    badgeHeight: 10 * sf,
+                    badgeWidth: 12 * sf,
+                    borderRadius: 2 * sf,
                   ),
-                )
-              else
-                SizedBox(
-                  width: gongSize.width * .18 * sf,
-                  height: gongSize.width * .18 * sf,
-                  child: CustomPaint(
-                    painter: _CirclePainter(DaliurenColors.textHint),
-                  ),
-                ),
+                ],
+              ),
               SizedBox(height: gap * sf),
+              // 天干 + 自己的旺衰 badge
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (tianGan != null)
+                    SizedBox(
+                      width: gongSize.width * .18 * sf,
+                      height: gongSize.width * .18 * sf,
+                      child: FittedBox(
+                        child: Text(tianGan.value,
+                            style: DaliurenTypography.ganZiTianGan(sf).copyWith(
+                                color: ConstResourcesMapper
+                                    .zodiacGanColors[tianGan]!
+                                    .withValues(alpha: .6))),
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      width: gongSize.width * .18 * sf,
+                      height: gongSize.width * .18 * sf,
+                      child: CustomPaint(
+                        painter: _CirclePainter(DaliurenColors.textHint),
+                      ),
+                    ),
+                  WangShuaiBadge(
+                    hint: wsResult?.tianGanHint ?? const WangShuaiHint(),
+                    visible: showWs && tianGan != null,
+                    fontSize: 8 * sf,
+                    badgeHeight: 10 * sf,
+                    badgeWidth: 12 * sf,
+                    borderRadius: 2 * sf,
+                  ),
+                ],
+              ),
+              SizedBox(height: gap * sf),
+              // 地盘地支
               SizedBox(
                 width: gongSize.width * .14 * sf,
                 height: gongSize.width * .14 * sf,

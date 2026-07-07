@@ -14,6 +14,8 @@ import '../model/four_class.dart';
 import '../domain/entities/shen_sha_entity.dart';
 import '../presentation/viewmodels/da_liu_ren_viewmodel.dart';
 import '../presentation/widgets/gong_hint_mapper.dart';
+import '../presentation/widgets/wang_shuai_badge.dart';
+import '../presentation/models/wang_shuai_config.dart';
 
 /// 宫位布局开发页面
 ///
@@ -28,6 +30,7 @@ class GongLayoutDevPage extends StatefulWidget {
 
 class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
   bool _showHints = false;
+  WangShuaiConfig _wangShuaiConfig = const WangShuaiConfig();
   double _gongScale = 1.0;
   double _panSize = 400.0;
   DiZhi? _selectedDiZhi;
@@ -105,6 +108,42 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
             icon: _showHints ? Icons.visibility_off : Icons.visibility,
             selected: _showHints,
             onTap: () => setState(() => _showHints = !_showHints),
+          ),
+          _buildToggleChip(
+            label: "天盘支",
+            icon: _wangShuaiConfig.showSkyDiZhi
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            selected: _wangShuaiConfig.showSkyDiZhi,
+            onTap: () => setState(() {
+              _wangShuaiConfig = _wangShuaiConfig.copyWith(
+                showSkyDiZhi: !_wangShuaiConfig.showSkyDiZhi,
+              );
+            }),
+          ),
+          _buildToggleChip(
+            label: "天干",
+            icon: _wangShuaiConfig.showTianGan
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            selected: _wangShuaiConfig.showTianGan,
+            onTap: () => setState(() {
+              _wangShuaiConfig = _wangShuaiConfig.copyWith(
+                showTianGan: !_wangShuaiConfig.showTianGan,
+              );
+            }),
+          ),
+          _buildToggleChip(
+            label: "天将",
+            icon: _wangShuaiConfig.showTianJiang
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            selected: _wangShuaiConfig.showTianJiang,
+            onTap: () => setState(() {
+              _wangShuaiConfig = _wangShuaiConfig.copyWith(
+                showTianJiang: !_wangShuaiConfig.showTianJiang,
+              );
+            }),
           ),
           _buildScaleChip(
             label: "宫格缩放",
@@ -227,7 +266,7 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
           ),
           SizedBox(height: DaliurenSpacing.lg),
           Center(
-            child: _buildGongCell(diZhi, gong, gongSize, 1.0, shenSha),
+            child: _buildGongCell(diZhi, gong, gongSize, 1.0, shenSha, monthJiaZi: pan.monthJiaZi),
           ),
           SizedBox(height: DaliurenSpacing.lg),
           _buildGongInfoPanel(diZhi, gong, shenSha),
@@ -378,6 +417,7 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
                             gongSize,
                             sf,
                             context.read<DaLiuRenViewModel>().shenShaResults,
+                            monthJiaZi: pan.monthJiaZi,
                           )
                         : const SizedBox(),
                   ),
@@ -396,8 +436,9 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
     DaLiuRenGong gong,
     Size gongSize,
     double sf,
-    Map<DiZhi, List<ShenShaResult>>? shenShaResults,
-  ) {
+    Map<DiZhi, List<ShenShaResult>>? shenShaResults, {
+    JiaZi? monthJiaZi,
+  }) {
     final skyDiZhi = gong.skyPanDiZhi;
     final groundDiZhi = gong.groundPanDiZhi;
     final tianGan = gong.tianGan;
@@ -424,6 +465,17 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
       color: DaliurenColors.textSecondary,
     );
 
+    // 计算各符号独立的旺衰 hint
+    final showWs = _showHints && monthJiaZi != null;
+    final wsResult = showWs
+        ? GongHintMapper.map(
+            diZhi: diZhi,
+            gong: gong,
+            monthJiaZi: monthJiaZi,
+            wangShuaiConfig: _wangShuaiConfig,
+          )
+        : null;
+
     return Container(
       margin: EdgeInsets.all(1 * sf),
       decoration: BoxDecoration(
@@ -432,43 +484,55 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
       ),
       clipBehavior: Clip.hardEdge,
       alignment: Alignment.center,
-      child: Builder(
-        builder: (context) {
-          final hints = _showHints
-              ? GongHintMapper.map(
-                  diZhi: diZhi,
-                  gong: gong,
-                  shenShaResults: shenShaResults,
-                )
-              : <VitalityValue>[];
-
-          return Column(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // 第一行：天将名 + 天将自己的旺衰 badge
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(gong.guiRen.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: guiRenStyle),
+              WangShuaiBadge(
+                hint: wsResult?.tianJiangHint ?? const WangShuaiHint(),
+                visible: showWs,
+                fontSize: 8 * sf,
+                badgeHeight: 10 * sf,
+                badgeWidth: 12 * sf,
+                borderRadius: 2 * sf,
+              ),
+            ],
+          ),
+          SizedBox(height: 1 * sf),
+          // 第二行：天盘地支 + 天干（各自独立显示）
+          Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 第一行：天将名（18px，最顶部）
-              SymbolAnnotation.sides(
-                symbol: Text(gong.guiRen.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: guiRenStyle),
-                values: hints,
-                show: _showHints,
-                theme: const GongTokenTheme.fallback(),
-                axis: VitalityAxis.horizontal,
-                symbolShrinkScale: 0.85,
-                expandedExtent: 20,
-              ),
-              SizedBox(height: 2 * sf),
-              // 第二行：天盘地支(18px) + 天干(14px)
-              Row(
+              // 天盘支 + 自己的旺衰 badge
+              Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
                 children: [
                   Text(skyDiZhi.value, style: skyDiZhiStyle),
-                  SizedBox(width: 4 * sf),
+                  WangShuaiBadge(
+                    hint: wsResult?.skyDiZhiHint ?? const WangShuaiHint(),
+                    visible: showWs,
+                    fontSize: 8 * sf,
+                    badgeHeight: 10 * sf,
+                    badgeWidth: 12 * sf,
+                    borderRadius: 2 * sf,
+                  ),
+                ],
+              ),
+              SizedBox(width: 4 * sf),
+              // 天干 + 自己的旺衰 badge
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   if (tianGan != null)
                     Text(tianGan.value, style: tianGanStyle)
                   else
@@ -476,18 +540,26 @@ class _GongLayoutDevPageState extends State<GongLayoutDevPage> {
                       size: Size(10 * sf, 10 * sf),
                       painter: _CirclePainter(DaliurenColors.textHint),
                     ),
+                  WangShuaiBadge(
+                    hint: wsResult?.tianGanHint ?? const WangShuaiHint(),
+                    visible: showWs && tianGan != null,
+                    fontSize: 8 * sf,
+                    badgeHeight: 10 * sf,
+                    badgeWidth: 12 * sf,
+                    borderRadius: 2 * sf,
+                  ),
                 ],
               ),
-              SizedBox(height: 2 * sf),
-              // 第三行：宫位名（16px，灰色浅色透明）
-              Text(groundDiZhi.value,
-                  style: DaliurenTypography.caption(sf).copyWith(
-                    fontSize: 16 * sf,
-                    color: DaliurenColors.textHint,
-                  )),
             ],
-          );
-        },
+          ),
+          SizedBox(height: 1 * sf),
+          // 第三行：宫位名（16px，灰色浅色透明）
+          Text(groundDiZhi.value,
+              style: DaliurenTypography.caption(sf).copyWith(
+                fontSize: 16 * sf,
+                color: DaliurenColors.textHint,
+              )),
+        ],
       ),
     );
   }

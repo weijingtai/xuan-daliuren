@@ -22,6 +22,9 @@ class LiuRenPanModel {
   /// Full GanZhi of the time (e.g., "丙寅").
   final JiaZi timeGanZhi;
 
+  /// 月柱干支（用于旺衰计算）
+  final JiaZi monthJiaZi;
+
   /// Name of the ShiChen DiZhi (e.g., "子").
   DiZhi get timeChen => timeGanZhi.zhi;
 
@@ -60,6 +63,7 @@ class LiuRenPanModel {
   LiuRenPanModel({
     required this.dayJiaZi,
     required this.timeGanZhi,
+    required this.monthJiaZi,
     required this.fourClasses,
     required this.threeChuans,
     required this.nineZongMen,

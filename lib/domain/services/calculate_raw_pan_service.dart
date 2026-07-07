@@ -121,6 +121,7 @@ class CalculateRawPanService {
     return LiuRenPanModel(
       dayJiaZi: divinationDatetimeModel.dayJiaZi,
       timeGanZhi: divinationDatetimeModel.timeJiaZi,
+      monthJiaZi: divinationDatetimeModel.monthJiaZi,
       monthGeneral: monthGeneral,
       dayNight: dayNight,
       gongMapper: gongMapper,
