@@ -23,15 +23,20 @@ environment:
 
 dependencies:
   theme:
-    path: ../theme
+    git:
+      url: http://192.168.0.165:3000/xuan/theme.git
   xuan_common_ui:
-    path: ../xuan-common-ui
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-common-ui.git
   xuan_four_zhu_card:
-    path: ../xuan-four-zhu-card
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-four-zhu-card.git
   metaphysics_chart_ui:
-    path: ../metaphysics-chart-ui
+    git:
+      url: http://192.168.0.165:3000/xuan/metaphysics-chart-ui.git
   metaphysics_core:
-    path: ../xuan-metaphysics-core
+    git:
+      url: http://192.168.0.165:3000/xuan/metaphysics-core.git
   flutter:
     sdk: flutter
   logger: ^2.6.2
@@ -56,11 +61,13 @@ dependencies:
   board_datetime_picker: 2.8.5
   flutter_sliding_toast: ^1.5.3
   xuan_logger:
-    path: ../xuan-logger
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-logger.git
   equatable: ^2.0.7
   protobuf: ^6.0.0
   repository_interface_daliuren:
-    path: ../repository-interface-daliuren
+    git:
+      url: http://192.168.0.165:3000/xuan/repository-interface-daliuren.git
 
 dev_dependencies:
   flutter_test:
@@ -126,18 +133,26 @@ dependency_overrides:
   persistence_drift:
     path: ../xuan-storage/drift
   metaphysics_core:
-    path: ../xuan-metaphysics-core
+    git:
+      url: http://192.168.0.165:3000/xuan/metaphysics-core.git
   xuan_gua_core:
-    path: ../xuan-gua-core
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-gua-core.git
   xuan_common_ui:
-    path: ../xuan-common-ui
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-common-ui.git
   theme:
-    path: ../theme
+    git:
+      url: http://192.168.0.165:3000/xuan/theme.git
   repository_interface_four_zhu_card:
-    path: ../repository-interface-four-zhu-card
+    git:
+      url: http://192.168.0.165:3000/xuan/repository-interface-four-zhu-card.git
   persistence_domain:
-    path: ../xuan-domain
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-domain.git
   xuan_time_location:
-    path: ../xuan-time-location
+    git:
+      url: http://192.168.0.165:3000/xuan/xuan-time-location.git
   calendar:
-    path: ../calendar
+    git:
+      url: http://192.168.0.165:3000/xuan/calendar.git
