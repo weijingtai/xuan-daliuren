@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:metaphysics_core/enums.dart';
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
@@ -13,6 +15,7 @@ import 'package:daliuren/domain/usecases/load_yuding_data_usecase.dart';
 import 'package:daliuren/model/da_liu_ren_ke_pan.dart';
 import 'package:daliuren/presentation/viewmodels/base_viewmodel.dart';
 import 'package:daliuren/presentation/models/da_liu_ren_input_state.dart';
+import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 
 class DaLiuRenViewModel extends BaseViewModel {
   final CalculateDivinationUseCase _calculateDivinationUseCase;
@@ -21,6 +24,7 @@ class DaLiuRenViewModel extends BaseViewModel {
   final GetKetiDataUseCase? _getKetiDataUseCase;
   final MatchYuDingKetiUseCase? _matchYuDingKetiUseCase;
   final LoadYuDingDataUseCase? _loadYuDingDataUseCase;
+  final DaliurenRecordRepository? _recordRepository;
 
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
@@ -29,7 +33,9 @@ class DaLiuRenViewModel extends BaseViewModel {
     GetKetiDataUseCase? getKetiDataUseCase,
     MatchYuDingKetiUseCase? matchYuDingKetiUseCase,
     LoadYuDingDataUseCase? loadYuDingDataUseCase,
-  })  : _calculateDivinationUseCase = calculateDivinationUseCase,
+    DaliurenRecordRepository? recordRepository,
+  })  : _recordRepository = recordRepository,
+        _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
         _calculateShenShaUseCase = calculateShenShaUseCase,
         _getKetiDataUseCase = getKetiDataUseCase,
@@ -147,6 +153,7 @@ class DaLiuRenViewModel extends BaseViewModel {
       // Run async enrichment THEN do a single final notifyListeners
       await _matchKeTi();
       await _calculateShenSha();
+      _saveCurrentDivination();
       setSuccess(); // This calls notifyListeners() with all data already populated
     } catch (e) {
       logger.e('🔴 [ViewModel] Calculation error: $e');
@@ -335,10 +342,22 @@ class DaLiuRenViewModel extends BaseViewModel {
       _updateDivinationProperties();
       await _matchKeTi();
       await _calculateShenSha();
+      _saveCurrentDivination();
       setSuccess();
     } catch (e) {
       setError(e is DivinationFailure ? e.message : e.toString());
     }
+  }
+
+  void _saveCurrentDivination() {
+    if (_recordRepository == null || _currentDivination == null) return;
+    final now = DateTime.now();
+    final contract = DaliurenDivinationRecordContract(
+      uuid: '${now.millisecondsSinceEpoch}_${Random().nextInt(9999)}',
+      question: _question,
+      createdAt: now,
+    );
+    _recordRepository!.saveRecord(contract);
   }
 
   Future<void> _matchKeTi() async {

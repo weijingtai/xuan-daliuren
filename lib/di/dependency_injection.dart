@@ -97,6 +97,7 @@ class DependencyInjection {
             getKetiDataUseCase: GetKetiDataUseCase(context.read<KetiDataService>()),
             matchYuDingKetiUseCase: MatchYuDingKetiUseCase(context.read<YuDingKetiMatchService>()),
             loadYuDingDataUseCase: LoadYuDingDataUseCase(repository),
+            context.read<DaliurenRecordRepository>(),
           );
         },
       ),
