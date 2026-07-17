@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:daliuren/domain/entities/liu_ren_pan_model.dart';
 import 'package:daliuren/presentation/widgets/keti_detail_widget.dart';
 
@@ -9,8 +10,9 @@ class PanDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (liuRenPan == null) {
-      return const Center(child: Text("请先排盘"));
+      return Center(child: Text(l10n.pleaseCalculateFirst));
     }
 
     // TODO: Reconstruct the detailed Pan UI here based on liuRenPan data
@@ -20,26 +22,26 @@ class PanDisplayWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          Text("日干支: ${liuRenPan!.dayJiaZi}"),
-          Text("时干支: ${liuRenPan!.timeGanZhi}"),
-          Text("月将: ${liuRenPan!.monthGeneral}"),
-          Text("贵人: ${liuRenPan!.timeGanZhi}"),
+          Text("${l10n.dayGanZhi}: ${liuRenPan!.dayJiaZi}"),
+          Text("${l10n.timeGanZhi}: ${liuRenPan!.timeGanZhi}"),
+          Text("${l10n.monthGeneralLabel} ${liuRenPan!.monthGeneral}"),
+          Text("${l10n.guiRenLabel} ${liuRenPan!.timeGanZhi}"),
           const SizedBox(height: 16),
           if (liuRenPan!.matchedLessons.isNotEmpty)
             KetiDetailWidget(lessons: liuRenPan!.matchedLessons)
           else if (liuRenPan!.keTiComplement.isNotEmpty)
-            Text("课体: ${liuRenPan!.keTiComplement.join(', ')}"),
+            Text("${l10n.keTiLabel} ${liuRenPan!.keTiComplement.join(', ')}"),
           const SizedBox(height: 16),
-          const Text("天地盘 (Placeholder):",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(l10n.tianDiPanPlaceholder,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          const Text("四课 (Placeholder):",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(l10n.fourClassPlaceholder,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           ...liuRenPan!.fourClasses.map((ke) =>
               Text(" - ${ke.toString()}")),
           const SizedBox(height: 16),
-          const Text("三传 (Placeholder):",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(l10n.threeChuanPlaceholder,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           ...liuRenPan!.threeChuans.map((chuan) =>
               Text(" - ${chuan.toString()}")),
         ],

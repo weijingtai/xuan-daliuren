@@ -1,6 +1,7 @@
 import 'package:theme/theme.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../model/four_class.dart';
@@ -19,6 +20,7 @@ class FourClassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final style = XuanThemeData.maybeOf(context)?.component('daliuren_four_class_card');
     final bg = style?.background ?? Colors.white;
     final titleColor = style?.border?.color ?? Colors.blueGrey;
@@ -35,7 +37,7 @@ class FourClassCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "四课",
+              l10n.fourClass,
               style: GoogleFonts.maShanZheng(
                 fontSize: 18 * scaleFactor,
                 color: titleColor,
@@ -51,6 +53,7 @@ class FourClassCard extends StatelessWidget {
 
   Widget _buildContent(Color textColor) {
     double diZhiFontSize = gongSize.width * .24;
+    final l10n = AppLocalizations.of(context)!;
 
     TextStyle tianGanStyle = ConstUIResourcesMapper.tianGanTextStyle.copyWith(
       fontSize: diZhiFontSize,
@@ -94,15 +97,15 @@ class FourClassCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildClassColumn(
-            "四", fourClass.fourth.guiRen.name, fourClass.fourth.sky,
+            l10n.fourClassShort, fourClass.fourth.guiRen.name, fourClass.fourth.sky,
             fourClass.fourth.ground, guiRenNameStyle, diZhiStyle),
         intervalSize,
         _buildClassColumn(
-            "三", fourClass.third.guiRen.name, fourClass.third.sky,
+            l10n.threeClassShort, fourClass.third.guiRen.name, fourClass.third.sky,
             fourClass.third.ground, guiRenNameStyle, diZhiStyle),
         intervalSize,
         _buildClassColumn(
-            "二", fourClass.second.guiRen.name, fourClass.second.sky,
+            l10n.twoClassShort, fourClass.second.guiRen.name, fourClass.second.sky,
             fourClass.second.ground, guiRenNameStyle, diZhiStyle),
         intervalSize,
         IntrinsicHeight(
@@ -115,7 +118,7 @@ class FourClassCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "一",
+                    l10n.oneClassShort,
                     style: GoogleFonts.maShanZheng(
                       height: 1,
                       fontSize: 18 * scaleFactor,

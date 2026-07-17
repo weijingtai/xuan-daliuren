@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/domain/schools/school_catalog.dart';
@@ -13,11 +14,12 @@ class DivinationDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<DaLiuRenViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.currentDivination == null) {
-          return const Center(
-            child: Text('请选择时间进行占卜'),
+          return Center(
+            child: Text(l10n.pleaseSelectTimeToDivine),
           );
         }
 
@@ -28,44 +30,21 @@ class DivinationDisplayWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Basic Information Card
-              _buildBasicInfoCard(context, divination),
-
+              _buildBasicInfoCard(context, divination, l10n),
               const SizedBox(height: 16),
-
-              // JiaZi Information Card
-              _buildJiaZiInfoCard(context, viewModel),
-
+              _buildJiaZiInfoCard(context, viewModel, l10n),
               const SizedBox(height: 16),
-
-              // Divination Panel (placeholder for now)
-              _buildDivinationPanel(context, divination),
-
+              _buildDivinationPanel(context, divination, l10n),
               const SizedBox(height: 16),
-
-              // 课体 Detail
               if (viewModel.matchedLessons.isNotEmpty)
                 KetiDetailWidget(lessons: viewModel.matchedLessons),
-
               if (viewModel.matchedLessons.isNotEmpty)
                 const SizedBox(height: 16),
-
-              // Shen Sha Display
               ShenShaDisplayWidget(shenShaResults: viewModel.shenShaResults),
-
               const SizedBox(height: 12),
-
-              // School slider + explanation panel.
-              //
-              // Inserted strictly AFTER the pan / four-class / three-chuan /
-              // keti / shen-sha sections so the formal pan rendering above
-              // remains untouched. Tab switching is owned by the local
-              // [_SchoolSwitcherSection] and never calls the viewmodel — no
-              // recalculate() / calculateDivination() invocations occur here.
               const _SchoolSwitcherSection(
                 key: Key('school_switcher_section'),
               ),
-
               const SizedBox(height: 24),
             ],
           ),
@@ -74,84 +53,76 @@ class DivinationDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBasicInfoCard(BuildContext context, dynamic divination) {
+  Widget _buildBasicInfoCard(BuildContext context, dynamic divination, AppLocalizations l10n) {
     return XuanCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '基本信息',
+            l10n.basicInfo,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
-          Text('时间: ${divination.panDateTime}'),
+          Text(l10n.timeLabel(divination.panDateTime)),
           if (divination.question != null)
-            Text('问题: ${divination.question}'),
-          Text('八字: ${divination.eightChatStr}'),
+            Text(l10n.questionLabel(divination.question)),
+          Text(l10n.eightCharLabel(divination.eightChatStr)),
         ],
       ),
     );
   }
 
-  Widget _buildJiaZiInfoCard(BuildContext context, DaLiuRenViewModel viewModel) {
+  Widget _buildJiaZiInfoCard(BuildContext context, DaLiuRenViewModel viewModel, AppLocalizations l10n) {
     return XuanCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '干支信息',
+            l10n.ganZhiInfo,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
           if (viewModel.yearJiaZi != null)
-            Text('年干支: ${viewModel.yearJiaZi!.name}'),
+            Text('${l10n.yearGanZhi}: ${viewModel.yearJiaZi!.name}'),
           if (viewModel.monthJiaZi != null)
-            Text('月干支: ${viewModel.monthJiaZi!.name}'),
+            Text('${l10n.monthGanZhi}: ${viewModel.monthJiaZi!.name}'),
           if (viewModel.dayJiaZi != null)
-            Text('日干支: ${viewModel.dayJiaZi!.name}'),
+            Text('${l10n.dayGanZhi}: ${viewModel.dayJiaZi!.name}'),
           if (viewModel.timeJiaZi != null)
-            Text('时干支: ${viewModel.timeJiaZi!.name}'),
+            Text('${l10n.timeGanZhi}: ${viewModel.timeJiaZi!.name}'),
         ],
       ),
     );
   }
 
-  Widget _buildDivinationPanel(BuildContext context, dynamic divination) {
+  Widget _buildDivinationPanel(BuildContext context, dynamic divination, AppLocalizations l10n) {
     return XuanCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '占卜盘',
+            l10n.divinationPanel,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
-
-          // Four Class (四课)
-          _buildFourClassSection(context, divination),
-
+          _buildFourClassSection(context, divination, l10n),
           const SizedBox(height: 16),
-
-          // Three Transmission (三传)
-          _buildThreeChuanSection(context, divination),
-
+          _buildThreeChuanSection(context, divination, l10n),
           const SizedBox(height: 16),
-
-          // Twelve Palaces (十二宫)
-          _buildTwelvePalacesSection(context, divination),
+          _buildTwelvePalacesSection(context, divination, l10n),
         ],
       ),
     );
   }
 
-  Widget _buildFourClassSection(BuildContext context, dynamic divination) {
+  Widget _buildFourClassSection(BuildContext context, dynamic divination, AppLocalizations l10n) {
     final fourClass = divination.fourClass;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '四课',
+          l10n.fourClass,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -168,10 +139,10 @@ class DivinationDisplayWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildClassItem('第一课', fourClass.first.sky.name, fourClass.first.ground.name),
-                  _buildClassItem('第二课', fourClass.second.sky.name, fourClass.second.ground.name),
-                  _buildClassItem('第三课', fourClass.third.sky.name, fourClass.third.ground.name),
-                  _buildClassItem('第四课', fourClass.fourth.sky.name, fourClass.fourth.ground.name),
+                  _buildClassItem(l10n.firstClass, fourClass.first.sky.name, fourClass.first.ground.name),
+                  _buildClassItem(l10n.secondClass, fourClass.second.sky.name, fourClass.second.ground.name),
+                  _buildClassItem(l10n.thirdClass, fourClass.third.sky.name, fourClass.third.ground.name),
+                  _buildClassItem(l10n.fourthClass, fourClass.fourth.sky.name, fourClass.fourth.ground.name),
                 ],
               ),
               const SizedBox(height: 8),
@@ -179,13 +150,13 @@ class DivinationDisplayWidget extends StatelessWidget {
                 spacing: 12,
                 children: [
                   if (fourClass.isFuYin)
-                    Chip(label: Text('伏吟'), backgroundColor: Colors.blue[100]),
+                    Chip(label: Text(l10n.fuYin), backgroundColor: Colors.blue[100]),
                   if (fourClass.isFanYin)
-                    Chip(label: Text('反吟'), backgroundColor: Colors.orange[100]),
+                    Chip(label: Text(l10n.fanYin), backgroundColor: Colors.orange[100]),
                   if (fourClass.isFullClass)
-                    Chip(label: Text('四课齐备'), backgroundColor: Colors.green[100]),
+                    Chip(label: Text(l10n.fourClassComplete), backgroundColor: Colors.green[100]),
                   if (fourClass.isThreeClassOnly)
-                    Chip(label: Text('三课'), backgroundColor: Colors.purple[100]),
+                    Chip(label: Text(l10n.threeClassOnly), backgroundColor: Colors.purple[100]),
                 ],
               ),
             ],
@@ -218,14 +189,14 @@ class DivinationDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildThreeChuanSection(BuildContext context, dynamic divination) {
+  Widget _buildThreeChuanSection(BuildContext context, dynamic divination, AppLocalizations l10n) {
     final threeChuan = divination.threeChuan;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '三传',
+          l10n.threeChuan,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -240,16 +211,16 @@ class DivinationDisplayWidget extends StatelessWidget {
           child: Column(
             children: [
               Chip(
-                label: Text('九宗门: ${threeChuan.nineZongMen.name}'),
+                label: Text('${l10n.nineZongMen}: ${threeChuan.nineZongMen.name}'),
                 backgroundColor: Colors.amber[100],
               ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildChuanItem('初传', threeChuan.first),
-                  _buildChuanItem('中传', threeChuan.second),
-                  _buildChuanItem('末传', threeChuan.third),
+                  _buildChuanItem(l10n.initialChuan, threeChuan.first),
+                  _buildChuanItem(l10n.middleChuan, threeChuan.second),
+                  _buildChuanItem(l10n.finalChuan, threeChuan.third),
                 ],
               ),
             ],
@@ -291,14 +262,14 @@ class DivinationDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTwelvePalacesSection(BuildContext context, dynamic divination) {
+  Widget _buildTwelvePalacesSection(BuildContext context, dynamic divination, AppLocalizations l10n) {
     final gongMapper = divination.gongMapper;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '十二宫位',
+          l10n.twelvePalaces,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -352,14 +323,6 @@ class DivinationDisplayWidget extends StatelessWidget {
   }
 }
 
-/// Local stateful container for the school slider + explanation panel.
-///
-/// Owns the `_selectedSchoolId` state so tab switches only rebuild this
-/// subtree. Tab callbacks intentionally call **only** `setState` — they must
-/// never invoke `DaLiuRenViewModel.recalculate()` or
-/// `DaLiuRenViewModel.calculateDivination()` so that switching schools does
-/// not re-trigger pan calculation (per Story 7 UI contract §Integration &
-/// State Boundary and ZenTao Task #38 Step 4).
 class _SchoolSwitcherSection extends StatefulWidget {
   const _SchoolSwitcherSection({super.key});
 
@@ -403,13 +366,6 @@ class _SchoolSwitcherSectionState extends State<_SchoolSwitcherSection> {
             key: ValueKey<String>(
                 'school_explanation_panel_$_selectedSchoolId'),
             selectedSchoolId: _selectedSchoolId,
-            // The formal yuding display path (pan / keti / shen-sha) is
-            // already rendered above this section by the parent widget. The
-            // viewmodel does not currently expose a `YuDingEntry`, so we
-            // intentionally leave [availableYudingBuilder] unset and let the
-            // panel surface its built-in yuding fallback copy. This preserves
-            // the contract that the yuding tab must never be substituted by
-            // `SchoolEntryDisplayWidget`.
           ),
         ),
       ],

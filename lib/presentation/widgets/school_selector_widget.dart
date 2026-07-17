@@ -1,6 +1,7 @@
 // lib/presentation/widgets/school_selector_widget.dart
 
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:daliuren/domain/interfaces/da_liu_ren_school.dart';
 import 'package:daliuren/domain/interfaces/school_registry.dart';
 
@@ -31,6 +32,7 @@ class _SchoolSelectorWidgetState extends State<SchoolSelectorWidget> {
   
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final schools = SchoolRegistry.all;
     
     if (schools.isEmpty) {
@@ -40,10 +42,10 @@ class _SchoolSelectorWidgetState extends State<SchoolSelectorWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text(
-            '选择流派',
+            l10n.selectSchool,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

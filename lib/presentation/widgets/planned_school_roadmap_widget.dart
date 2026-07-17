@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 import 'package:daliuren/domain/schools/school_catalog.dart';
 
@@ -14,10 +15,7 @@ import 'package:daliuren/domain/schools/school_catalog.dart';
 ///  - description body
 ///  - "正在整理中" status badge with tertiary status dot
 class PlannedSchoolRoadmapWidget extends StatelessWidget {
-  /// Fixed status copy required by the design contract.
   static const String statusLabel = '正在整理中';
-
-  /// Auxiliary copy required by the design contract (planned row).
   static const String supportingCopy =
       '该流派正在整理中，后续版本将解锁完整解释。当前可继续在御定流派下查看本盘解释。';
 
@@ -29,13 +27,15 @@ class PlannedSchoolRoadmapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final tertiary = colorScheme.tertiary;
+    final statusText = l10n.schoolStatusPreparing;
 
     return Semantics(
       container: true,
-      label: '流派路线图: ${entry.displayName}，$statusLabel',
+      label: l10n.schoolRoadmapLabel(entry.displayName, statusText),
       child: Card(
         elevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -60,7 +60,7 @@ class PlannedSchoolRoadmapWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  _StatusBadge(label: statusLabel, color: tertiary),
+                  _StatusBadge(label: statusText, color: tertiary),
                 ],
               ),
               const SizedBox(height: 8),
@@ -116,7 +116,7 @@ class PlannedSchoolRoadmapWidget extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                supportingCopy,
+                l10n.schoolRoadmapSupporting,
                 style: textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   height: 1.5,

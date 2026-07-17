@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +27,8 @@ class NavigatorGenerator {
       final deps = context.read<DaliurenStorageDependencies>();
       return MultiProvider(
         providers: DependencyInjection.getProviders(deps),
-        child: const MyHomePage(
-          title: "大六壬(旧版)",
+        child: MyHomePage(
+          title: AppLocalizations.of(context)!.daliurenOld,
         ),
       );
     },
@@ -67,8 +68,8 @@ class NavigatorGenerator {
 
   static Route _errorPage(String msg) {
     return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-          appBar: AppBar(title: const Text('大六壬_未知页面')),
+        return Scaffold(
+          appBar: AppBar(title: Text(AppLocalizations.of(context)!.daliurenUnknownPage)),
           body: Center(child: Text(msg)));
     });
   }
@@ -80,7 +81,7 @@ class NavigatorGenerator {
             settings:
                 settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
             // pageBuilder: (_, __, ___) => CreateOrderPage(settings.arguments == null ?null:settings.arguments as CreateOrderPageArgs),
-            pageBuilder: (_, __, ___) => const MyHomePage(title: "太乙神数"),
+            pageBuilder: (_, __, ___) => MyHomePage(title: AppLocalizations.of(__)!.taiyiShenshu),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0);

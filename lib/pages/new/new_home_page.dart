@@ -4,6 +4,7 @@ import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:theme/const_resources_mapper.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:metaphysics_chart_ui/metaphysics_chart_ui.dart';
@@ -75,6 +76,7 @@ class _NewHomePageState extends State<NewHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final viewModel = context.watch<DaLiuRenViewModel>();
     final pan = viewModel.currentDivination;
     final juNumberFromVm = viewModel.juNumber;
@@ -88,12 +90,15 @@ class _NewHomePageState extends State<NewHomePage> {
         ),
         title: pan != null && juNumberFromVm != null
             ? Text(
-                "${pan.dayJiaZi.name}日·${pan.timeJiaZi.diZhi.name}时·"
-                "${pan.isDayGuiRen ? "阳" : "阴"}"
-                "${ConstResourcesMapper.chineseNumberMapper[juNumberFromVm]}局",
+                l10n.divinationTime(
+                  pan.dayJiaZi.name,
+                  pan.timeJiaZi.diZhi.name,
+                  pan.isDayGuiRen ? l10n.yang : l10n.yin,
+                  ConstResourcesMapper.chineseNumberMapper[juNumberFromVm]!,
+                ),
                 style: DaliurenTypography.h1(0.9),
               )
-            : Text("大六壬", style: DaliurenTypography.h1(0.9)),
+            : Text(l10n.appTitle, style: DaliurenTypography.h1(0.9)),
       ),
       body:
           pan == null ? _buildEmptyState(viewModel) : _buildContent(viewModel),
@@ -310,6 +315,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildActionButtons(DaLiuRenViewModel viewModel) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.all(DaliurenSpacing.xl),
       child: Wrap(
@@ -317,22 +323,22 @@ class _NewHomePageState extends State<NewHomePage> {
         runSpacing: DaliurenSpacing.md,
         alignment: WrapAlignment.center,
         children: [
-          _actionButton("选择时间", Icons.calendar_today, () async {
+          _actionButton(l10n.selectTimeAction, Icons.calendar_today, () async {
             final result = await showBoardDateTimePicker(
                 context: context, pickerType: DateTimePickerType.datetime);
             if (result != null) viewModel.updateDateTime(result);
           }),
-          _actionButton("现在", Icons.schedule, () {
+          _actionButton(l10n.nowAction, Icons.schedule, () {
             viewModel.updateDateTime(DateTime.now());
           }),
-          _actionButton("排盘", Icons.auto_awesome, () async {
+          _actionButton(l10n.calculateAction, Icons.auto_awesome, () async {
             if (viewModel.currentDivination == null) {
               viewModel.updateDateTime(viewModel.selectedDateTime);
             } else {
-              _toast("不能重复");
+              _toast(l10n.cannotRepeat);
             }
           }),
-          _actionButton("干支排盘", Icons.edit_note, () async {
+          _actionButton(l10n.ganZhiCalculateAction, Icons.edit_note, () async {
             if (viewModel.currentDivination == null) {
               if ([yearJiaZi, monthJiaZi, dayJiaZi, yinYangDun]
                       .any((e) => e == null) ||
@@ -350,10 +356,10 @@ class _NewHomePageState extends State<NewHomePage> {
                 );
               }
             } else {
-              _toast("不能重复");
+              _toast(l10n.cannotRepeat);
             }
           }),
-          _actionButton("清除", Icons.clear, () {
+          _actionButton(l10n.clearAction, Icons.clear, () {
             viewModel.clear();
             yearJiaZi = null;
             monthJiaZi = null;
@@ -367,14 +373,14 @@ class _NewHomePageState extends State<NewHomePage> {
             valueListenable: _showHints,
             builder: (context, show, _) {
               return _actionButton(
-                show ? "隐藏注解" : "显示注解",
+                show ? l10n.hideAnnotations : l10n.showAnnotations,
                 show ? Icons.visibility_off : Icons.visibility,
                 () => _showHints.value = !_showHints.value,
               );
             },
           ),
           _actionButton(
-            "天盘支",
+            l10n.tianPanZhi,
             _wangShuaiConfig.showSkyDiZhi
                 ? Icons.check_box
                 : Icons.check_box_outline_blank,
@@ -385,7 +391,7 @@ class _NewHomePageState extends State<NewHomePage> {
             }),
           ),
           _actionButton(
-            "天干",
+            l10n.tianGanShort,
             _wangShuaiConfig.showTianGan
                 ? Icons.check_box
                 : Icons.check_box_outline_blank,
@@ -396,7 +402,7 @@ class _NewHomePageState extends State<NewHomePage> {
             }),
           ),
           _actionButton(
-            "天将",
+            l10n.tianJiang,
             _wangShuaiConfig.showTianJiang
                 ? Icons.check_box
                 : Icons.check_box_outline_blank,
@@ -545,21 +551,22 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildFourKeCompact(FourClass fourClass, double sf) {
+    final l10n = AppLocalizations.of(context)!;
     final items = [
       {
-        "l": "四",
+        "l": l10n.fourClassShort,
         "g": fourClass.fourth.guiRen.name,
         "s": fourClass.fourth.sky.value,
         "d": fourClass.fourth.ground.value
       },
       {
-        "l": "三",
+        "l": l10n.threeClassShort,
         "g": fourClass.third.guiRen.name,
         "s": fourClass.third.sky.value,
         "d": fourClass.third.ground.value
       },
       {
-        "l": "二",
+        "l": l10n.twoClassShort,
         "g": fourClass.second.guiRen.name,
         "s": fourClass.second.sky.value,
         "d": fourClass.second.ground.value
@@ -578,7 +585,7 @@ class _NewHomePageState extends State<NewHomePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: DaliurenSpacing.xs * sf),
           child: _keColumn(
-              "一",
+              l10n.oneClassShort,
               fourClass.first.guiRen.name,
               fourClass.first.sky.value,
               fourClass.first.ground.value,
@@ -621,12 +628,13 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildSanChuanSection(DaLiuRenKePan pan) {
+    final l10n = AppLocalizations.of(context)!;
     final chuan = pan.getThreeChuan();
 
     final items = [
-      {"l": "初传", "o": chuan.first},
-      {"l": "中传", "o": chuan.second},
-      {"l": "末传", "o": chuan.third},
+      {"l": l10n.initialChuan, "o": chuan.first},
+      {"l": l10n.middleChuan, "o": chuan.second},
+      {"l": l10n.finalChuan, "o": chuan.third},
     ];
 
     return XuanCard(
@@ -644,7 +652,7 @@ class _NewHomePageState extends State<NewHomePage> {
                   ),
                 ),
                 SizedBox(width: DaliurenSpacing.md),
-                Text("三传", style: DaliurenTypography.h3(1)),
+                Text(l10n.threeChuan, style: DaliurenTypography.h3(1)),
               ],
             ),
             SizedBox(height: DaliurenSpacing.lg),
@@ -719,13 +727,15 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildShenShaSection(Map<DiZhi, List<ShenShaResult>> shenShaResults) {
+    final l10n = AppLocalizations.of(context)!;
     return CollapsibleSection(
-      title: "神煞",
+      title: l10n.shenSha,
       child: ShenShaDisplayWidget(shenShaResults: shenShaResults),
     );
   }
 
   Widget _buildAncientTextSection(DaLiuRenKePan pan) {
+    final l10n = AppLocalizations.of(context)!;
     return FutureBuilder<YuDingDaLiuRenDataModel>(
       future: _loadYuDing(pan),
       builder: (ctx, snap) {
@@ -733,7 +743,7 @@ class _NewHomePageState extends State<NewHomePage> {
           return const SizedBox.shrink();
         }
         return CollapsibleSection(
-          title: "古籍释义",
+          title: l10n.ancientTextSeal + l10n.explanation,
           child: AncientTextCard(yuDing: snap.data!),
         );
       },
@@ -758,24 +768,24 @@ class _NewHomePageState extends State<NewHomePage> {
           alignment: WrapAlignment.center,
           children: [
             _dropdown(
-                "年干支",
+                l10n.yearGanZhi,
                 renYearGanZhiShakeKey,
                 JiaZi.listAll.map((e) => e.name).toList(),
                 (v) =>
                     yearJiaZi = v != null ? JiaZi.getFromGanZhiValue(v) : null),
             _dropdown(
-                "月干支",
+                l10n.monthGanZhi,
                 renMonthGanZhiShakeKey,
                 JiaZi.listAll.map((e) => e.name).toList(),
                 (v) => monthJiaZi =
                     v != null ? JiaZi.getFromGanZhiValue(v) : null),
             _dropdown(
-                "日干支",
+                l10n.dayGanZhi,
                 renDayGanZhiShakeKey,
                 JiaZi.listAll.map((e) => e.name).toList(),
                 (v) =>
                     dayJiaZi = v != null ? JiaZi.getFromGanZhiValue(v) : null),
-            _dropdown("时干支", renTimeGanZhiShakeKey,
+            _dropdown(l10n.timeGanZhi, renTimeGanZhiShakeKey,
                 JiaZi.listAll.map((e) => e.name).toList(), (v) {
               if (v != null) {
                 timeJiaZi = JiaZi.getFromGanZhiValue(v);
@@ -784,16 +794,16 @@ class _NewHomePageState extends State<NewHomePage> {
                 timeJiaZi = null;
               }
             }),
-            _dropdown("阴阳遁", renDunGanZhiShakeKey, ["阳", "阴"],
-                (v) => yinYangDun = v == "阳" ? YinYang.YANG : YinYang.YIN),
-            _dropdown("月将", renMonthGeneralShakeKey,
+            _dropdown(l10n.renDun, renDunGanZhiShakeKey, [l10n.yang, l10n.yin],
+                (v) => yinYangDun = v == l10n.yang ? YinYang.YANG : YinYang.YIN),
+            _dropdown(l10n.monthGeneralLabel, renMonthGeneralShakeKey,
                 MonthGeneral.values.map((e) => e.name).toList(), (v) {
               monthGeneral = v != null
                   ? MonthGeneral.values.firstWhere((m) => m.name == v)
                   : null;
             }),
             _dropdown(
-                "局数", renJuNumberShakeKey, List.generate(12, (i) => "${i + 1}"),
+                l10n.juNumberLabel, renJuNumberShakeKey, List.generate(12, (i) => "${i + 1}"),
                 (v) {
               if (v != null) {
                 juNumber = int.tryParse(v);

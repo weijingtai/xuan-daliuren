@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final l10n = AppLocalizations.of(context)!;
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 16),
-          Text('加载中...'),
+          const CircularProgressIndicator(),
+          const SizedBox(height: 16),
+          Text(l10n.loading),
         ],
       ),
     );

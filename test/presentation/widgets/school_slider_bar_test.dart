@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:daliuren/domain/schools/school_catalog.dart';
 import 'package:daliuren/presentation/widgets/school_slider_bar.dart';
+import 'package:daliuren/l10n/generated/app_localizations.dart';
 
 Widget _wrap(Widget child, {ThemeData? theme}) {
   return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    locale: const Locale('zh'),
     theme: theme ?? ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
     home: Scaffold(body: child),
   );

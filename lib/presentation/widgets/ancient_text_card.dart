@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:theme/theme.dart';
 import '../../data/models/yu_ding_da_liu_ren_data_model.dart';
 import '../../design/daliuren_colors.dart';
@@ -17,6 +18,7 @@ class AncientTextCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final style = XuanThemeData.maybeOf(context)?.component('daliuren_ancient_text_card');
     final bg = style?.background ?? DaliurenColors.paper;
     final borderColor = style?.border?.color ?? DaliurenColors.ink.withValues(alpha: .12);
@@ -44,16 +46,16 @@ class AncientTextCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTitleRow(sealBg),
+            _buildTitleRow(sealBg, l10n),
             _buildDivider(),
             SizedBox(height: DaliurenSpacing.lg * scale),
             _buildBody(highlightColor),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildParagraph("课义", yuDing.meaning, labelColor, highlightColor),
+            _buildParagraph(l10n.keYi, yuDing.meaning, labelColor, highlightColor),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildParagraph("解曰", yuDing.explain, labelColor, highlightColor),
+            _buildParagraph(l10n.jieYue, yuDing.explain, labelColor, highlightColor),
             SizedBox(height: DaliurenSpacing.lg * scale),
-            _buildParagraph("断曰", yuDing.predication, labelColor, highlightColor),
+            _buildParagraph(l10n.duanYue, yuDing.predication, labelColor, highlightColor),
             if (yuDing.details.isNotEmpty) ...[
               SizedBox(height: DaliurenSpacing.lg * scale),
               _buildDivider(),
@@ -80,7 +82,7 @@ class AncientTextCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTitleRow(Color sealBg) {
+  Widget _buildTitleRow(Color sealBg, AppLocalizations l10n) {
     return Row(
       children: [
         Container(
@@ -92,14 +94,14 @@ class AncientTextCard extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            "典",
+            l10n.ancientTextSeal,
             style: DaliurenTypography.tag(scale).copyWith(color: Colors.white, fontSize: 16 * scale),
           ),
         ),
         SizedBox(width: DaliurenSpacing.md * scale),
         Expanded(
           child: Text(
-            "${yuDing.dayJiaZi.name}日 第${_chineseNumber(yuDing.juNumber)} 干上${yuDing.juName.name}",
+            l10n.ancientTextTitle(yuDing.dayJiaZi.name, _chineseNumber(yuDing.juNumber, l10n), yuDing.juName.name),
             style: DaliurenTypography.h2(scale),
           ),
         ),
@@ -167,13 +169,13 @@ class AncientTextCard extends StatelessWidget {
     );
   }
 
-  String _chineseNumber(int n) {
+  String _chineseNumber(int n, AppLocalizations l10n) {
     const mapper = {
       1: '一', 2: '二', 3: '三', 4: '四', 5: '五',
       6: '六', 7: '七', 8: '八', 9: '九', 10: '十',
       11: '十一', 12: '十二'
     };
-    return '${mapper[n] ?? n}局';
+    return '${mapper[n] ?? n}${l10n.chineseNumberUnit}';
   }
 
   static const _highlightPatterns = ['吉', '凶', '利', '害', '宜', '忌', '克',

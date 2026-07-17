@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
 
 class CustomErrorWidget extends StatelessWidget {
@@ -13,6 +14,7 @@ class CustomErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -24,7 +26,7 @@ class CustomErrorWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            '出错了',
+            l10n.errorOccurred,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 8),
@@ -37,7 +39,7 @@ class CustomErrorWidget extends StatelessWidget {
           if (onRetry != null)
             XuanButton.primary(
               onPressed: onRetry,
-              child: const Text('重试'),
+              child: Text(l10n.retry),
             ),
         ],
       ),

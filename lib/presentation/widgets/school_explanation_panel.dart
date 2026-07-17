@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 import 'package:daliuren/domain/schools/school_catalog.dart';
 import 'package:daliuren/presentation/widgets/planned_school_roadmap_widget.dart';
@@ -29,20 +30,10 @@ enum SchoolPanelStateOverride {
 ///  4. Catalog status `planned`  → [PlannedSchoolRoadmapWidget].
 ///  5. Unknown school            → fallback message.
 class SchoolExplanationPanel extends StatelessWidget {
-  /// Empty-state primary copy required by the design contract.
   static const String emptyPrimary = '暂无匹配解释';
-
-  /// Empty-state secondary copy required by the design contract.
   static const String emptySecondary = '当前盘面在该流派下未找到匹配条目，可尝试切回御定。';
-
-  /// Error-state primary copy required by the design contract.
   static const String errorPrimary = '数据不可用';
-
-  /// Fallback copy when the catalog has no entry for the supplied id.
   static const String unknownSchoolCopy = '暂无该流派的解释数据。';
-
-  /// Fallback copy when yuding is selected but no builder was supplied
-  /// (e.g. DevPage rendering without an actual divination result).
   static const String yudingFallbackCopy = '请起盘后查看御定流派解释。';
 
   final String selectedSchoolId;
@@ -65,21 +56,23 @@ class SchoolExplanationPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     // 1. Explicit empty override.
     if (state == SchoolPanelStateOverride.empty) {
-      return _buildEmpty(context);
+      return _buildEmpty(context, l10n);
     }
 
     // 2. Explicit error override.
     if (state == SchoolPanelStateOverride.error) {
-      return _buildError(context);
+      return _buildError(context, l10n);
     }
 
     final entry = SchoolCatalog.byId(selectedSchoolId);
 
     // 3. Unknown school id — surface a small, unambiguous fallback.
     if (entry == null) {
-      return _buildUnknown(context);
+      return _buildUnknown(context, l10n);
     }
 
     // 4. Yuding (available) — protect the formal display path.
@@ -89,14 +82,14 @@ class SchoolExplanationPanel extends StatelessWidget {
       if (builder != null) {
         return Semantics(
           container: true,
-          label: '${entry.displayName} 解释',
+          label: l10n.schoolExplanation(entry.displayName),
           child: KeyedSubtree(
             key: const Key('school_panel_available_yuding'),
             child: builder(context),
           ),
         );
       }
-      return _buildYudingFallback(context);
+      return _buildYudingFallback(context, l10n);
     }
 
     // 5. Any planned school — show the roadmap empty state.
@@ -112,13 +105,13 @@ class SchoolExplanationPanel extends StatelessWidget {
     return _buildGenericAvailable(context, entry);
   }
 
-  Widget _buildEmpty(BuildContext context) {
+  Widget _buildEmpty(BuildContext context, AppLocalizations l10n) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Semantics(
       container: true,
       liveRegion: true,
-      label: emptyPrimary,
+      label: l10n.noMatchExplanation,
       child: Padding(
         key: const Key('panel_empty'),
         padding: const EdgeInsets.all(24),
@@ -129,13 +122,13 @@ class SchoolExplanationPanel extends StatelessWidget {
                 size: 40, color: colorScheme.onSurfaceVariant),
             const SizedBox(height: 12),
             Text(
-              emptyPrimary,
+              l10n.noMatchExplanation,
               style: textTheme.bodyLarge
                   ?.copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             Text(
-              emptySecondary,
+              l10n.noMatchSecondary,
               textAlign: TextAlign.center,
               style: textTheme.bodySmall
                   ?.copyWith(color: colorScheme.onSurfaceVariant),
@@ -146,14 +139,14 @@ class SchoolExplanationPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildError(BuildContext context) {
+  Widget _buildError(BuildContext context, AppLocalizations l10n) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final reason = '流派数据加载失败: $selectedSchoolId';
+    final reason = l10n.schoolDataLoadFailed(selectedSchoolId);
     return Semantics(
       container: true,
       liveRegion: true,
-      label: errorPrimary,
+      label: l10n.dataUnavailable,
       child: Padding(
         key: const Key('panel_error'),
         padding: const EdgeInsets.all(24),
@@ -163,7 +156,7 @@ class SchoolExplanationPanel extends StatelessWidget {
             Icon(Icons.error_outline, size: 40, color: colorScheme.error),
             const SizedBox(height: 12),
             Text(
-              errorPrimary,
+              l10n.dataUnavailable,
               style: textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w500,
                 color: colorScheme.error,
@@ -182,13 +175,13 @@ class SchoolExplanationPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildYudingFallback(BuildContext context) {
+  Widget _buildYudingFallback(BuildContext context, AppLocalizations l10n) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Text(
-        yudingFallbackCopy,
+        l10n.yudingFallback,
         textAlign: TextAlign.center,
         style: textTheme.bodyMedium
             ?.copyWith(color: colorScheme.onSurfaceVariant),
@@ -196,13 +189,13 @@ class SchoolExplanationPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildUnknown(BuildContext context) {
+  Widget _buildUnknown(BuildContext context, AppLocalizations l10n) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Text(
-        unknownSchoolCopy,
+        l10n.noSchoolData,
         textAlign: TextAlign.center,
         style: textTheme.bodyMedium
             ?.copyWith(color: colorScheme.onSurfaceVariant),

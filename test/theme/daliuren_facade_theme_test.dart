@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:theme/theme.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/domain/interfaces/school_entry.dart';
 import 'package:daliuren/presentation/widgets/school_entry_display_widget.dart';
+import 'package:daliuren/l10n/generated/app_localizations.dart';
 
 class MockSchoolEntry implements SchoolEntry {
   @override
@@ -55,6 +57,9 @@ void main() {
         XuanThemeScope(
           themeData: themeData,
           child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('zh'),
             home: Scaffold(
               body: SchoolEntryDisplayWidget(entry: entry),
             ),

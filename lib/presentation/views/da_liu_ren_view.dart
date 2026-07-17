@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
@@ -18,7 +19,6 @@ class _DaLiuRenViewState extends State<DaLiuRenView> {
   @override
   void initState() {
     super.initState();
-    // Initialize data when view loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DaLiuRenViewModel>().initializeData();
     });
@@ -26,6 +26,7 @@ class _DaLiuRenViewState extends State<DaLiuRenView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: XuanAppBar(
         title: Consumer<DaLiuRenViewModel>(
@@ -34,11 +35,15 @@ class _DaLiuRenViewState extends State<DaLiuRenView> {
                 viewModel.juNumber != null) {
               final divination = viewModel.currentDivination!;
               return Text(
-                "${divination.dayJiaZi.name}日·${divination.timeJiaZi.diZhi.name}时·"
-                "${divination.isDayGuiRen ? "阳" : "阴"}${viewModel.juNumber}局",
+                l10n.divinationTime(
+                  divination.dayJiaZi.name,
+                  divination.timeJiaZi.diZhi.name,
+                  divination.isDayGuiRen ? l10n.yang : l10n.yin,
+                  '${viewModel.juNumber}',
+                ),
               );
             }
-            return const Text("大六壬");
+            return Text(l10n.appTitle);
           },
         ),
         actions: [
@@ -65,10 +70,7 @@ class _DaLiuRenViewState extends State<DaLiuRenView> {
 
           return const Column(
             children: [
-              // Date/Time Selector
               DateTimeSelectorWidget(),
-
-              // Main Divination Display
               Expanded(
                 child: DivinationDisplayWidget(),
               ),

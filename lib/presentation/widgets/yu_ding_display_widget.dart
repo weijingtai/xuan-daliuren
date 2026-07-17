@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 import 'package:daliuren/domain/entities/yuding_entry.dart';
 
@@ -12,6 +13,7 @@ class YuDingDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         Text(
@@ -29,7 +31,7 @@ class YuDingDisplayWidget extends StatelessWidget {
         RichText(
           text: TextSpan(
               style: const TextStyle(fontSize: 16, color: Colors.black87),
-              text: "课义：",
+              text: l10n.keYiFull,
               children: [TextSpan(text: yuDingEntry.meaning)]),
         ),
         const SizedBox(
@@ -38,7 +40,7 @@ class YuDingDisplayWidget extends StatelessWidget {
         RichText(
           text: TextSpan(
               style: const TextStyle(fontSize: 16, color: Colors.black87),
-              text: "解曰：",
+              text: l10n.jieYueFull,
               children: [TextSpan(text: yuDingEntry.explanation)]),
         ),
         const SizedBox(
@@ -47,7 +49,7 @@ class YuDingDisplayWidget extends StatelessWidget {
         RichText(
           text: TextSpan(
               style: const TextStyle(fontSize: 16, color: Colors.black87),
-              text: "断曰：",
+              text: l10n.duanYueFull,
               children: [TextSpan(text: yuDingEntry.perdiction)]),
         ),
         const SizedBox(

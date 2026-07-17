@@ -1,6 +1,7 @@
 // lib/presentation/widgets/school_entry_display_widget.dart
 
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
 import 'package:daliuren/domain/interfaces/school_entry.dart';
 
@@ -20,6 +21,7 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return XuanCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +39,7 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
             // 课义
             _buildSection(
               context,
-              '课义',
+              l10n.keYi,
               entry.meaning,
             ),
             const SizedBox(height: 12),
@@ -45,7 +47,7 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
             // 解曰
             _buildSection(
               context,
-              '解曰',
+              l10n.jieYue,
               entry.explanation,
             ),
             const SizedBox(height: 12),
@@ -53,7 +55,7 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
             // 断曰
             _buildSection(
               context,
-              '断曰',
+              l10n.duanYue,
               entry.prediction,
             ),
             
@@ -147,11 +149,12 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
   }
   
   Widget _buildDetailsSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '杂占：',
+          l10n.mixedDivination,
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,
@@ -186,11 +189,12 @@ class SchoolEntryDisplayWidget extends StatelessWidget {
   }
   
   Widget _buildBookReferencesSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '经典引用：',
+          l10n.classicReferences,
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,

@@ -1,6 +1,7 @@
 import 'package:theme/theme.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../model/three_chuan.dart';
@@ -21,6 +22,7 @@ class ThreeChuanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final style = XuanThemeData.maybeOf(context)?.component('daliuren_three_chuan_card');
     final bg = style?.background ?? Colors.white;
     final titleColor = style?.border?.color ?? Colors.blueGrey;
@@ -37,7 +39,7 @@ class ThreeChuanCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "三传",
+              l10n.threeChuan,
               style: GoogleFonts.maShanZheng(
                 fontSize: 18 * scaleFactor,
                 color: titleColor,
@@ -53,6 +55,7 @@ class ThreeChuanCard extends StatelessWidget {
 
   Widget _buildContent(Color textColor) {
     double diZhiFontSize = gongSize.width * .24;
+    final l10n = AppLocalizations.of(context)!;
     TextStyle otherStyle = GoogleFonts.maShanZheng(
       fontSize: gongSize.width * .16,
       color: textColor,
@@ -95,11 +98,11 @@ class ThreeChuanCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildChuanRow(
-          "初", threeChuan.first, otherStyle, tianGanStyle, diZhiStyle, offset),
+          l10n.initialChuan.substring(0, 1), threeChuan.first, otherStyle, tianGanStyle, diZhiStyle, offset),
         _buildChuanRow(
-          "中", threeChuan.second, otherStyle, tianGanStyle, diZhiStyle, offset),
+          l10n.middleChuan.substring(0, 1), threeChuan.second, otherStyle, tianGanStyle, diZhiStyle, offset),
         _buildChuanRow(
-          "末", threeChuan.third, otherStyle, tianGanStyle, diZhiStyle, offset),
+          l10n.finalChuan.substring(0, 1), threeChuan.third, otherStyle, tianGanStyle, diZhiStyle, offset),
       ],
     );
   }

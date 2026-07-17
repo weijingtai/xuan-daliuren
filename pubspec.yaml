@@ -22,6 +22,8 @@ environment:
   sdk: '>=3.11.0 <4.0.0'
 
 dependencies:
+  flutter_localizations:
+    sdk: flutter
   theme:
     git:
       url: http://192.168.0.165:3000/xuan/theme.git
@@ -79,6 +81,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 flutter:
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

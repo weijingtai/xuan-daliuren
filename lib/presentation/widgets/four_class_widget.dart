@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class FourClassWidget extends StatelessWidget {
   final List<Map<String, dynamic>> fourClasses;
@@ -7,14 +8,14 @@ class FourClassWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (fourClasses.isEmpty) {
       return const SizedBox.shrink();
     }
-    // TODO: Implement the detailed UI for displaying the Four Classes (四课)
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("四课:", style: Theme.of(context).textTheme.titleSmall),
+        Text("${l10n.fourClass}:", style: Theme.of(context).textTheme.titleSmall),
         ...fourClasses.map((ke) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0),

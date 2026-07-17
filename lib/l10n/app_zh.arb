@@ -1,0 +1,260 @@
+{
+  "@@locale": "zh",
+  "appTitle": "大六壬",
+  "daliurenOld": "大六壬(旧版)",
+  "daliurenUnknownPage": "大六壬_未知页面",
+  "taiyiShenshu": "太乙神数",
+  "registeredSchoolCount": "已注册 {count} 个大六壬流派",
+  "@registeredSchoolCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "selectTime": "选择时间",
+  "pleaseSelectTimeToDivine": "请选择时间进行占卜",
+  "pleaseCalculateFirst": "请先排盘",
+  "basicInfo": "基本信息",
+  "timeLabel": "时间: {time}",
+  "@timeLabel": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "questionLabel": "问题: {question}",
+  "@questionLabel": {
+    "placeholders": {
+      "question": { "type": "String" }
+    }
+  },
+  "eightCharLabel": "八字: {eightChar}",
+  "@eightCharLabel": {
+    "placeholders": {
+      "eightChar": { "type": "String" }
+    }
+  },
+  "ganZhiInfo": "干支信息",
+  "yearGanZhi": "年干支",
+  "monthGanZhi": "月干支",
+  "dayGanZhi": "日干支",
+  "timeGanZhi": "时干支",
+  "divinationPanel": "占卜盘",
+  "fourClass": "四课",
+  "firstClass": "第一课",
+  "secondClass": "第二课",
+  "thirdClass": "第三课",
+  "fourthClass": "第四课",
+  "fuYin": "伏吟",
+  "fanYin": "反吟",
+  "fourClassComplete": "四课齐备",
+  "threeClassOnly": "三课",
+  "threeChuan": "三传",
+  "nineZongMen": "九宗门",
+  "initialChuan": "初传",
+  "middleChuan": "中传",
+  "finalChuan": "末传",
+  "twelvePalaces": "十二宫位",
+  "errorOccurred": "出错了",
+  "retry": "重试",
+  "loading": "加载中...",
+  "questionOptional": "问题（可选）",
+  "questionHint": "请输入您想要占卜的问题",
+  "panTitle": "{day}日·{time}时·{yinyang}{ju}局·干上{firstSky}",
+  "@panTitle": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "time": { "type": "String" },
+      "yinyang": { "type": "String" },
+      "ju": { "type": "String" },
+      "firstSky": { "type": "String" }
+    }
+  },
+  "panTitleShort": "{day}日·{time}时·干上{firstSky}",
+  "@panTitleShort": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "time": { "type": "String" },
+      "firstSky": { "type": "String" }
+    }
+  },
+  "panSeal": "盘",
+  "year": "年",
+  "month": "月",
+  "day": "日",
+  "hour": "时",
+  "twelveGods": "十二神将",
+  "dayNightGui": "{dynasty}贵",
+  "@dayNightGui": {
+    "placeholders": {
+      "dynasty": { "type": "String" }
+    }
+  },
+  "chuanChen": "传辰{diZhi}",
+  "@chuanChen": {
+    "placeholders": {
+      "diZhi": { "type": "String" }
+    }
+  },
+  "monthGeneral": "月将{diZhi}",
+  "@monthGeneral": {
+    "placeholders": {
+      "diZhi": { "type": "String" }
+    }
+  },
+  "keGe": "课格",
+  "none": "无",
+  "daytime": "昼",
+  "nighttime": "夜",
+  "shenSha": "神煞",
+  "sortByType": "按类型",
+  "sortByPosition": "按宫位",
+  "auspicious": "吉",
+  "inauspicious": "凶",
+  "typeLabel": "类型: {type}",
+  "@typeLabel": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "positionLabel": "位置: {position}",
+  "@positionLabel": {
+    "placeholders": {
+      "position": { "type": "String" }
+    }
+  },
+  "selectSchool": "选择流派",
+  "schoolExplanation": "{school} 解释",
+  "@schoolExplanation": {
+    "placeholders": {
+      "school": { "type": "String" }
+    }
+  },
+  "noMatchExplanation": "暂无匹配解释",
+  "noMatchSecondary": "当前盘面在该流派下未找到匹配条目，可尝试切回御定。",
+  "dataUnavailable": "数据不可用",
+  "schoolDataLoadFailed": "流派数据加载失败: {schoolId}",
+  "@schoolDataLoadFailed": {
+    "placeholders": {
+      "schoolId": { "type": "String" }
+    }
+  },
+  "noSchoolData": "暂无该流派的解释数据。",
+  "yudingFallback": "请起盘后查看御定流派解释。",
+  "schoolStatusPreparing": "正在整理中",
+  "schoolStatusAvailable": "当前可用",
+  "schoolRoadmapLabel": "流派路线图: {school}，{status}",
+  "@schoolRoadmapLabel": {
+    "placeholders": {
+      "school": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "schoolRoadmapSupporting": "该流派正在整理中，后续版本将解锁完整解释。当前可继续在御定流派下查看本盘解释。",
+  "schoolSelectedLabel": "{school}，{status}，已选中",
+  "@schoolSelectedLabel": {
+    "placeholders": {
+      "school": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "schoolDeselectedLabel": "{school}，{status}",
+  "@schoolDeselectedLabel": {
+    "placeholders": {
+      "school": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "keTi": "课体",
+  "conditions": "条件",
+  "nameExplanation": "释名",
+  "introduction": "总论",
+  "explanation": "详解",
+  "notes": "注意",
+  "subKeti": "子课体",
+  "pattern": "格",
+  "keYi": "课义",
+  "jieYue": "解曰",
+  "duanYue": "断曰",
+  "keYiFull": "课义：",
+  "jieYueFull": "解曰：",
+  "duanYueFull": "断曰：",
+  "ancientTextSeal": "典",
+  "ancientTextTitle": "{day}日 第{num} 干上{juname}",
+  "@ancientTextTitle": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "num": { "type": "String" },
+      "juname": { "type": "String" }
+    }
+  },
+  "chineseNumberUnit": "局",
+  "mixedDivination": "杂占：",
+  "classicReferences": "经典引用：",
+  "timeColon": "时间：",
+  "lunarLabel": "农历：",
+  "lunarDate": "{year}年 {month}月 {day} {time}",
+  "@lunarDate": {
+    "placeholders": {
+      "year": { "type": "String" },
+      "month": { "type": "String" },
+      "day": { "type": "String" },
+      "time": { "type": "String" }
+    }
+  },
+  "divinationTime": "{day}日·{time}时·{yinyang}{ju}局",
+  "@divinationTime": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "time": { "type": "String" },
+      "yinyang": { "type": "String" },
+      "ju": { "type": "String" }
+    }
+  },
+  "selectTimeAction": "选择时间",
+  "nowAction": "现在",
+  "calculateAction": "排盘",
+  "cannotRepeat": "不能重复",
+  "ganZhiCalculateAction": "干支排盘",
+  "clearAction": "清除",
+  "showAnnotations": "显示注解",
+  "hideAnnotations": "隐藏注解",
+  "newVersionUi": "新版UI",
+  "dayGanZhiLabel": "日干支:",
+  "timeGanZhiLabel": "时干支:",
+  "monthGeneralLabel": "月将:",
+  "guiRenLabel": "贵人:",
+  "keTiLabel": "课体:",
+  "tianDiPanPlaceholder": "天地盘 (Placeholder):",
+  "fourClassPlaceholder": "四课 (Placeholder):",
+  "threeChuanPlaceholder": "三传 (Placeholder):",
+  "renDun": "阴阳遁",
+  "yang": "阳",
+  "yin": "阴",
+  "juNumberLabel": "局数",
+  "singleGongDetail": "单宫详情",
+  "fullPanOverview": "全盘概览",
+  "diZhiGround": "地支（地盘）",
+  "tianPan": "天盘",
+  "tianGanLabel": "天干",
+  "jiGan": "寄干",
+  "wuLabel": "（无）",
+  "gongLayoutDev": "宫位布局开发",
+  "showHideAnnotations": "隐藏注解",
+  "tianPanZhi": "天盘支",
+  "tianGanShort": "天干",
+  "tianJiang": "天将",
+  "gongGeZoom": "宫格缩放",
+  "panSize": "盘面尺寸",
+  "fourClassShort": "四",
+  "threeClassShort": "三",
+  "twoClassShort": "二",
+  "oneClassShort": "一",
+  "schoolDemoTitle": "大六壬流派演示",
+  "noData": "暂无数据",
+  "representativeBook": "代表书籍：",
+  "era": "年代：",
+  "debugEntry": "调试入口",
+  "fourClassDebug": "四课调试",
+  "multiSchoolDebug": "多流派调试",
+  "multiSchoolDebugUnified": "多流派调试 (统一组件展示路径)",
+  "loadEntriesFailed": "加载条目失败"
+}

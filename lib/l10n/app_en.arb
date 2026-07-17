@@ -1,0 +1,260 @@
+{
+  "@@locale": "en",
+  "appTitle": "Da Liu Ren",
+  "daliurenOld": "Da Liu Ren (Legacy)",
+  "daliurenUnknownPage": "Da Liu Ren_Unknown Page",
+  "taiyiShenshu": "Tai Yi Shen Shu",
+  "registeredSchoolCount": "{count} Da Liu Ren schools registered",
+  "@registeredSchoolCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "selectTime": "Select Time",
+  "pleaseSelectTimeToDivine": "Please select a time to divine",
+  "pleaseCalculateFirst": "Please calculate first",
+  "basicInfo": "Basic Info",
+  "timeLabel": "Time: {time}",
+  "@timeLabel": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "questionLabel": "Question: {question}",
+  "@questionLabel": {
+    "placeholders": {
+      "question": { "type": "String" }
+    }
+  },
+  "eightCharLabel": "Eight Char: {eightChar}",
+  "@eightCharLabel": {
+    "placeholders": {
+      "eightChar": { "type": "String" }
+    }
+  },
+  "ganZhiInfo": "Gan-Zhi Info",
+  "yearGanZhi": "Year GZ",
+  "monthGanZhi": "Month GZ",
+  "dayGanZhi": "Day GZ",
+  "timeGanZhi": "Hour GZ",
+  "divinationPanel": "Divination Panel",
+  "fourClass": "Four Classes",
+  "firstClass": "Class 1",
+  "secondClass": "Class 2",
+  "thirdClass": "Class 3",
+  "fourthClass": "Class 4",
+  "fuYin": "Fu Yin",
+  "fanYin": "Fan Yin",
+  "fourClassComplete": "Full 4 Classes",
+  "threeClassOnly": "3 Classes",
+  "threeChuan": "Three Transmissions",
+  "nineZongMen": "Nine Zong Men",
+  "initialChuan": "1st",
+  "middleChuan": "2nd",
+  "finalChuan": "3rd",
+  "twelvePalaces": "Twelve Palaces",
+  "errorOccurred": "Error",
+  "retry": "Retry",
+  "loading": "Loading...",
+  "questionOptional": "Question (optional)",
+  "questionHint": "Enter your divination question",
+  "panTitle": "{day}Day·{time}Hr·{yinyang}{ju}Ju·Above:{firstSky}",
+  "@panTitle": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "time": { "type": "String" },
+      "yinyang": { "type": "String" },
+      "ju": { "type": "String" },
+      "firstSky": { "type": "String" }
+    }
+  },
+  "panTitleShort": "{day}Day·{time}Hr·Above:{firstSky}",
+  "@panTitleShort": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "time": { "type": "String" },
+      "firstSky": { "type": "String" }
+    }
+  },
+  "panSeal": "P",
+  "year": "Year",
+  "month": "Month",
+  "day": "Day",
+  "hour": "Hour",
+  "twelveGods": "Twelve Gods",
+  "dayNightGui": "{dynasty} Gui",
+  "@dayNightGui": {
+    "placeholders": {
+      "dynasty": { "type": "String" }
+    }
+  },
+  "chuanChen": "Chuan {diZhi}",
+  "@chuanChen": {
+    "placeholders": {
+      "diZhi": { "type": "String" }
+    }
+  },
+  "monthGeneral": "Month Gen {diZhi}",
+  "@monthGeneral": {
+    "placeholders": {
+      "diZhi": { "type": "String" }
+    }
+  },
+  "keGe": "Ke Ge",
+  "none": "None",
+  "daytime": "Day",
+  "nighttime": "Night",
+  "shenSha": "Shen Sha",
+  "sortByType": "By Type",
+  "sortByPosition": "By Position",
+  "auspicious": "Ji",
+  "inauspicious": "Xiong",
+  "typeLabel": "Type: {type}",
+  "@typeLabel": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "positionLabel": "Position: {position}",
+  "@positionLabel": {
+    "placeholders": {
+      "position": { "type": "String" }
+    }
+  },
+  "selectSchool": "Select School",
+  "schoolExplanation": "{school} Explanation",
+  "@schoolExplanation": {
+    "placeholders": {
+      "school": { "type": "String" }
+    }
+  },
+  "noMatchExplanation": "No matching explanation",
+  "noMatchSecondary": "No matching entry found. Try switching to YuDing.",
+  "dataUnavailable": "Data Unavailable",
+  "schoolDataLoadFailed": "School data load failed: {schoolId}",
+  "@schoolDataLoadFailed": {
+    "placeholders": {
+      "schoolId": { "type": "String" }
+    }
+  },
+  "noSchoolData": "No explanation data for this school.",
+  "yudingFallback": "Please calculate first to view YuDing explanation.",
+  "schoolStatusPreparing": "Preparing",
+  "schoolStatusAvailable": "Available",
+  "schoolRoadmapLabel": "Roadmap: {school}, {status}",
+  "@schoolRoadmapLabel": {
+    "placeholders": {
+      "school": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "schoolRoadmapSupporting": "This school is being prepared. Full explanations will be available in a future version.",
+  "schoolSelectedLabel": "{school}, {status}, selected",
+  "@schoolSelectedLabel": {
+    "placeholders": {
+      "school": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "schoolDeselectedLabel": "{school}, {status}",
+  "@schoolDeselectedLabel": {
+    "placeholders": {
+      "school": { "type": "String" },
+      "status": { "type": "String" }
+    }
+  },
+  "keTi": "Lesson Type",
+  "conditions": "Conditions",
+  "nameExplanation": "Name",
+  "introduction": "Overview",
+  "explanation": "Detail",
+  "notes": "Notes",
+  "subKeti": "Sub-Lessons",
+  "pattern": "Pattern",
+  "keYi": "Ke Yi",
+  "jieYue": "Jie Yue",
+  "duanYue": "Duan Yue",
+  "keYiFull": "Ke Yi: ",
+  "jieYueFull": "Jie Yue: ",
+  "duanYueFull": "Duan Yue: ",
+  "ancientTextSeal": "C",
+  "ancientTextTitle": "{day} Day #{num} Above {juname}",
+  "@ancientTextTitle": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "num": { "type": "String" },
+      "juname": { "type": "String" }
+    }
+  },
+  "chineseNumberUnit": "",
+  "mixedDivination": "Misc: ",
+  "classicReferences": "References: ",
+  "timeColon": "Time: ",
+  "lunarLabel": "Lunar: ",
+  "lunarDate": "{year} {month} {day} {time}",
+  "@lunarDate": {
+    "placeholders": {
+      "year": { "type": "String" },
+      "month": { "type": "String" },
+      "day": { "type": "String" },
+      "time": { "type": "String" }
+    }
+  },
+  "divinationTime": "{day}D·{time}H·{yinyang}{ju}J",
+  "@divinationTime": {
+    "placeholders": {
+      "day": { "type": "String" },
+      "time": { "type": "String" },
+      "yinyang": { "type": "String" },
+      "ju": { "type": "String" }
+    }
+  },
+  "selectTimeAction": "Select Time",
+  "nowAction": "Now",
+  "calculateAction": "Calculate",
+  "cannotRepeat": "Cannot repeat",
+  "ganZhiCalculateAction": "GZ Calculate",
+  "clearAction": "Clear",
+  "showAnnotations": "Show Notes",
+  "hideAnnotations": "Hide Notes",
+  "newVersionUi": "New UI",
+  "dayGanZhiLabel": "Day GZ:",
+  "timeGanZhiLabel": "Hour GZ:",
+  "monthGeneralLabel": "Month Gen:",
+  "guiRenLabel": "Gui Ren:",
+  "keTiLabel": "Ke Ti:",
+  "tianDiPanPlaceholder": "Sky-Earth Pan (Placeholder):",
+  "fourClassPlaceholder": "Four Classes (Placeholder):",
+  "threeChuanPlaceholder": "Three Transmissions (Placeholder):",
+  "renDun": "Yin-Yang Dun",
+  "yang": "Yang",
+  "yin": "Yin",
+  "juNumberLabel": "Ju",
+  "singleGongDetail": "Palace Detail",
+  "fullPanOverview": "Full Pan Overview",
+  "diZhiGround": "Di Zhi (Ground)",
+  "tianPan": "Sky Pan",
+  "tianGanLabel": "Tian Gan",
+  "jiGan": "Ji Gan",
+  "wuLabel": "(none)",
+  "gongLayoutDev": "Gong Layout Dev",
+  "showHideAnnotations": "Hide Notes",
+  "tianPanZhi": "Sky Pan Zhi",
+  "tianGanShort": "Tian Gan",
+  "tianJiang": "Tian Jiang",
+  "gongGeZoom": "Gong Zoom",
+  "panSize": "Pan Size",
+  "fourClassShort": "4",
+  "threeClassShort": "3",
+  "twoClassShort": "2",
+  "oneClassShort": "1",
+  "schoolDemoTitle": "Da Liu Ren Schools Demo",
+  "noData": "No data",
+  "representativeBook": "Book: ",
+  "era": "Era: ",
+  "debugEntry": "Debug",
+  "fourClassDebug": "4-Class Debug",
+  "multiSchoolDebug": "Multi-School Debug",
+  "multiSchoolDebugUnified": "Multi-School Debug (Unified)",
+  "loadEntriesFailed": "Failed to load entries"
+}

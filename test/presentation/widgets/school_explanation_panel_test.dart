@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:daliuren/domain/schools/school_catalog.dart';
 import 'package:daliuren/presentation/widgets/planned_school_roadmap_widget.dart';
 import 'package:daliuren/presentation/widgets/school_explanation_panel.dart';
+import 'package:daliuren/l10n/generated/app_localizations.dart';
 
-Widget _wrap(Widget child) => MaterialApp(home: Scaffold(body: child));
+Widget _wrap(Widget child) => MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('zh'),
+      home: Scaffold(body: child),
+    );
 
 void main() {
   group('PlannedSchoolRoadmapWidget', () {
@@ -68,6 +75,9 @@ void main() {
 
         await tester.pumpWidget(
           MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('zh'),
             home: Scaffold(
               body: StatefulBuilder(
                 builder: (context, setState) {

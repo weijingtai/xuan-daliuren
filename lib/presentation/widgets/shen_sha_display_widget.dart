@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 
@@ -34,6 +35,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (widget.shenShaResults == null || widget.shenShaResults!.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -52,7 +54,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
             // Header
             Row(
               children: [
-                Text('神煞',
+                Text(l10n.shenSha,
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -68,14 +70,14 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
                   borderRadius: BorderRadius.circular(8),
                   constraints: const BoxConstraints(minHeight: 30, minWidth: 60),
                   textStyle: const TextStyle(fontSize: 12),
-                  children: const [
+                  children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text('按类型'),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(l10n.sortByType),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text('按宫位'),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(l10n.sortByPosition),
                     ),
                   ],
                 ),
@@ -244,6 +246,7 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
 
   Widget _buildShenShaChip(BuildContext context, ShenShaResult result,
       {bool showLocation = false, bool showType = false}) {
+    final l10n = AppLocalizations.of(context)!;
     final jiXiongName = result.shenSha.jiXiong.name;
     Color chipColor;
     Color textColor;
@@ -265,8 +268,8 @@ class _ShenShaDisplayWidgetState extends State<ShenShaDisplayWidget> {
 
     final tooltipLines = <String>[
       '${result.shenSha.name} ($jiXiongName)',
-      '类型: ${result.shenSha.type}',
-      '位置: ${result.location.name}',
+      l10n.typeLabel(result.shenSha.type),
+      l10n.positionLabel(result.location.name),
     ];
     if (result.shenSha.descriptionList.isNotEmpty) {
       tooltipLines.add(result.shenSha.descriptionList.first);

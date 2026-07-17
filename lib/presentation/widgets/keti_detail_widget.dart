@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 
 class KetiDetailWidget extends StatelessWidget {
@@ -13,6 +14,7 @@ class KetiDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (lessons.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -20,8 +22,8 @@ class KetiDetailWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '课体',
+        Text(
+          l10n.keTi,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 8),
@@ -53,6 +55,7 @@ class _LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final highlightedNames = _highlightedNames;
 
     return Card(
@@ -94,19 +97,19 @@ class _LessonCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (lesson.conditions.isNotEmpty)
-                  _Section(title: '条件', items: lesson.conditions),
+                  _Section(title: l10n.conditions, items: lesson.conditions),
                 if (lesson.nameExplanation != null)
-                  _TextSection(title: '释名', text: lesson.nameExplanation!),
+                  _TextSection(title: l10n.nameExplanation, text: lesson.nameExplanation!),
                 if (lesson.introduction != null)
-                  _TextSection(title: '总论', text: lesson.introduction!),
+                  _TextSection(title: l10n.introduction, text: lesson.introduction!),
                 if (lesson.explanation != null)
-                  _TextSection(title: '详解', text: lesson.explanation!),
+                  _TextSection(title: l10n.explanation, text: lesson.explanation!),
                 if (lesson.notes.isNotEmpty)
-                  _Section(title: '注意', items: lesson.notes),
+                  _Section(title: l10n.notes, items: lesson.notes),
                 if (lesson.subLessons.isNotEmpty) ...[
                   const Divider(),
-                  const Text(
-                    '子课体',
+                  Text(
+                    l10n.subKeti,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
@@ -138,6 +141,7 @@ class _SubLessonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tile = ExpansionTile(
       tilePadding: const EdgeInsets.symmetric(horizontal: 8),
       title: Row(
@@ -157,7 +161,7 @@ class _SubLessonTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                '格',
+                l10n.pattern,
                 style: TextStyle(
                   fontSize: 11,
                   color: Colors.green.shade800,
@@ -177,15 +181,15 @@ class _SubLessonTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (subLesson.conditions.isNotEmpty)
-                _Section(title: '条件', items: subLesson.conditions),
+                _Section(title: l10n.conditions, items: subLesson.conditions),
               if (subLesson.nameExplanation != null)
-                _TextSection(title: '释名', text: subLesson.nameExplanation!),
+                _TextSection(title: l10n.nameExplanation, text: subLesson.nameExplanation!),
               if (subLesson.introduction != null)
-                _TextSection(title: '总论', text: subLesson.introduction!),
+                _TextSection(title: l10n.introduction, text: subLesson.introduction!),
               if (subLesson.explanation != null)
-                _TextSection(title: '详解', text: subLesson.explanation!),
+                _TextSection(title: l10n.explanation, text: subLesson.explanation!),
               if (subLesson.notes.isNotEmpty)
-                _Section(title: '注意', items: subLesson.notes),
+                _Section(title: l10n.notes, items: subLesson.notes),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:theme/theme.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../model/da_liu_ren_gong.dart';
@@ -35,6 +36,7 @@ class KePanInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final style = XuanThemeData.maybeOf(context)?.component('daliuren_ke_pan_card');
     _ink = style?.border?.color ?? _defaultInk;
     _bg = style?.background ?? _defaultBg;
@@ -42,11 +44,11 @@ class KePanInfoCard extends StatelessWidget {
 
     final dayName = kePan.dayJiaZi.name;
     final shichen = kePan.timeJiaZi.diZhi.name;
-    final yinyang = kePan.isDayGuiRen ? "阳" : "阴";
+    final yinyang = kePan.isDayGuiRen ? l10n.yang : l10n.yin;
     final juStr = juNumber != null
         ? ConstResourcesMapper.chineseNumberMapper[juNumber]!
         : "";
- final firstSky = kePan.fourClass.first.sky.name;
+  final firstSky = kePan.fourClass.first.sky.name;
 
     return Card(
       elevation: 6,
@@ -61,11 +63,11 @@ class KePanInfoCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTitleRow(dayName, shichen, yinyang, juStr, firstSky),
+            _buildTitleRow(dayName, shichen, yinyang, juStr, firstSky, l10n),
             SizedBox(height: 14 * scaleFactor),
             _buildDivider(),
             SizedBox(height: 14 * scaleFactor),
-            _buildEightCharRow(),
+            _buildEightCharRow(l10n),
             SizedBox(height: 10 * scaleFactor),
             _buildDivider(),
             SizedBox(height: 14 * scaleFactor),
@@ -100,10 +102,10 @@ class KePanInfoCard extends StatelessWidget {
   }
 
   Widget _buildTitleRow(
-      String day, String shi, String yinyang, String ju, String firstSky) {
- final title = ju.isNotEmpty
- ? "$day日·$shi时·$yinyang$ju局·干上$firstSky"
- : "$day日·$shi时·干上$firstSky";
+      String day, String shi, String yinyang, String ju, String firstSky, AppLocalizations l10n) {
+  final title = ju.isNotEmpty
+  ? l10n.panTitle(day, shi, yinyang, ju, firstSky)
+  : l10n.panTitleShort(day, shi, firstSky);
 
     return Column(
       children: [
@@ -116,7 +118,7 @@ class KePanInfoCard extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            "盘",
+            l10n.panSeal,
             style: GoogleFonts.maShanZheng(
               fontSize: 18 * scaleFactor,
               color: Colors.white,
@@ -139,13 +141,13 @@ class KePanInfoCard extends StatelessWidget {
     );
   }
 
-  Widget _buildEightCharRow() {
+  Widget _buildEightCharRow(AppLocalizations l10n) {
     final pan = kePan;
     return Row(
       children: [
         Expanded(
           child: _infoChip(
-            label: "年",
+            label: l10n.year,
             tianGan: pan.yearJiaZi.tianGan.value,
             diZhi: pan.yearJiaZi.diZhi.value,
             ganColor: ConstResourcesMapper.zodiacGanColors[pan.yearJiaZi.tianGan]!,
@@ -155,7 +157,7 @@ class KePanInfoCard extends StatelessWidget {
         SizedBox(width: 2 * scaleFactor),
         Expanded(
           child: _infoChip(
-            label: "月",
+            label: l10n.month,
             tianGan: pan.monthJiaZi.tianGan.value,
             diZhi: pan.monthJiaZi.diZhi.value,
             ganColor: ConstResourcesMapper.zodiacGanColors[pan.monthJiaZi.tianGan]!,
@@ -165,7 +167,7 @@ class KePanInfoCard extends StatelessWidget {
         SizedBox(width: 2 * scaleFactor),
         Expanded(
           child: _infoChip(
-            label: "日",
+            label: l10n.day,
             tianGan: pan.dayJiaZi.tianGan.value,
             diZhi: pan.dayJiaZi.diZhi.value,
             ganColor: ConstResourcesMapper.zodiacGanColors[pan.dayJiaZi.tianGan]!,
@@ -176,7 +178,7 @@ class KePanInfoCard extends StatelessWidget {
         SizedBox(width: 2 * scaleFactor),
         Expanded(
           child: _infoChip(
-            label: "时",
+            label: l10n.hour,
             tianGan: pan.timeJiaZi.tianGan.value,
             diZhi: pan.timeJiaZi.diZhi.value,
             ganColor: ConstResourcesMapper.zodiacGanColors[pan.timeJiaZi.tianGan]!,
@@ -252,6 +254,7 @@ class KePanInfoCard extends StatelessWidget {
   Widget _buildGodsGrid() {
     final gongMapper = kePan.gongMapper;
     final dynastyStr = _dynasty();
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +271,7 @@ class KePanInfoCard extends StatelessWidget {
             ),
             SizedBox(width: 6 * scaleFactor),
             Text(
-              "十二神将",
+              l10n.twelveGods,
               style: GoogleFonts.maShanZheng(
                 fontSize: 14 * scaleFactor,
                 color: _ink,
@@ -276,14 +279,14 @@ class KePanInfoCard extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            _buildMiniTag("$dynastyStr贵"),
+            _buildMiniTag(l10n.dayNightGui(dynastyStr)),
 
           ],
         ),
 
-        _buildMiniTag("传辰${kePan.guiRenDiZhi.name}"),
+        _buildMiniTag(l10n.chuanChen(kePan.guiRenDiZhi.name)),
 
-        _buildMiniTag("月将${kePan.monthGeneral.generalZhi.name}"),
+        _buildMiniTag(l10n.monthGeneral(kePan.monthGeneral.generalZhi.name)),
         _buildMiniTag(kePan.monthGeneral.name),
         SizedBox(height: 10 * scaleFactor),
         _godsTable(gongMapper),
@@ -390,6 +393,7 @@ class KePanInfoCard extends StatelessWidget {
   Widget _buildKeGeRow() {
  final jieItem1 = kePan.monthGeneral.jieSegment.item1.name;
  final jieItem2 = kePan.monthGeneral.jieSegment.item2.name;
+ final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,7 +410,7 @@ class KePanInfoCard extends StatelessWidget {
             ),
             SizedBox(width: 6 * scaleFactor),
             Text(
-              "课格",
+              l10n.keGe,
               style: GoogleFonts.maShanZheng(
                 fontSize: 14 * scaleFactor,
                 color: _ink,
@@ -447,7 +451,7 @@ class KePanInfoCard extends StatelessWidget {
           )
         else
           Text(
-            "无",
+            l10n.none,
             style: GoogleFonts.zhiMangXing(
               fontSize: 13 * scaleFactor,
               color: Colors.grey,
@@ -491,7 +495,7 @@ class KePanInfoCard extends StatelessWidget {
       DiZhi.WEI,
       DiZhi.SHEN
     ].contains(timeDiZhi);
-    return isDay ? "昼" : "夜";
+    return isDay ? l10n.daytime : l10n.nighttime;
   }
 }
 

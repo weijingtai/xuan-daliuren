@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 import '../../domain/schools/school_catalog.dart';
 
@@ -67,6 +68,7 @@ class SchoolSliderBar extends StatelessWidget {
   }
 
   Widget _buildChip(BuildContext context, SchoolCatalogEntry entry) {
+    final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -96,10 +98,10 @@ class SchoolSliderBar extends StatelessWidget {
       fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
     );
 
-    final String statusLabel = isPlanned ? '正在整理中' : '当前可用';
+    final String statusText = isPlanned ? l10n.schoolStatusPreparing : l10n.schoolStatusAvailable;
     final String semanticsLabel = isSelected
-        ? '${entry.displayName}，$statusLabel，已选中'
-        : '${entry.displayName}，$statusLabel';
+        ? l10n.schoolSelectedLabel(entry.displayName, statusText)
+        : l10n.schoolDeselectedLabel(entry.displayName, statusText);
 
     Widget chip = AnimatedContainer(
       duration: _motionDuration(context),

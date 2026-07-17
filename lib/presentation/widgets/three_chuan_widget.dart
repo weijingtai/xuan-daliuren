@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class ThreeChuanWidget extends StatelessWidget {
   final List<Map<String, dynamic>> threeChuans;
@@ -7,22 +8,22 @@ class ThreeChuanWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (threeChuans.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    // TODO: Implement the detailed UI for displaying the Three Chuans (三传)
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("三传:", style: Theme.of(context).textTheme.titleSmall),
+        Text("${l10n.threeChuan}:", style: Theme.of(context).textTheme.titleSmall),
         ...threeChuans.asMap().entries.map((entry) {
           int idx = entry.key;
           Map<String, dynamic> chuan = entry.value;
           String chuanName = "";
-          if (idx == 0) chuanName = "初传";
-          if (idx == 1) chuanName = "中传";
-          if (idx == 2) chuanName = "末传";
+          if (idx == 0) chuanName = l10n.initialChuan;
+          if (idx == 1) chuanName = l10n.middleChuan;
+          if (idx == 2) chuanName = l10n.finalChuan;
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0),

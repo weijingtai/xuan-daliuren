@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:xuan_common_ui/xuan_common_ui.dart';
@@ -9,12 +10,13 @@ class DateTimeSelectorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return XuanCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '选择时间',
+            l10n.selectTime,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
@@ -34,7 +36,7 @@ class DateTimeSelectorWidget extends StatelessWidget {
                   ),
                   XuanButton.primary(
                     onPressed: () => _showDateTimePicker(context, viewModel),
-                    child: const Text('选择时间'),
+                    child: Text(l10n.selectTime),
                   ),
                 ],
               );
@@ -44,10 +46,10 @@ class DateTimeSelectorWidget extends StatelessWidget {
           Consumer<DaLiuRenViewModel>(
             builder: (context, viewModel, child) {
               return TextField(
-                decoration: const InputDecoration(
-                  labelText: '问题（可选）',
-                  hintText: '请输入您想要占卜的问题',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l10n.questionOptional,
+                  hintText: l10n.questionHint,
+                  border: const OutlineInputBorder(),
                 ),
                 onChanged: (value) {
                   viewModel.updateQuestion(value.isEmpty ? null : value);
