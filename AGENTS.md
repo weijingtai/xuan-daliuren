@@ -20,6 +20,11 @@
 - `lib/data/repositories/da_liu_ren_repository_impl.dart`: Hardcoded asset paths.
 - `assets/da_liu_ren/`: Legacy data files.
 
+
+
+## 铁律：主分支代码操作
+当需要进行操作的时候，只有人类下达命令让他们操作的时候，才可以进行操作。
+
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
