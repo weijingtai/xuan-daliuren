@@ -5,6 +5,7 @@ import 'package:daliuren/domain/interfaces/school_entry.dart';
 import 'package:daliuren/domain/interfaces/school_registry.dart';
 import 'package:daliuren/presentation/widgets/school_selector_widget.dart';
 import 'package:daliuren/presentation/widgets/school_entry_display_widget.dart';
+import 'package:daliuren/l10n/generated/app_localizations.dart';
 
 /// 流派演示页面
 /// 展示如何使用多流派功能
@@ -79,7 +80,7 @@ class _SchoolDemoPageState extends State<SchoolDemoPage> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _entries.isEmpty
-                    ? const Center(child: Text('暂无数据'))
+                    ? Center(child: Text(AppLocalizations.of(context)!.noData))
                     : _buildEntryList(),
           ),
         ],
