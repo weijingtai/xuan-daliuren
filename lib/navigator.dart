@@ -67,9 +67,9 @@ class NavigatorGenerator {
   }
 
   static Route _errorPage(String msg) {
-    return MaterialPageRoute(builder: (_) {
+    return MaterialPageRoute(builder: (ctx) {
         return Scaffold(
-          appBar: AppBar(title: Text(AppLocalizations.of(context)!.daliurenUnknownPage)),
+          appBar: AppBar(title: Text(AppLocalizations.of(ctx)!.daliurenUnknownPage)),
           body: Center(child: Text(msg)));
     });
   }
@@ -81,7 +81,7 @@ class NavigatorGenerator {
             settings:
                 settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
             // pageBuilder: (_, __, ___) => CreateOrderPage(settings.arguments == null ?null:settings.arguments as CreateOrderPageArgs),
-            pageBuilder: (_, __, ___) => MyHomePage(title: AppLocalizations.of(__)!.taiyiShenshu),
+            pageBuilder: (ctx, __, ___) => MyHomePage(title: AppLocalizations.of(ctx)!.taiyiShenshu),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0);

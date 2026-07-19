@@ -46,14 +46,14 @@ class ThreeChuanCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8 * scaleFactor),
-            _buildContent(textColor),
+            _buildContent(context, textColor),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildContent(Color textColor) {
+  Widget _buildContent(BuildContext context, Color textColor) {
     double diZhiFontSize = gongSize.width * .24;
     final l10n = AppLocalizations.of(context)!;
     TextStyle otherStyle = GoogleFonts.maShanZheng(

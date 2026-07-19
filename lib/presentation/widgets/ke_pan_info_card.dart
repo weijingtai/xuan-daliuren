@@ -71,12 +71,12 @@ class KePanInfoCard extends StatelessWidget {
             SizedBox(height: 10 * scaleFactor),
             _buildDivider(),
             SizedBox(height: 14 * scaleFactor),
-            _buildGodsGrid(),
+            _buildGodsGrid(context),
             if (keTiNames.isNotEmpty) ...[
               SizedBox(height: 14 * scaleFactor),
               _buildDivider(),
               SizedBox(height: 12 * scaleFactor),
-              _buildKeGeRow(),
+              _buildKeGeRow(context),
             ],
           ],
         ),
@@ -251,10 +251,10 @@ class KePanInfoCard extends StatelessWidget {
     );
   }
 
-  Widget _buildGodsGrid() {
+  Widget _buildGodsGrid(BuildContext context) {
     final gongMapper = kePan.gongMapper;
-    final dynastyStr = _dynasty();
     final l10n = AppLocalizations.of(context)!;
+    final dynastyStr = _dynasty(l10n);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,7 +390,7 @@ class KePanInfoCard extends StatelessWidget {
     );
   }
 
-  Widget _buildKeGeRow() {
+  Widget _buildKeGeRow(BuildContext context) {
  final jieItem1 = kePan.monthGeneral.jieSegment.item1.name;
  final jieItem2 = kePan.monthGeneral.jieSegment.item2.name;
  final l10n = AppLocalizations.of(context)!;
@@ -485,7 +485,7 @@ class KePanInfoCard extends StatelessWidget {
     );
   }
 
-  String _dynasty() {
+  String _dynasty(AppLocalizations l10n) {
     final timeDiZhi = kePan.timeJiaZi.diZhi;
     final isDay = const [
       DiZhi.MAO,

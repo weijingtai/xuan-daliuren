@@ -761,6 +761,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buildManualInput() {
+    final l10n = AppLocalizations.of(context)!;
     return XuanCard(
       child: Wrap(
           spacing: DaliurenSpacing.md,
