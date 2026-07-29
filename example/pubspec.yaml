@@ -163,4 +163,4 @@ dependency_overrides:
       url: http://192.168.0.165:3000/xuan/xuan-domain.git
   xuan_time_location:
     git:
-      url: http://192.168.0.165:3000/xuan/time-location.git
+      url: http://192.168.0.165:3000/xuan/xuan-time-location.git
