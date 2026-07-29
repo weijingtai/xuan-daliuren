@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:enumeration/enums.dart' show EnumDatetimeType;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:metaphysics_core/models/eight_chars.dart';
@@ -13,11 +16,11 @@ import 'package:daliuren/domain/services/calculators/gui_ren_calculator.dart';
 import 'package:daliuren/domain/services/calculators/four_class_calculator.dart';
 import 'package:daliuren/domain/services/calculators/three_chuan_calculator.dart';
 import 'package:daliuren/domain/services/da_liu_ren_calculation_service.dart';
+import 'package:daliuren/domain/services/shen_sha_calculation_service.dart';
 import 'package:daliuren/domain/services/shen_sha_calculation_service_impl.dart';
 import 'package:daliuren/data/services/shen_sha_data_service_impl.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 
-/// Fake shen sha data port — implements (not extends) the interface class.
 class _FakeShenShaData implements DaLiuRenShenShaDataRepository {
   @override
   Future<List<dynamic>> loadGanShenShaRaw() async => [
@@ -112,29 +115,42 @@ void main() {
         ),
         nominalTime: _fixtureUtc,
         eightChars: EightChars(
-          year: '丙午', month: '乙未', day: '戊戌', time: '壬子',
+          year: JiaZi.getFromGanZhiValue('丙午')!,
+          month: JiaZi.getFromGanZhiValue('乙未')!,
+          day: JiaZi.getFromGanZhiValue('戊戌')!,
+          time: JiaZi.getFromGanZhiValue('壬子')!,
         ),
         lunar: const LunarDate(month: 7, day: 3, isLeapMonth: false),
         jieQi: JieQiInfo(
-          current: '大暑',
-          next: '立秋',
-          currentSolarTermIndex: 12,
-          daysToNextTerm: 3,
+          jieQi: TwentyFourJieQi.LI_QIU,
+          startAt: DateTime(2024, 8, 7, 8, 0),
+          endAt: DateTime(2024, 8, 22, 22, 0),
         ),
       );
 
   group('DaliurenChartCalculator', () {
     test('daliuren_calculator_matches_legacy_output', () {
-      const params = DaliurenChartParams(uuid: 'test-uuid-001', question: '测试占卜');
+      final params = DaliurenChartParams(
+        uuid: 'test-uuid-001',
+        question: '测试占卜',
+        createdAt: DateTime(2024, 1, 1),
+      );
       final contract = calculator.calculate(_moment(), params);
+
+      // 4 concrete business field assertions
       expect(contract.uuid, 'test-uuid-001');
       expect(contract.question, '测试占卜');
-      expect(contract.createdAt, isNotNull);
-      expect(contract.ganzhiJson, isNotNull);
+      expect(contract.createdAt, DateTime(2024, 1, 1));
+      // gongMapper should have 12 entries (12 地支)
+      final siKe = jsonDecode(contract.siKeJson!) as Map;
+      expect(siKe['isFullClass'], isTrue);
     });
 
     test('daliuren_calculator_is_deterministic', () {
-      const params = DaliurenChartParams(uuid: 'test-uuid-002');
+      final params = DaliurenChartParams(
+        uuid: 'test-uuid-002',
+        createdAt: DateTime(2024, 1, 1),
+      );
       final m = _moment();
       expect(
         calculator.calculate(m, params).toJson(),
@@ -148,9 +164,57 @@ void main() {
     });
 
     test('daliuren_calculate_produces_shensha_without_await', () {
-      const params = DaliurenChartParams(uuid: 'test-uuid-003');
+      final params = DaliurenChartParams(
+        uuid: 'test-uuid-003',
+        createdAt: DateTime(2024, 1, 1),
+      );
       final contract = calculator.calculate(_moment(), params);
-      expect(contract.paramsJson, isNotNull);
+
+      // Verify shensha chain is complete: sanChuanJson/siKeJson populated
+      expect(contract.sanChuanJson, isNotNull,
+          reason: '三传应非空');
+      expect(contract.sanChuanJson!.isNotEmpty, true,
+          reason: '三传数据应完整');
+
+      final sanChuan = jsonDecode(contract.sanChuanJson!) as Map;
+      expect(sanChuan.containsKey('nineZongMen'), isTrue,
+          reason: '三传应有九宗门');
+      expect(sanChuan.containsKey('first'), isTrue,
+          reason: '三传应有初传');
+      expect(sanChuan.containsKey('second'), isTrue,
+          reason: '三传应有中传');
+      expect(sanChuan.containsKey('third'), isTrue,
+          reason: '三传应有末传');
+
+      // siKeJson should be populated with class data
+      expect(contract.siKeJson, isNotNull);
+      final siKe = jsonDecode(contract.siKeJson!) as Map;
+      expect(siKe['isFullClass'], isTrue,
+          reason: '四课齐全');
+      final classes = siKe['classes'] as List;
+      expect(classes.length, greaterThanOrEqualTo(1),
+          reason: '至少有一课');
+    });
+
+    test('daliuren_calculate_contains_valid_date', () {
+      final params = DaliurenChartParams(
+        uuid: 'test-uuid-004',
+        createdAt: DateTime(2024, 1, 1),
+      );
+      final contract = calculator.calculate(_moment(), params);
+
+      // Verify lunar date and ganzhi are properly set
+      expect(contract.lunarDateJson, isNotNull);
+      final lunar = jsonDecode(contract.lunarDateJson!) as Map;
+      expect(lunar['month'], 7);
+      expect(lunar['day'], 3);
+
+      expect(contract.ganzhiJson, isNotNull);
+      final ganzhi = jsonDecode(contract.ganzhiJson!) as Map;
+      expect(ganzhi['year'], '丙午');
+      expect(ganzhi['month'], '乙未');
+      expect(ganzhi['day'], '戊戌');
+      expect(ganzhi['time'], '壬子');
     });
   });
 }

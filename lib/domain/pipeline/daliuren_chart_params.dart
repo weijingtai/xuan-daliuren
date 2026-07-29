@@ -3,18 +3,18 @@ import 'package:repository_interface_divination_pipeline/repository_interface_di
 final class DaliurenChartParams implements ModuleParams {
   final String uuid;
   final String? question;
-  final DateTime? createdAt;
+  final DateTime createdAt;
 
   const DaliurenChartParams({
     required this.uuid,
     this.question,
-    this.createdAt,
+    required this.createdAt,
   });
 
   @override
   Map<String, dynamic> toJson() => {
         'uuid': uuid,
         'question': question,
-        'createdAt': createdAt?.toIso8601String(),
+        'createdAt': createdAt.toIso8601String(),
       };
 }
