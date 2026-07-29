@@ -49,6 +49,7 @@ final class DaliurenChartCalculator
       sanChuanJson: jsonEncode(_buildSanChuanJson(kePan)),
       siKeJson: jsonEncode(_buildSiKeJson(kePan)),
       twelveTianJinJson: jsonEncode(_buildTwelveTianJinJson(kePan)),
+      shenShaJson: jsonEncode(_buildShenShaJson()),
       paramsJson: jsonEncode(params.toJson()),
       createdAt: params.createdAt,
       updatedAt: params.createdAt,
@@ -105,5 +106,19 @@ final class DaliurenChartCalculator
       'isDayGuiRen': kePan.isDayGuiRen,
       'guiRenDiZhi': kePan.guiRenDiZhi.name,
     };
+  }
+
+  /// 序列化 context 预载的神煞数据（裁决三：神煞前置到 load()，calculate 同步消费）。
+  /// 神煞作为盘面的可选附加层，记录预载到的神煞名、吉凶与类型。
+  Map<String, dynamic> _buildShenShaJson() {
+    final entries = <Map<String, dynamic>>[];
+    for (final entity in context.shenShaByName.values) {
+      entries.add({
+        'name': entity.name,
+        'jiXiong': entity.jiXiong.name,
+        'type': entity.type,
+      });
+    }
+    return {'shenShaList': entries};
   }
 }

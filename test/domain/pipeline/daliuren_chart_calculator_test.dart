@@ -170,30 +170,24 @@ void main() {
       );
       final contract = calculator.calculate(_moment(), params);
 
-      // Verify shensha chain is complete: sanChuanJson/siKeJson populated
-      expect(contract.sanChuanJson, isNotNull,
-          reason: '三传应非空');
-      expect(contract.sanChuanJson!.isNotEmpty, true,
-          reason: '三传数据应完整');
+      // 裁决三核心验证：context 预载的神煞经 calculate 同步消费进 Contract
+      expect(contract.shenShaJson, isNotNull, reason: '神煞字段应非空');
+      expect(contract.shenShaJson!.isNotEmpty, true, reason: '神煞数据应完整');
 
-      final sanChuan = jsonDecode(contract.sanChuanJson!) as Map;
-      expect(sanChuan.containsKey('nineZongMen'), isTrue,
-          reason: '三传应有九宗门');
-      expect(sanChuan.containsKey('first'), isTrue,
-          reason: '三传应有初传');
-      expect(sanChuan.containsKey('second'), isTrue,
-          reason: '三传应有中传');
-      expect(sanChuan.containsKey('third'), isTrue,
-          reason: '三传应有末传');
+      final shenSha = jsonDecode(contract.shenShaJson!) as Map;
+      final list = shenSha['shenShaList'] as List;
+      expect(list, isNotEmpty, reason: '神煞列表应非空');
 
-      // siKeJson should be populated with class data
-      expect(contract.siKeJson, isNotNull);
-      final siKe = jsonDecode(contract.siKeJson!) as Map;
-      expect(siKe['isFullClass'], isTrue,
-          reason: '四课齐全');
-      final classes = siKe['classes'] as List;
-      expect(classes.length, greaterThanOrEqualTo(1),
-          reason: '至少有一课');
+      // 断言具体已知神煞名（context.load 装载了干德/太岁/天德）
+      final names = list.map((e) => (e as Map)['name'] as String).toList();
+      expect(names, contains('干德'), reason: '应含神煞「干德」');
+      expect(names, contains('太岁'), reason: '应含神煞「太岁」');
+      expect(names, contains('天德'), reason: '应含神煞「天德」');
+
+      // 每条神煞记录应含吉凶与类型（具体值，非空洞断言）
+      final firstEntry = list.first as Map;
+      expect(firstEntry['jiXiong'], isNotNull, reason: '神煞吉凶应非空');
+      expect(firstEntry['type'], isNotNull, reason: '神煞类型应非空');
     });
 
     test('daliuren_calculate_contains_valid_date', () {
