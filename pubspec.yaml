@@ -39,6 +39,9 @@ dependencies:
   metaphysics_core:
     git:
       url: http://192.168.0.165:3000/xuan/metaphysics-core.git
+  repository_interface_divination_pipeline:
+    git:
+      url: http://192.168.0.165:3000/xuan/repository-interface-divination-pipeline.git
   flutter:
     sdk: flutter
   logger: ^2.6.2
@@ -169,3 +172,5 @@ dependency_overrides:
   calendar:
     git:
       url: http://192.168.0.165:3000/xuan/calendar.git
+
+  uuid: ^4.6.0
