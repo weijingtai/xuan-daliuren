@@ -83,11 +83,12 @@ final _fixtureUtc = DateTime(2024, 8, 6, 0, 22).toUtc();
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  late ShenShaDataService dataService;
   late DaliurenCalculationContext preloadedContext;
   late DaliurenChartCalculator calculator;
 
   setUpAll(() async {
-    final dataService = ShenShaDataServiceImpl(
+    dataService = ShenShaDataServiceImpl(
       shenShaData: _FakeShenShaData(),
     );
     final shenShaService = ShenShaCalculationServiceImpl(
@@ -102,6 +103,7 @@ void main() {
     );
     preloadedContext = await DaliurenCalculationContext.load(
       shenShaService: shenShaService,
+      shenShaDataService: dataService,
       calculationService: calcService,
     );
     calculator = DaliurenChartCalculator(context: preloadedContext);
@@ -161,6 +163,7 @@ void main() {
     test('daliuren_context_preloads_shensha', () {
       expect(preloadedContext.knownShenShaNames, contains('干德'));
       expect(preloadedContext.knownShenShaNames, contains('太岁'));
+      expect(preloadedContext.knownShenShaNames, contains('天德'));
     });
 
     test('daliuren_calculate_produces_shensha_without_await', () {
@@ -178,7 +181,7 @@ void main() {
       final list = shenSha['shenShaList'] as List;
       expect(list, isNotEmpty, reason: '神煞列表应非空');
 
-      // 断言具体已知神煞名（context.load 装载了干德/太岁/天德）
+      // 断言具体已知神煞名（context.load 装载了权威全集）
       final names = list.map((e) => (e as Map)['name'] as String).toList();
       expect(names, contains('干德'), reason: '应含神煞「干德」');
       expect(names, contains('太岁'), reason: '应含神煞「太岁」');
@@ -209,6 +212,35 @@ void main() {
       expect(ganzhi['month'], '乙未');
       expect(ganzhi['day'], '戊戌');
       expect(ganzhi['time'], '壬子');
+    });
+
+    test('daliuren_context_loads_full_shensha_set', () async {
+      // 重新 load 一次，断言装载数与权威数据源一致（禁止硬编码数字）
+      final freshContext = await DaliurenCalculationContext.load(
+        shenShaService: ShenShaCalculationServiceImpl(dataService: dataService),
+        shenShaDataService: dataService,
+        calculationService: preloadedContext.calculationService,
+      );
+      final totalCount = (await dataService.loadAllShenSha()).length;
+      expect(freshContext.shenShaByName.length, totalCount,
+          reason: 'shenShaByName 条目数应等于权威数据源神煞总数');
+      expect(freshContext.knownShenShaNames.length, totalCount,
+          reason: 'knownShenShaNames 条目数应等于权威数据源神煞总数');
+    });
+
+    test('daliuren_chart_contains_full_shensha', () async {
+      // 用权威数据源确定神煞总数
+      final totalCount = (await dataService.loadAllShenSha()).length;
+      final params = DaliurenChartParams(
+        uuid: 'test-uuid-005',
+        createdAt: DateTime(2024, 1, 1),
+      );
+      final contract = calculator.calculate(_moment(), params);
+
+      final shenSha = jsonDecode(contract.shenShaJson!) as Map;
+      final list = shenSha['shenShaList'] as List;
+      expect(list.length, totalCount,
+          reason: 'Contract 中神煞条目数与 context 装载数一致');
     });
   });
 }

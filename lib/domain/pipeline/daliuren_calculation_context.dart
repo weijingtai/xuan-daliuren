@@ -13,21 +13,21 @@ class DaliurenCalculationContext {
     required this.shenShaByName,
   });
 
+  /// 从权威数据源 [shenShaDataService] 加载全部神煞实体，
+  /// 取代之前的硬编码取样（干德、太岁、天德）。
   static Future<DaliurenCalculationContext> load({
     required ShenShaCalculationService shenShaService,
+    required ShenShaDataService shenShaDataService,
     required DaLiuRenCalculationService calculationService,
   }) async {
+    final allEntities = await shenShaDataService.loadAllShenSha();
+
     final allShenSha = <String, ShenShaEntity>{};
     final names = <String>[];
 
-    // Try to find known shen sha entities by name
-    final knownNames = ['干德', '太岁', '天德'];
-    for (final name in knownNames) {
-      final entity = await shenShaService.findShenShaByName(name);
-      if (entity != null) {
-        allShenSha[name] = entity;
-        names.add(name);
-      }
+    for (final entity in allEntities) {
+      allShenSha[entity.name] = entity;
+      names.add(entity.name);
     }
 
     return DaliurenCalculationContext(
