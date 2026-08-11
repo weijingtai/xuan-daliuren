@@ -37,29 +37,35 @@ class LunarCalculator extends BaseCalculator {
     try {
       final solarDay =
           SolarDay.fromYmd(dateTime.year, dateTime.month, dateTime.day);
-      final term = solarDay.getTerm();
-      final termJd = term.getJulianDay();
-      final termTime = termJd.getSolarTime();
-      final termAt = DateTime(
-        termTime.getYear(),
-        termTime.getMonth(),
-        termTime.getDay(),
-        termTime.getHour(),
-        termTime.getMinute(),
-        termTime.getSecond(),
-      );
+      var term = solarDay.getTerm();
+      final termAt = _toDateTime(term.getJulianDay().getSolarTime());
 
-      // Get the previous qi (中气, even-indexed terms)
-      String prevQiName;
+      // 时间校准：若最近节气时刻晚于 dateTime（当天节气未到），退回上一个节气。
       if (termAt.isAfter(dateTime)) {
-        prevQiName = term.next(-1).getName();
-      } else {
-        prevQiName = term.getName();
+        term = term.next(-1);
       }
-      return MonthGeneral.fromByStartAtJie(prevQiName);
+      // 月将起点是中气（tyme index 偶数：冬至/大寒/雨水/春分/谷雨/小满/
+      // 夏至/大暑/处暑/秋分/霜降/小雪），而 getTerm() 可能返回节（奇数 index）。
+      // 循环退回最近的中气（isQi），再匹配 MonthGeneral.jieSegment.item1。
+      while (!term.isQi()) {
+        term = term.next(-1);
+      }
+      return MonthGeneral.fromByStartAtJie(term.getName());
     } catch (e) {
       throw Exception('Failed to calculate MonthGeneral: $e');
     }
+  }
+
+  /// SolarTime -> DateTime（复用原 getSolarTime 取整逻辑）。
+  DateTime _toDateTime(dynamic solarTime) {
+    return DateTime(
+      solarTime.getYear(),
+      solarTime.getMonth(),
+      solarTime.getDay(),
+      solarTime.getHour(),
+      solarTime.getMinute(),
+      solarTime.getSecond(),
+    );
   }
 
   /// 判断阴阳遁
