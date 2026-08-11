@@ -42,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static const double NORMAL_PAN_SIZE = 400.0;
-  static const String ICONS_ASSETS_PATH = "icons";
+  static const String ICONS_ASSETS_PATH = "packages/persistence_assets/lib/qimendunjia/assets/icons";
 
   GlobalKey renYearGanZhiShakeKey = GlobalKey<ShakeWidgetState>();
   GlobalKey renMonthGanZhiShakeKey = GlobalKey<ShakeWidgetState>();

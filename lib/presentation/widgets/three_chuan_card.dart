@@ -17,7 +17,7 @@ class ThreeChuanCard extends StatelessWidget {
     required this.threeChuan,
     required this.gongSize,
     required this.scaleFactor,
-    this.iconsAssetPath = "icons",
+    this.iconsAssetPath = "packages/persistence_assets/lib/qimendunjia/assets/icons",
   });
 
   @override

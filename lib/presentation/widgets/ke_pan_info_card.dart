@@ -22,7 +22,7 @@ class KePanInfoCard extends StatelessWidget {
     this.juNumber,
     this.keTiNames = const [],
     this.scaleFactor = 1.0,
-    this.iconsAssetPath = "icons",
+    this.iconsAssetPath = "packages/persistence_assets/lib/qimendunjia/assets/icons",
   });
 
   // Mutable fields initialized in build() before sub-methods run.
