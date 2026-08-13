@@ -9,6 +9,7 @@ import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:daliuren/domain/pipeline/daliuren_pipeline_executor.dart';
 import 'package:daliuren/domain/pipeline/daliuren_chart_params.dart';
+import 'package:daliuren/domain/pipeline/pipeline_evidence.dart';
 import 'package:daliuren/domain/services/keti_data_service.dart' show KetiMatchResult;
 import 'package:daliuren/domain/usecases/get_keti_data_usecase.dart';
 import 'package:daliuren/domain/usecases/match_yuding_keti_usecase.dart';
@@ -40,6 +41,15 @@ class DaLiuRenViewModel extends BaseViewModel {
 
   /// 最后一次统一入参排盘产出的 Record。
   DaliurenDivinationRecordContract? lastPipelineRecord;
+
+  /// 本次排盘执行证据（供壳侧 E2E 测试断言 executor 真实执行）。
+  /// 只读：不参与生产逻辑判断、不影响渲染。
+  PipelineEvidence? _lastPipelineEvidence;
+  int _pipelineCallCount = 0;
+
+  /// 最后一次走统一入参排盘的执行证据；未走 pipeline 路径时为 null。
+  @visibleForTesting
+  PipelineEvidence? get lastPipelineEvidence => _lastPipelineEvidence;
 
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
@@ -385,14 +395,31 @@ class DaLiuRenViewModel extends BaseViewModel {
     final executor = _pipelineExecutor;
     if (executor != null && _currentDivination != null) {
       try {
+        _pipelineCallCount++;
         final record = await _runPipeline(executor);
         lastPipelineRecord = record;
+        _lastPipelineEvidence = PipelineEvidence(
+          callCount: _pipelineCallCount,
+          requestId: record.uuid,
+          resultUuid: record.uuid,
+          module: 'daliuren',
+          keyResult: _keyResultOf(record),
+          error: null,
+        );
         final repo = _recordRepository;
         if (repo != null) {
           await repo.saveRecord(record);
         }
         return;
       } catch (error, stack) {
+        _lastPipelineEvidence = PipelineEvidence(
+          callCount: _pipelineCallCount,
+          requestId: null,
+          resultUuid: null,
+          module: 'daliuren',
+          keyResult: null,
+          error: error,
+        );
         debugPrint('大六壬 Pipeline 排盘失败，已回退老路径: $error\n$stack');
       }
     }
@@ -423,6 +450,17 @@ class DaLiuRenViewModel extends BaseViewModel {
     );
     lastPipelineRequest = request;
     return executor.execute(request);
+  }
+
+  /// 提取页面可观察的关键结果（月将 + 三传），作为执行证据的 keyResult。
+  ///
+  /// 月将与三传由本次排盘决定（executor/calculator 计算产出），
+  /// 且直接显示在大六壬盘面页面上，因此能代表「这次执行真的发生了」。
+  Object? _keyResultOf(DaliurenDivinationRecordContract record) {
+    return {
+      'yueJiang': record.yueJiangJson,
+      'sanChuan': record.sanChuanJson,
+    };
   }
 
   Future<void> _matchKeTi() async {
