@@ -1,9 +1,14 @@
 import 'dart:math';
 
+import 'package:enumeration/enums.dart' show EnumDatetimeType;
+import 'package:flutter/foundation.dart';
 import 'package:metaphysics_core/enums.dart';
+import 'package:repository_interface_divination_pipeline/repository_interface_divination_pipeline.dart';
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
+import 'package:daliuren/domain/pipeline/daliuren_pipeline_executor.dart';
+import 'package:daliuren/domain/pipeline/daliuren_chart_params.dart';
 import 'package:daliuren/domain/services/keti_data_service.dart' show KetiMatchResult;
 import 'package:daliuren/domain/usecases/get_keti_data_usecase.dart';
 import 'package:daliuren/domain/usecases/match_yuding_keti_usecase.dart';
@@ -26,6 +31,16 @@ class DaLiuRenViewModel extends BaseViewModel {
   final LoadYuDingDataUseCase? _loadYuDingDataUseCase;
   final DaliurenRecordRepository? _recordRepository;
 
+  /// Pipeline 统一入参排盘执行器（可选注入）。注入后走新路径，
+  /// 失败回退老路径，不打断 UI。
+  final DaliurenPipelineExecutor? _pipelineExecutor;
+
+  /// 最后一次走统一入参排盘的 [ChartRequest]，供测试断言 executor 被真实调用。
+  ChartRequest<DaliurenChartParams>? lastPipelineRequest;
+
+  /// 最后一次统一入参排盘产出的 Record。
+  DaliurenDivinationRecordContract? lastPipelineRecord;
+
   DaLiuRenViewModel({
     required CalculateDivinationUseCase calculateDivinationUseCase,
     required LoadDivinationDataUseCase loadDivinationDataUseCase,
@@ -34,7 +49,9 @@ class DaLiuRenViewModel extends BaseViewModel {
     MatchYuDingKetiUseCase? matchYuDingKetiUseCase,
     LoadYuDingDataUseCase? loadYuDingDataUseCase,
     DaliurenRecordRepository? recordRepository,
+    DaliurenPipelineExecutor? pipelineExecutor,
   })  : _recordRepository = recordRepository,
+        _pipelineExecutor = pipelineExecutor,
         _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
         _calculateShenShaUseCase = calculateShenShaUseCase,
@@ -153,7 +170,7 @@ class DaLiuRenViewModel extends BaseViewModel {
       // Run async enrichment THEN do a single final notifyListeners
       await _matchKeTi();
       await _calculateShenSha();
-      _saveCurrentDivination();
+      await _saveCurrentDivinationWithPipeline();
       setSuccess(); // This calls notifyListeners() with all data already populated
     } catch (e) {
       logger.e('🔴 [ViewModel] Calculation error: $e');
@@ -342,7 +359,7 @@ class DaLiuRenViewModel extends BaseViewModel {
       _updateDivinationProperties();
       await _matchKeTi();
       await _calculateShenSha();
-      _saveCurrentDivination();
+      await _saveCurrentDivinationWithPipeline();
       setSuccess();
     } catch (e) {
       setError(e is DivinationFailure ? e.message : e.toString());
@@ -358,6 +375,54 @@ class DaLiuRenViewModel extends BaseViewModel {
       createdAt: now,
     );
     _recordRepository!.saveRecord(contract);
+  }
+
+  /// 落库当前盘面。
+  ///
+  /// 注入 [DaliurenPipelineExecutor] 时走 Pipeline 统一入参排盘并落库完整 Record，
+  /// 失败只记日志回退老路径，不打断 UI；未注入时走老路径。
+  Future<void> _saveCurrentDivinationWithPipeline() async {
+    final executor = _pipelineExecutor;
+    if (executor != null && _currentDivination != null) {
+      try {
+        final record = await _runPipeline(executor);
+        lastPipelineRecord = record;
+        final repo = _recordRepository;
+        if (repo != null) {
+          await repo.saveRecord(record);
+        }
+        return;
+      } catch (error, stack) {
+        debugPrint('大六壬 Pipeline 排盘失败，已回退老路径: $error\n$stack');
+      }
+    }
+    _saveCurrentDivination();
+  }
+
+  /// 构建统一入参并调用 Pipeline executor 排盘，返回落库用的 Record。
+  Future<DaliurenDivinationRecordContract> _runPipeline(
+    DaliurenPipelineExecutor executor,
+  ) async {
+    final dateTime = _selectedDateTime;
+    final params = DaliurenChartParams(
+      uuid: 'daliuren-${dateTime.millisecondsSinceEpoch}',
+      question: _question,
+      createdAt: DateTime.now(),
+    );
+    final request = ChartRequest<DaliurenChartParams>(
+      moment: DivinationMoment(
+        instantUtc: dateTime.toUtc(),
+        place: const GeoPoint(
+          latitude: 0.0,
+          longitude: 0.0,
+          timeZoneId: 'Asia/Shanghai',
+        ),
+        reckoning: EnumDatetimeType.standard,
+      ),
+      params: params,
+    );
+    lastPipelineRequest = request;
+    return executor.execute(request);
   }
 
   Future<void> _matchKeTi() async {

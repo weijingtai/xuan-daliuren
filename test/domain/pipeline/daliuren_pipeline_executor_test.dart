@@ -119,6 +119,7 @@ void main() {
       shenShaService: shenShaService,
       shenShaDataService: dataService,
       calculationService: calcService,
+      momentResolver: _FixedMomentResolver(),
     );
   });
 
@@ -143,6 +144,12 @@ void main() {
         ),
       );
 
+  ChartRequest<DaliurenChartParams> _request(DaliurenChartParams params) =>
+      ChartRequest<DaliurenChartParams>(
+        moment: _moment().source,
+        params: params,
+      );
+
   group('DaliurenPipelineExecutor', () {
     test('daliuren_executor_produces_contract', () async {
       final params = DaliurenChartParams(
@@ -150,16 +157,16 @@ void main() {
         question: '测试占卜',
         createdAt: DateTime(2024, 1, 1),
       );
-      final result = await executor.execute(moment: _moment(), params: params);
+      final contract = await executor.execute(_request(params));
 
       // At least 4 concrete business field values
-      expect(result.contract.uuid, 'test-uuid-exec-001');
-      expect(result.contract.question, '测试占卜');
-      expect(result.contract.createdAt, DateTime(2024, 1, 1));
-      expect(result.contract.schoolId, 'default');
+      expect(contract.uuid, 'test-uuid-exec-001');
+      expect(contract.question, '测试占卜');
+      expect(contract.createdAt, DateTime(2024, 1, 1));
+      expect(contract.schoolId, 'default');
 
       // shenShaJson should be non-empty (loaded by context)
-      final shenSha = jsonDecode(result.contract.shenShaJson!) as Map;
+      final shenSha = jsonDecode(contract.shenShaJson!) as Map;
       final list = shenSha['shenShaList'] as List;
       expect(list, isNotEmpty);
     });
@@ -169,13 +176,14 @@ void main() {
         uuid: 'test-uuid-exec-002',
         createdAt: DateTime(2024, 1, 1),
       );
-      final moment = _moment();
+      final request = _request(params);
+      final resolved = _moment();
 
-      final executorResult = await executor.execute(moment: moment, params: params);
-      final calculatorResult = calculator.calculate(moment, params);
+      final executorResult = await executor.execute(request);
+      final calculatorResult = calculator.calculate(resolved, params);
 
       expect(
-        executorResult.contract.toJson(),
+        executorResult.toJson(),
         calculatorResult.toJson(),
       );
     });
@@ -185,15 +193,50 @@ void main() {
         uuid: 'test-uuid-exec-003',
         createdAt: DateTime(2024, 1, 1),
       );
-      final moment = _moment();
+      final request = _request(params);
 
-      final first = await executor.execute(moment: moment, params: params);
-      final second = await executor.execute(moment: moment, params: params);
+      final first = await executor.execute(request);
+      final second = await executor.execute(request);
 
       expect(
-        first.contract.toJson(),
-        second.contract.toJson(),
+        first.toJson(),
+        second.toJson(),
       );
     });
   });
+}
+
+/// 固定 ResolvedMoment，隔离真实历法计算，专注验证接线与入参透传。
+class _FixedMomentResolver implements MomentResolver {
+  const _FixedMomentResolver();
+
+  @override
+  ResolvedMoment resolve(DivinationMoment moment) => _moment();
+
+  @override
+  List<ResolvedMoment> resolveCandidates(
+    DivinationMoment moment,
+    CandidateSpec spec,
+  ) => [];
+
+  static ResolvedMoment _moment() => ResolvedMoment(
+        source: DivinationMoment(
+          instantUtc: _fixtureUtc,
+          place: const GeoPoint(latitude: 39.9, longitude: 116.4),
+          reckoning: EnumDatetimeType.standard,
+        ),
+        nominalTime: _fixtureUtc,
+        eightChars: EightChars(
+          year: JiaZi.getFromGanZhiValue('丙午')!,
+          month: JiaZi.getFromGanZhiValue('乙未')!,
+          day: JiaZi.getFromGanZhiValue('戊戌')!,
+          time: JiaZi.getFromGanZhiValue('壬子')!,
+        ),
+        lunar: const LunarDate(month: 7, day: 3, isLeapMonth: false),
+        jieQi: JieQiInfo(
+          jieQi: TwentyFourJieQi.LI_QIU,
+          startAt: DateTime(2024, 8, 7, 8, 0),
+          endAt: DateTime(2024, 8, 22, 22, 0),
+        ),
+      );
 }

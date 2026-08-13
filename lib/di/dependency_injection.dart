@@ -17,6 +17,7 @@ import 'package:daliuren/domain/usecases/load_yuding_data_usecase.dart';
 import 'package:daliuren/domain/usecases/get_keti_data_usecase.dart';
 import 'package:daliuren/domain/usecases/match_yuding_keti_usecase.dart';
 import 'package:daliuren/presentation/viewmodels/da_liu_ren_viewmodel.dart';
+import 'package:daliuren/domain/pipeline/daliuren_pipeline_executor.dart';
 import 'package:daliuren/di/daliuren_storage_dependencies.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:provider/provider.dart';
@@ -98,6 +99,11 @@ class DependencyInjection {
             matchYuDingKetiUseCase: MatchYuDingKetiUseCase(context.read<YuDingKetiMatchService>()),
             loadYuDingDataUseCase: LoadYuDingDataUseCase(repository),
             recordRepository: context.read<DaliurenRecordRepository>(),
+            pipelineExecutor: DaliurenPipelineExecutor(
+              shenShaService: context.read<ShenShaCalculationServiceImpl>(),
+              shenShaDataService: context.read<ShenShaDataServiceImpl>(),
+              calculationService: context.read<DaLiuRenCalculationService>(),
+            ),
           );
         },
       ),
