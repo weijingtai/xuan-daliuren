@@ -99,6 +99,7 @@ class DependencyInjection {
             matchYuDingKetiUseCase: MatchYuDingKetiUseCase(context.read<YuDingKetiMatchService>()),
             loadYuDingDataUseCase: LoadYuDingDataUseCase(repository),
             recordRepository: context.read<DaliurenRecordRepository>(),
+            timezoneProvider: deps.timezoneProvider,
             pipelineExecutor: DaliurenPipelineExecutor(
               shenShaService: context.read<ShenShaCalculationServiceImpl>(),
               shenShaDataService: context.read<ShenShaDataServiceImpl>(),

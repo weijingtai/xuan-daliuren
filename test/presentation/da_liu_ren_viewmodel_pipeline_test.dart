@@ -151,6 +151,7 @@ void main() {
 
   DaLiuRenViewModel _buildViewModel({
     DaliurenPipelineExecutor? pipelineExecutor,
+    String Function()? timezoneProvider,
   }) {
     final fakeRepo = _FakeDaLiuRenRepository();
     return DaLiuRenViewModel(
@@ -158,6 +159,7 @@ void main() {
       loadDivinationDataUseCase: LoadDivinationDataUseCase(fakeRepo),
       recordRepository: recordRepo,
       pipelineExecutor: pipelineExecutor,
+      timezoneProvider: timezoneProvider,
     );
   }
 
@@ -298,6 +300,27 @@ void main() {
         () => DaliurenChartParams.fromJson(const {'createdAt': 'not-a-date'}),
         throwsFormatException,
       );
+    });
+
+    test('D: 时区来自注入的宿主上下文，不落回 chinaTimeZoneId', () async {
+      final executor = DaliurenPipelineExecutor(
+        shenShaService: _shenShaService(),
+        shenShaDataService: _shenShaDataService(),
+        calculationService: _calcService(),
+        momentResolver: const _FixedMomentResolver(),
+      );
+      viewModel = _buildViewModel(
+        pipelineExecutor: executor,
+        timezoneProvider: () => 'America/New_York',
+      );
+      await viewModel.initializeData();
+      viewModel.updateQuestion('时区注入测试');
+      await viewModel.recalculate();
+
+      expect(viewModel.isError, isFalse);
+      final request = viewModel.lastPipelineRequest;
+      expect(request, isNotNull, reason: 'executor 必须被真实调用');
+      expect(request!.moment.place.timeZoneId, equals('America/New_York'));
     });
   });
 }
