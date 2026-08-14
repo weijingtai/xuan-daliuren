@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:metaphysics_core/enums.dart';
 import 'package:repository_interface_divination_pipeline/repository_interface_divination_pipeline.dart';
 import 'package:xuan_logger/xuan_logger.dart';
+import 'package:xuan_time_location/xuan_time_location.dart';
 import 'package:daliuren/domain/entities/daliuren_lesson.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:daliuren/domain/pipeline/daliuren_pipeline_executor.dart';
@@ -36,6 +37,12 @@ class DaLiuRenViewModel extends BaseViewModel {
   /// 失败回退老路径，不打断 UI。
   final DaliurenPipelineExecutor? _pipelineExecutor;
 
+  /// 宿主解析的当前时区（用户偏好 > 地点 > 中国默认）。null 时回退 [chinaTimeZoneId]。
+  final String Function()? _timezoneProvider;
+
+  /// 每次排盘现取，保证用户中途改偏好即时生效。
+  String get _timezone => _timezoneProvider?.call() ?? chinaTimeZoneId;
+
   /// 最后一次走统一入参排盘的 [ChartRequest]，供测试断言 executor 被真实调用。
   ChartRequest<DaliurenChartParams>? lastPipelineRequest;
 
@@ -60,8 +67,10 @@ class DaLiuRenViewModel extends BaseViewModel {
     LoadYuDingDataUseCase? loadYuDingDataUseCase,
     DaliurenRecordRepository? recordRepository,
     DaliurenPipelineExecutor? pipelineExecutor,
+    String Function()? timezoneProvider,
   })  : _recordRepository = recordRepository,
         _pipelineExecutor = pipelineExecutor,
+        _timezoneProvider = timezoneProvider,
         _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
         _calculateShenShaUseCase = calculateShenShaUseCase,
@@ -439,10 +448,10 @@ class DaLiuRenViewModel extends BaseViewModel {
     final request = ChartRequest<DaliurenChartParams>(
       moment: DivinationMoment(
         instantUtc: dateTime.toUtc(),
-        place: const GeoPoint(
+        place: GeoPoint(
           latitude: 0.0,
           longitude: 0.0,
-          timeZoneId: 'Asia/Shanghai',
+          timeZoneId: _timezone,
         ),
         reckoning: EnumDatetimeType.standard,
       ),
