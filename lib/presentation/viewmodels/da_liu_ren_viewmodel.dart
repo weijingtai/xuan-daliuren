@@ -37,9 +37,11 @@ class DaLiuRenViewModel extends BaseViewModel {
   /// 失败回退老路径，不打断 UI。
   final DaliurenPipelineExecutor? _pipelineExecutor;
 
-  /// 宿主解析的产品时区标识（用户偏好 > 地点 > 中国默认），
-  /// 用于运行路径排盘，不写死字面量。
-  final String _timezone;
+  /// 宿主解析的当前时区（用户偏好 > 地点 > 中国默认）。null 时回退 [chinaTimeZoneId]。
+  final String Function()? _timezoneProvider;
+
+  /// 每次排盘现取，保证用户中途改偏好即时生效。
+  String get _timezone => _timezoneProvider?.call() ?? chinaTimeZoneId;
 
   /// 最后一次走统一入参排盘的 [ChartRequest]，供测试断言 executor 被真实调用。
   ChartRequest<DaliurenChartParams>? lastPipelineRequest;
@@ -68,7 +70,7 @@ class DaLiuRenViewModel extends BaseViewModel {
     String Function()? timezoneProvider,
   })  : _recordRepository = recordRepository,
         _pipelineExecutor = pipelineExecutor,
-        _timezone = timezoneProvider?.call() ?? chinaTimeZoneId,
+        _timezoneProvider = timezoneProvider,
         _calculateDivinationUseCase = calculateDivinationUseCase,
         _loadDivinationDataUseCase = loadDivinationDataUseCase,
         _calculateShenShaUseCase = calculateShenShaUseCase,
