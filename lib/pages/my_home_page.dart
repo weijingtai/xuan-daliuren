@@ -133,6 +133,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
+                    // E2E 稳定选择器：命名规约「模块.类别.名称」，
+                    // 供壳侧集成测试定位「选择时间」入口，禁止靠可见文案定位。
+                    key: const ValueKey('daliuren.input.pickDatetime'),
                     onPressed: () async {
                       final result = await showBoardDateTimePicker(
                         context: context,
@@ -156,6 +159,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(width: 24),
                   ElevatedButton(
+                    // E2E 稳定选择器：一次点击即完成「设为当前时间 → 排盘 → 落库」，
+                    // 是壳侧 Pipeline→Record 端到端测试的主动作触发点。
+                    key: const ValueKey('daliuren.action.now'),
                     onPressed: () => viewModel.updateDateTime(DateTime.now()),
                     style: ElevatedButton.styleFrom(
                       // backgroundColor: Colors.green, // Background coloronPrimary: Colors.white, // Text color
@@ -171,6 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(width: 24),
                   ElevatedButton(
+                    // E2E 稳定选择器：以当前已选时间起卦/排盘（已有盘时提示不能重复）。
+                    key: const ValueKey('daliuren.action.calculate'),
                     onPressed: () async {
                       if (viewModel.currentDivination == null) {
                         viewModel.updateDateTime(viewModel.selectedDateTime);
@@ -382,6 +390,9 @@ class _MyHomePageState extends State<MyHomePage> {
               const double normalPanSize = 400.0;
               const double smallPanSize = 280.0;
               return SizedBox(
+                  // E2E 稳定选择器：盘面根容器（竖屏分支）。
+                  // 竖屏/横屏两分支互斥构建，同一时刻树上只存在一个该 Key。
+                  key: const ValueKey('daliuren.view.pan'),
                   width: normalPanSize,
                   height: normalPanSize,
                   child: Stack(
@@ -581,6 +592,9 @@ child: pan == null
                   const double normalPanSize = 400.0;
                   const double smallPanSize = 280.0;
                   return SizedBox(
+                    // E2E 稳定选择器：盘面根容器（横屏分支）。
+                    // 与竖屏分支互斥构建，同一时刻树上只存在一个该 Key。
+                    key: const ValueKey('daliuren.view.pan'),
                     width: normalPanSize,
                     height: normalPanSize,
                     child: Stack(
