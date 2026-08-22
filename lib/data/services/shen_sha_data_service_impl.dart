@@ -1,3 +1,4 @@
+import 'package:repository_contract_kernel/repository_contract_kernel.dart';
 import 'package:daliuren/domain/services/shen_sha_calculation_service.dart';
 import 'package:daliuren/domain/entities/shen_sha_entity.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
@@ -17,6 +18,15 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   List<TianGanShenShaEntity>? _yearGanShenShaCache;
   List<TianGanShenShaEntity>? _monthGanShenShaCache;
 
+  RequestContext get _ctx => RequestContext(scopeUid: 'local-anonymous');
+
+  Future<List<dynamic>> _loadRaw(String id) async {
+    final res = await shenShaData.get(id, _ctx);
+    final val = res.orElse(null);
+    if (val is List) return val;
+    return const [];
+  }
+
   @override
   Future<List<TianGanShenShaEntity>> loadTianGanShenSha() async {
     if (_tianGanShenShaCache != null) {
@@ -24,7 +34,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final List<dynamic> jsonList = await shenShaData.loadGanShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("gan");
 
       // 6_shensha_gan.json 中混合了 干煞、日煞、支煞 类型，只加载 干煞
       _tianGanShenShaCache = jsonList
@@ -51,7 +61,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final List<dynamic> jsonList = await shenShaData.loadYearShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("year");
 
       _yearShenShaCache =
           jsonList.map((json) => YearShenShaEntity.fromJson(json)).toList();
@@ -69,7 +79,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final List<dynamic> jsonList = await shenShaData.loadMonthShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("month");
 
       _monthShenShaCache =
           jsonList.map((json) => MonthShenShaEntity.fromJson(json)).toList();
@@ -87,7 +97,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final List<dynamic> jsonList = await shenShaData.loadZhiShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("zhi");
 
       _diZhiShenShaCache =
           jsonList.map((json) => DiZhiShenShaEntity.fromJson(json)).toList();
@@ -105,7 +115,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final List<dynamic> jsonList = await shenShaData.loadJiShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("ji");
 
       _jiShenShaCache =
           jsonList.map((json) => JiShenShaEntity.fromJson(json)).toList();
@@ -123,7 +133,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
     }
 
     try {
-      final List<dynamic> jsonList = await shenShaData.loadXunShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("xun");
 
       _xunShenShaCache =
           jsonList.map((json) => XunShenShaEntity.fromJson(json)).toList();
@@ -148,7 +158,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   Future<List<TianGanShenShaEntity>> loadYearGanShenSha() async {
     if (_yearGanShenShaCache != null) return _yearGanShenShaCache!;
     try {
-      final List<dynamic> jsonList = await shenShaData.loadYearGanShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("year_gan");
       _yearGanShenShaCache =
           jsonList.map((j) => TianGanShenShaEntity.fromJson(j)).toList();
       return _yearGanShenShaCache!;
@@ -163,7 +173,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   Future<List<TianGanShenShaEntity>> loadMonthGanShenSha() async {
     if (_monthGanShenShaCache != null) return _monthGanShenShaCache!;
     try {
-      final List<dynamic> jsonList = await shenShaData.loadMonthGanShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("month_gan");
       _monthGanShenShaCache =
           jsonList.map((j) => TianGanShenShaEntity.fromJson(j)).toList();
       return _monthGanShenShaCache!;
@@ -176,7 +186,7 @@ class ShenShaDataServiceImpl implements ShenShaDataService {
   /// 加载月支干合神煞（6_shensha_month_zhi_gan.json，type='月煞'）
   Future<List<MonthShenShaEntity>> loadMonthZhiGanShenSha() async {
     try {
-      final List<dynamic> jsonList = await shenShaData.loadMonthZhiGanShenShaRaw();
+      final List<dynamic> jsonList = await _loadRaw("month_zhi_gan");
       return jsonList
           .map((j) => MonthShenShaEntity.fromJson(j))
           .toList();

@@ -1,3 +1,4 @@
+import 'package:repository_contract_kernel/repository_contract_kernel.dart';
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:daliuren/model/enum_nine_zong_men.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
@@ -40,8 +41,10 @@ class KetiDataService {
   Future<void> loadData() async {
     if (_lessons != null) return;
     try {
-      final decoded = await keti.loadKetiData();
-      _lessons = decoded
+      final ctx = RequestContext(scopeUid: 'local-anonymous');
+      final res = await keti.query(const {}, PageRequest(limit: 200), ctx);
+      final page = res.orElse(const Page(items: []));
+      _lessons = page.items
           .map((e) => DaliurenLesson.fromJson(e as Map<String, dynamic>))
           .toList();
       _buildLookupMaps();

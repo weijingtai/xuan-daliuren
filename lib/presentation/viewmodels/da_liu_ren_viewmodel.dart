@@ -1,3 +1,4 @@
+import 'package:repository_contract_kernel/repository_contract_kernel.dart';
 import 'dart:math';
 
 import 'package:enumeration/enums.dart' show EnumDatetimeType;
@@ -393,7 +394,7 @@ class DaLiuRenViewModel extends BaseViewModel {
       question: _question,
       createdAt: now,
     );
-    _recordRepository!.saveRecord(contract);
+    _recordRepository!.put(contract, RequestContext(scopeUid: 'local-anonymous'));
   }
 
   /// 落库当前盘面。
@@ -417,7 +418,7 @@ class DaLiuRenViewModel extends BaseViewModel {
         );
         final repo = _recordRepository;
         if (repo != null) {
-          await repo.saveRecord(record);
+          await repo.put(record, RequestContext(scopeUid: 'local-anonymous'));
         }
         return;
       } catch (error, stack) {

@@ -1,6 +1,7 @@
 import 'package:metaphysics_core/enums.dart';
 import 'package:xuan_logger/xuan_logger.dart';
 import 'package:theme/const_resources_mapper.dart';
+import 'package:repository_contract_kernel/repository_contract_kernel.dart';
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
 import 'package:daliuren/domain/repositories/da_liu_ren_repository.dart';
 import 'package:daliuren/domain/services/da_liu_ren_calculation_service.dart';
@@ -43,25 +44,40 @@ class DaLiuRenRepositoryImpl implements DaLiuRenRepository {
     }
   }
 
+  RequestContext get _ctx => RequestContext(scopeUid: 'local-anonymous');
+
   Future<void> _loadYuDingData() async {
-    _yuDingData ??= await officialData.loadYuDingData();
+    final res = await officialData.get("yuding", _ctx);
+    final val = res.orElse(null);
+    if (val is List) {
+      _yuDingData = val;
+    }
   }
 
   Future<void> _loadJuMapperData() async {
-    _juMapperData ??= await officialData.loadJuMapperData();
+    final res = await officialData.get("jumapper", _ctx);
+    final val = res.orElse(null);
+    if (val is Map<String, dynamic>) {
+      _juMapperData = val;
+    } else if (val is Map) {
+      _juMapperData = Map<String, dynamic>.from(val);
+    }
   }
 
   Future<void> _loadPanData(YinYang yinYang) async {
     try {
-      final rawList = yinYang.isYang
-          ? await officialData.loadYangPanData()
-          : await officialData.loadYinPanData();
-      final panList =
-          rawList.map((m) => DaLiuRenPanModel.fromJson(m)).toList();
-      if (yinYang.isYang) {
-        _yangPanData = panList;
-      } else {
-        _yinPanData = panList;
+      final res = yinYang.isYang
+          ? await officialData.get("yangpan", _ctx)
+          : await officialData.get("yinpan", _ctx);
+      final rawList = res.orElse(null);
+      if (rawList is List) {
+        final panList =
+            rawList.map((m) => DaLiuRenPanModel.fromJson(m as Map<String, dynamic>)).toList();
+        if (yinYang.isYang) {
+          _yangPanData = panList;
+        } else {
+          _yinPanData = panList;
+        }
       }
     } catch (e) {
       if (yinYang.isYang) {

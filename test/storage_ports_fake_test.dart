@@ -15,47 +15,54 @@ import 'package:daliuren/data/schools/yuding_school.dart';
 // ── Fake port implementations with Spy / Call Counters ─────────
 
 class _FakeOfficialData implements DaLiuRenOfficialDataRepository {
-  int loadYuDingDataCallCount = 0;
-  int loadJuMapperDataCallCount = 0;
-  int loadYangPanDataCallCount = 0;
-  int loadYinPanDataCallCount = 0;
+  int getYudingDataCallCount = 0;
+  int getJuMapperDataCallCount = 0;
+  int getYangPanDataCallCount = 0;
+  int getYinPanDataCallCount = 0;
 
   @override
-  Future<List<dynamic>> loadYuDingData() async {
-    loadYuDingDataCallCount++;
-    return [
-      {'dayJiaZi': '甲子', 'juNumber': 1, 'juName': 'test_ju', 'body': []}
-    ];
+  Future<dynamic> get(String id) async {
+    switch (id) {
+      case 'yuding':
+        getYudingDataCallCount++;
+        return [
+          {'dayJiaZi': '甲子', 'juNumber': 1, 'juName': 'test_ju', 'body': []}
+        ];
+      case 'jumapper':
+        getJuMapperDataCallCount++;
+        return {'甲子': 1};
+      case 'yangpan':
+        getYangPanDataCallCount++;
+        return [];
+      case 'yinpan':
+        getYinPanDataCallCount++;
+        return [];
+      default:
+        throw ArgumentError('Unknown id: $id');
+    }
   }
 
   @override
-  Future<Map<String, dynamic>> loadJuMapperData() async {
-    loadJuMapperDataCallCount++;
-    return {'甲子': 1};
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> loadYangPanData() async {
-    loadYangPanDataCallCount++;
-    return [];
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> loadYinPanData() async {
-    loadYinPanDataCallCount++;
-    return [];
+  Future<List<dynamic>> query([Map<String, Object?>? criteria]) async {
+    final type = criteria?['type'] as String? ?? 'yuding';
+    return get(type) as Future<List<dynamic>>;
   }
 }
 
 class _FakeKeti implements DaLiuRenKetiRepository {
-  int loadKetiDataCallCount = 0;
+  int queryCallCount = 0;
 
   @override
-  Future<List<dynamic>> loadKetiData() async {
-    loadKetiDataCallCount++;
+  Future<List<dynamic>> query([Map<String, Object?>? criteria]) async {
+    queryCallCount++;
     return [
       {'id': 1, 'name': '伏吟'},
     ];
+  }
+
+  @override
+  Future<dynamic> get(String id) async {
+    return null;
   }
 }
 
@@ -118,32 +125,38 @@ class _FakeShenSha implements DaLiuRenShenShaDataRepository {
 }
 
 class _FakeSchool implements DaLiuRenSchoolDataRepository {
-  int loadEntriesCallCount = 0;
-  final List<String> loadEntriesParams = [];
+  int queryCallCount = 0;
+  final List<String> queryParams = [];
 
   @override
-  Future<List<SchoolEntryContract>> loadEntries(String schoolId) async {
-    loadEntriesCallCount++;
-    loadEntriesParams.add(schoolId);
+  Future<List<SchoolEntryContract>> query([Map<String, Object?>? criteria]) async {
+    queryCallCount++;
+    final schoolId = criteria?['schoolId'] as String? ?? '';
+    queryParams.add(schoolId);
     return [];
+  }
+
+  @override
+  Future<SchoolEntryContract?> get(String id) async {
+    return null;
   }
 }
 
 class _FakeRecordRepository implements DaliurenRecordRepository {
   @override
-  Future<String> saveRecord(DaliurenDivinationRecordContract record) async => record.uuid;
+  Future<String> put(DaliurenDivinationRecordContract record) async => record.uuid;
 
   @override
-  Future<List<DaliurenDivinationRecordContract>> getAllRecords() async => const [];
+  Future<List<DaliurenDivinationRecordContract>> query([Map<String, Object?>? criteria]) async => const [];
 
   @override
-  Future<DaliurenDivinationRecordContract?> getRecordByUuid(String uuid) async => null;
+  Future<DaliurenDivinationRecordContract?> get(String id) async => null;
 
   @override
-  Future<bool> softDeleteRecord(String uuid) async => true;
+  Future<bool> delete(String id) async => true;
 
   @override
-  Stream<List<DaliurenDivinationRecordContract>> watchAllRecords() => Stream.value(const []);
+  Stream<List<DaliurenDivinationRecordContract>> watchAll() => Stream.value(const []);
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────
@@ -154,14 +167,14 @@ void main() {
     final fakeKeti = _FakeKeti();
     final service = KetiDataService(keti: fakeKeti);
 
-    expect(fakeKeti.loadKetiDataCallCount, 0);
+    expect(fakeKeti.queryCallCount, 0);
 
     await service.loadData();
-    expect(fakeKeti.loadKetiDataCallCount, 1);
+    expect(fakeKeti.queryCallCount, 1);
 
     // loadData is idempotent, second call returns early.
     await service.loadData();
-    expect(fakeKeti.loadKetiDataCallCount, 1);
+    expect(fakeKeti.queryCallCount, 1);
   });
 
   test('DaLiuRenRepositoryImpl.loadDivinationData works via fake official port with spy',
@@ -184,30 +197,30 @@ void main() {
       officialData: fakeOfficial,
     );
 
-    expect(fakeOfficial.loadYuDingDataCallCount, 0);
-    expect(fakeOfficial.loadJuMapperDataCallCount, 0);
-    expect(fakeOfficial.loadYangPanDataCallCount, 0);
-    expect(fakeOfficial.loadYinPanDataCallCount, 0);
-    expect(fakeKeti.loadKetiDataCallCount, 0);
+    expect(fakeOfficial.getYudingDataCallCount, 0);
+    expect(fakeOfficial.getJuMapperDataCallCount, 0);
+    expect(fakeOfficial.getYangPanDataCallCount, 0);
+    expect(fakeOfficial.getYinPanDataCallCount, 0);
+    expect(fakeKeti.queryCallCount, 0);
 
     // Initial load
     await repo.loadDivinationData();
 
-    expect(fakeOfficial.loadYuDingDataCallCount, 1);
-    expect(fakeOfficial.loadJuMapperDataCallCount, 1);
-    expect(fakeOfficial.loadYangPanDataCallCount, 1);
-    expect(fakeOfficial.loadYinPanDataCallCount, 1);
-    expect(fakeKeti.loadKetiDataCallCount, 1);
+    expect(fakeOfficial.getYudingDataCallCount, 1);
+    expect(fakeOfficial.getJuMapperDataCallCount, 1);
+    expect(fakeOfficial.getYangPanDataCallCount, 1);
+    expect(fakeOfficial.getYinPanDataCallCount, 1);
+    expect(fakeKeti.queryCallCount, 1);
 
     // Second load should use cache for official/mapper/keti data,
     // but pan data is reloaded every time in DaLiuRenRepositoryImpl.
     await repo.loadDivinationData();
 
-    expect(fakeOfficial.loadYuDingDataCallCount, 1);
-    expect(fakeOfficial.loadJuMapperDataCallCount, 1);
-    expect(fakeOfficial.loadYangPanDataCallCount, 2);
-    expect(fakeOfficial.loadYinPanDataCallCount, 2);
-    expect(fakeKeti.loadKetiDataCallCount, 1);
+    expect(fakeOfficial.getYudingDataCallCount, 1);
+    expect(fakeOfficial.getJuMapperDataCallCount, 1);
+    expect(fakeOfficial.getYangPanDataCallCount, 2);
+    expect(fakeOfficial.getYinPanDataCallCount, 2);
+    expect(fakeKeti.queryCallCount, 1);
   });
 
   test('ShenShaDataServiceImpl uses spy/call counter', () async {
@@ -246,18 +259,18 @@ void main() {
     final fakeSchool = _FakeSchool();
     final yudingSchool = YudingSchool(schoolData: fakeSchool);
 
-    expect(fakeSchool.loadEntriesCallCount, 0);
-    expect(fakeSchool.loadEntriesParams, isEmpty);
+    expect(fakeSchool.queryCallCount, 0);
+    expect(fakeSchool.queryParams, isEmpty);
 
     await yudingSchool.loadData();
 
-    expect(fakeSchool.loadEntriesCallCount, 1);
-    expect(fakeSchool.loadEntriesParams, equals(['yuding']));
+    expect(fakeSchool.queryCallCount, 1);
+    expect(fakeSchool.queryParams, equals(['yuding']));
 
     // Second call is cached, count remains 1
     await yudingSchool.loadData();
-    expect(fakeSchool.loadEntriesCallCount, 1);
-    expect(fakeSchool.loadEntriesParams, equals(['yuding']));
+    expect(fakeSchool.queryCallCount, 1);
+    expect(fakeSchool.queryParams, equals(['yuding']));
   });
 
   test('DaliurenStorageDependencies bundle is verified', () async {

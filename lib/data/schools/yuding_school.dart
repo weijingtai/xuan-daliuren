@@ -1,3 +1,4 @@
+import 'package:repository_contract_kernel/repository_contract_kernel.dart';
 // lib/data/schools/yuding_school.dart
 
 import 'package:repository_interface_daliuren/repository_interface_daliuren.dart';
@@ -38,7 +39,9 @@ class YudingSchool implements DaLiuRenSchool {
   Future<void> loadData() async {
     if (_isLoaded) return;
     try {
-      _entries = await schoolData.loadEntries('yuding');
+      final ctx = RequestContext(scopeUid: 'local-anonymous');
+      final res = await schoolData.query({'schoolId': 'yuding'}, PageRequest(limit: 200), ctx);
+      _entries = res.orElse(const Page(items: [])).items;
       _isLoaded = true;
     } catch (e) {
       _entries = const [];
